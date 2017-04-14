@@ -33,7 +33,7 @@ public class EntityCategory extends ConfigCategory {
     @Setting(value = "max-bounding-box-size", comment = "Max size of an entity's bounding box before removing it. Set to 0 to disable")
     private int maxBoundingBoxSize = 1000;
     @Setting(value = "collision-warn-size",
-    comment = "Number of colliding entities in one spot before logging a warning. Set to 0 to disable")
+            comment = "Number of colliding entities in one spot before logging a warning. Set to 0 to disable")
     private int maxCollisionSize = 200;
     @Setting(value = "max-speed", comment = "Square of the max speed of an entity before removing it. Set to 0 to disable")
     private int maxSpeed = 100;

@@ -53,7 +53,6 @@ import org.spongepowered.common.interfaces.world.IMixinWorldInfo;
 import org.spongepowered.common.interfaces.world.IMixinWorldServer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SpongeEntityArchetype extends AbstractArchetype<EntityType, EntitySnapshot> implements EntityArchetype {
@@ -146,8 +145,7 @@ public class SpongeEntityArchetype extends AbstractArchetype<EntityType, EntityS
     public DataContainer toContainer() {
         return new MemoryDataContainer()
                 .set(DataQueries.EntityArchetype.ENTITY_TYPE, this.type)
-                .set(DataQueries.EntityArchetype.ENTITY_DATA, getEntityData())
-                ;
+                .set(DataQueries.EntityArchetype.ENTITY_DATA, getEntityData());
     }
 
     @Override

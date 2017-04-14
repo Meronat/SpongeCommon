@@ -47,8 +47,8 @@ public class GridInventoryAdapter extends Inventory2DAdapter implements GridInve
     
     protected final GridInventoryLens<IInventory, net.minecraft.item.ItemStack> gridLens;
     
-    protected final List<InventoryRow> rows = new ArrayList<InventoryRow>();
-    protected final List<InventoryColumn> columns = new ArrayList<InventoryColumn>();
+    protected final List<InventoryRow> rows = new ArrayList<>();
+    protected final List<InventoryColumn> columns = new ArrayList<>();
 
     public GridInventoryAdapter(Fabric<IInventory> inventory, GridInventoryLens<IInventory, net.minecraft.item.ItemStack> root) {
         this(inventory, root, null);

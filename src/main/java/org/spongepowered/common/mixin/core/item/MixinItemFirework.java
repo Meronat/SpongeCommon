@@ -29,7 +29,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFirework;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -53,7 +52,8 @@ public class MixinItemFirework extends Item {
 
     @Redirect(method = "onItemUse", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"))
-    private boolean onspawnEntity(World world, Entity firework, EntityPlayer player, World worldIn, BlockPos pos, EnumHand side, EnumFacing hitX, float hitY, float hitZ, float p_180614_9_) {
+    private boolean onspawnEntity(World world, Entity firework, EntityPlayer player, World worldIn, BlockPos pos, EnumHand side,
+            EnumFacing hitX, float hitY, float hitZ, float p_180614_9_) {
         ((Firework) firework).setShooter((ProjectileSource) player);
         this.primeCancelled = !((IMixinEntityFireworkRocket) firework)
                 .shouldPrime(Cause.of(NamedCause.of(NamedCause.IGNITER, player)));

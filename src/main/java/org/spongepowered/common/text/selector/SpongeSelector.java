@@ -26,7 +26,6 @@ package org.spongepowered.common.text.selector;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import org.spongepowered.api.entity.Entity;

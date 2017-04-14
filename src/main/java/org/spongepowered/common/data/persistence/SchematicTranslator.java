@@ -182,8 +182,7 @@ public class SchematicTranslator implements DataTranslator<Schematic> {
             }
         }
 
-        Schematic schematic = new SpongeSchematic(buffer, tiles, metadata);
-        return schematic;
+        return new SpongeSchematic(buffer, tiles, metadata);
     }
 
     @Override

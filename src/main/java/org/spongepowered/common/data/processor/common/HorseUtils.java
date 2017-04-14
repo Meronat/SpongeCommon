@@ -66,6 +66,7 @@ public class HorseUtils {
     }
 
     public static org.spongepowered.api.data.type.HorseVariant getHorseVariant(DataView container) {
-        return SpongeImpl.getRegistry().getType(org.spongepowered.api.data.type.HorseVariant.class, getData(container, Keys.HORSE_VARIANT, String.class)).get();
+        return SpongeImpl.getRegistry().getType(org.spongepowered.api.data.type.HorseVariant.class,
+                getData(container, Keys.HORSE_VARIANT, String.class)).get();
     }
 }

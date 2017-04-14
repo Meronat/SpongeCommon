@@ -24,7 +24,6 @@
  */
 package org.spongepowered.common.data.manipulator.immutable.entity;
 
-import com.google.common.collect.ComparisonChain;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.immutable.entity.ImmutableInvisibilityData;
@@ -35,7 +34,8 @@ import org.spongepowered.common.data.manipulator.mutable.entity.SpongeInvisibili
 import org.spongepowered.common.data.util.DataVersions;
 import org.spongepowered.common.data.value.immutable.ImmutableSpongeValue;
 
-public class ImmutableSpongeInvisibilityData extends AbstractImmutableData<ImmutableInvisibilityData, InvisibilityData> implements ImmutableInvisibilityData {
+public class ImmutableSpongeInvisibilityData extends AbstractImmutableData<ImmutableInvisibilityData, InvisibilityData>
+        implements ImmutableInvisibilityData {
 
     private final boolean vanish;
     private final boolean collision;

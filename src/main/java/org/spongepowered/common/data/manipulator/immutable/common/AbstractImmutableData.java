@@ -41,8 +41,8 @@ import org.spongepowered.api.data.value.BaseValue;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
 import org.spongepowered.api.data.value.mutable.Value;
 import org.spongepowered.common.data.DataProcessor;
-import org.spongepowered.common.data.ValueProcessor;
 import org.spongepowered.common.data.SpongeDataManager;
+import org.spongepowered.common.data.ValueProcessor;
 
 import java.util.List;
 import java.util.Map;
@@ -54,13 +54,14 @@ import java.util.stream.Collectors;
 /**
  * So, considering this is the root of the immutable variants of
  * {@link DataManipulator}, otherwise known as {@link ImmutableDataManipulator}s.
- * The advantage of these types of {@link DataManipulator}s is that they can not be
- * mutated once created. In other words, it's safe to pass around these immutable
- * variants across threads without worry of the underlying values being changed.
+ * The advantage of these types of {@link DataManipulator}s is that they can
+ * not be mutated once created. In other words, it's safe to pass around
+ * these immutable variants across threads without worry of the underlying
+ * values being changed.
  *
- * It may be possible that some commonly used {@link ImmutableDataManipulator}s
+ * <p>It may be possible that some commonly used {@link ImmutableDataManipulator}s
  * may be cached for better performance when processing obtaining new
- * {@link ImmutableDataManipulator}s with different values.
+ * {@link ImmutableDataManipulator}s with different values.</p>
  *
  * <p>Note: It is ABSOLUTELY REQUIRED to {@link #registerKeyValue(Key, Supplier)}
  * and {@link #registerFieldGetter(Key, Supplier)} for all possible
@@ -76,7 +77,8 @@ import java.util.stream.Collectors;
  * @param <M> The mutable manipulator type
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractImmutableData<I extends ImmutableDataManipulator<I, M>, M extends DataManipulator<M, I>> implements ImmutableDataManipulator<I, M> {
+public abstract class AbstractImmutableData<I extends ImmutableDataManipulator<I, M>, M extends DataManipulator<M, I>>
+        implements ImmutableDataManipulator<I, M> {
 
     private final Class<I> immutableClass;
 

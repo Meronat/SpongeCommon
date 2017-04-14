@@ -58,8 +58,8 @@ public abstract class MixinBlockFenceGate extends MixinBlock {
 
     @Override
     public boolean supports(Class<? extends ImmutableDataManipulator<?, ?>> immutable) {
-        return super.supports(immutable) || ImmutableOpenData.class.isAssignableFrom(immutable) || ImmutablePoweredData.class.isAssignableFrom(immutable)
-                || ImmutableInWallData.class.isAssignableFrom(immutable);
+        return super.supports(immutable) || ImmutableOpenData.class.isAssignableFrom(immutable)
+                || ImmutablePoweredData.class.isAssignableFrom(immutable) || ImmutableInWallData.class.isAssignableFrom(immutable);
     }
 
     @Override

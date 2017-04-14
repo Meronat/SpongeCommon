@@ -127,18 +127,21 @@ public abstract class MixinEntityFishHook extends MixinEntity implements FishHoo
 
                 // Sponge start
                 // TODO 1.9: Figure out how we want experience to work here
-                List<net.minecraft.item.ItemStack> itemstacks = this.world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(this.rand, lootcontext$builder.build());
-                FishingEvent.Stop event = SpongeEventFactory.createFishingEventStop(Cause.of(NamedCause.source(this.angler)), 0, 0,
-                        this.createSnapshot(), this, itemstacks.stream().map(s -> {
+                List<net.minecraft.item.ItemStack> itemStacks = this.world.getLootTableManager().getLootTableFromLocation(
+                        LootTableList.GAMEPLAY_FISHING).generateLootForPools(this.rand, lootcontext$builder.build());
+                FishingEvent.Stop event = SpongeEventFactory.createFishingEventStop(Cause.of(NamedCause.source(this.angler)),
+                        0, 0, this.createSnapshot(), this, itemStacks.stream().map(s -> {
                             ItemStackSnapshot snapshot = ((ItemStack) s).createSnapshot();
                             return new Transaction<>(snapshot, snapshot);
                         }).collect(Collectors.toList()), (Player) this.angler);
 
-
                 if (!SpongeImpl.postEvent(event)) {
-                    for (net.minecraft.item.ItemStack itemstack : event.getItemStackTransaction().stream().filter(Transaction::isValid).map(t -> (net.minecraft.item.ItemStack) t.getFinal().createStack()).collect(Collectors.toList())) {
+                    for (net.minecraft.item.ItemStack itemStack : event.getItemStackTransaction().stream()
+                            .filter(Transaction::isValid)
+                            .map(t -> (net.minecraft.item.ItemStack) t.getFinal().createStack())
+                            .collect(Collectors.toList())) {
                         // Sponge end
-                        EntityItem entityitem = new EntityItem(this.world, this.posX, this.posY, this.posZ, itemstack);
+                        EntityItem entityitem = new EntityItem(this.world, this.posX, this.posY, this.posZ, itemStack);
                         double d0 = this.angler.posX - this.posX;
                         double d1 = this.angler.posY - this.posY;
                         double d2 = this.angler.posZ - this.posZ;
@@ -148,15 +151,15 @@ public abstract class MixinEntityFishHook extends MixinEntity implements FishHoo
                         entityitem.motionY = d1 * 0.1D + (double) MathHelper.sqrt(d3) * 0.08D;
                         entityitem.motionZ = d2 * 0.1D;
                         this.world.spawnEntity(entityitem);
-                        this.angler.world.spawnEntity(new EntityXPOrb(this.angler.world, this.angler.posX, this.angler.posY + 0.5D, this.angler.posZ + 0.5D, this.rand.nextInt(6) + 1));
-                        Item item = itemstack.getItem();
+                        this.angler.world.spawnEntity(new EntityXPOrb(this.angler.world, this.angler.posX, this.angler.posY + 0.5D,
+                                this.angler.posZ + 0.5D, this.rand.nextInt(6) + 1));
+                        Item item = itemStack.getItem();
 
                         if (item == Items.FISH || item == Items.COOKED_FISH) {
                             this.angler.addStat(StatList.FISH_CAUGHT, 1);
                         }
                     }
                 }
-
 
                 i = 1;
             }

@@ -34,7 +34,6 @@ import org.spongepowered.common.data.manipulator.immutable.ImmutableSpongeColore
 import org.spongepowered.common.data.manipulator.mutable.common.AbstractSingleData;
 import org.spongepowered.common.data.value.mutable.SpongeValue;
 
-
 public class SpongeColoredData extends AbstractSingleData<Color, ColoredData, ImmutableColoredData> implements ColoredData {
 
     public SpongeColoredData() {

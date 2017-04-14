@@ -38,6 +38,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class IpSet implements Predicate<InetAddress> {
+
     private final InetAddress addr;
     private final int prefixLen;
 

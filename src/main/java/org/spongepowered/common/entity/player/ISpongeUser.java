@@ -34,7 +34,7 @@ public interface ISpongeUser {
 
     boolean setBedLocations(Map<UUID, RespawnLocation> value);
 
-    Map<UUID, RespawnLocation> getBedlocations();
+    Map<UUID, RespawnLocation> getBedLocations();
 
     ImmutableMap<UUID, RespawnLocation> removeAllBeds();
 

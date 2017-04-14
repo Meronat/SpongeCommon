@@ -75,12 +75,15 @@ public abstract class MixinCommandTeleport extends CommandBase {
                 Vec3d vec3d = sender.getPositionVector();
                 int j = 1;
                 CommandBase.CoordinateArg commandbase$coordinatearg = parseCoordinate(vec3d.xCoord, args[j++], true);
-                CommandBase.CoordinateArg commandbase$coordinatearg1 = parseCoordinate(vec3d.yCoord, args[j++], -4096, 4096, false);
+                CommandBase.CoordinateArg commandbase$coordinatearg1 = parseCoordinate(vec3d.yCoord, args[j++],
+                        -4096, 4096, false);
                 CommandBase.CoordinateArg commandbase$coordinatearg2 = parseCoordinate(vec3d.zCoord, args[j++], true);
                 Entity entity1 = sender.getCommandSenderEntity() == null ? entity : sender.getCommandSenderEntity();
-                CommandBase.CoordinateArg commandbase$coordinatearg3 = parseCoordinate(args.length > j ? (double)entity1.rotationYaw : (double)entity.rotationYaw, args.length > j ? args[j] : "~", false);
+                CommandBase.CoordinateArg commandbase$coordinatearg3 = parseCoordinate(args.length > j
+                        ? (double)entity1.rotationYaw : (double)entity.rotationYaw, args.length > j ? args[j] : "~", false);
                 ++j;
-                CommandBase.CoordinateArg commandbase$coordinatearg4 = parseCoordinate(args.length > j ? (double)entity1.rotationPitch : (double)entity.rotationPitch, args.length > j ? args[j] : "~", false);
+                CommandBase.CoordinateArg commandbase$coordinatearg4 = parseCoordinate(args.length > j
+                        ? (double)entity1.rotationPitch : (double)entity.rotationPitch, args.length > j ? args[j] : "~", false);
                 // Sponge start - check shouldNotifyCommandListener before calling 'notifyCommandListener'
 
                 // Guard against any possible re-entrance
@@ -88,7 +91,9 @@ public abstract class MixinCommandTeleport extends CommandBase {
 
                 doTeleport(entity, commandbase$coordinatearg, commandbase$coordinatearg1, commandbase$coordinatearg2, commandbase$coordinatearg3, commandbase$coordinatearg4);
                 if (shouldNotifyCommandListener) {
-                    notifyCommandListener(sender, this, "commands.tp.success.coordinates", new Object[] {entity.getName(), Double.valueOf(commandbase$coordinatearg.getResult()), Double.valueOf(commandbase$coordinatearg1.getResult()), Double.valueOf(commandbase$coordinatearg2.getResult())});
+                    notifyCommandListener(sender, this, "commands.tp.success.coordinates",
+                            new Object[] {entity.getName(), Double.valueOf(commandbase$coordinatearg.getResult()),
+                                    Double.valueOf(commandbase$coordinatearg1.getResult()), Double.valueOf(commandbase$coordinatearg2.getResult())});
                 }
                 shouldNotifyCommandListener = shouldNotify;
                 // Sponge end
@@ -101,7 +106,8 @@ public abstract class MixinCommandTeleport extends CommandBase {
      * @reason Muliple modification points are needed, so an overwrite is easier
      */
     @Overwrite
-    private static void doTeleport(Entity p_189862_0_, CommandBase.CoordinateArg p_189862_1_, CommandBase.CoordinateArg p_189862_2_, CommandBase.CoordinateArg p_189862_3_, CommandBase.CoordinateArg p_189862_4_, CommandBase.CoordinateArg p_189862_5_)
+    private static void doTeleport(Entity p_189862_0_, CommandBase.CoordinateArg p_189862_1_, CommandBase.CoordinateArg p_189862_2_,
+            CommandBase.CoordinateArg p_189862_3_, CommandBase.CoordinateArg p_189862_4_, CommandBase.CoordinateArg p_189862_5_)
     {
         if (p_189862_0_ instanceof EntityPlayerMP)
         {
@@ -140,7 +146,8 @@ public abstract class MixinCommandTeleport extends CommandBase {
 
             p_189862_0_.dismountRidingEntity();
             Vector3d position = event.getToTransform().getPosition();
-            ((EntityPlayerMP)p_189862_0_).connection.setPlayerLocation(position.getX(), position.getY(), position.getZ(), (float) event.getToTransform().getYaw(), (float) event.getToTransform().getPitch(), set);
+            ((EntityPlayerMP)p_189862_0_).connection.setPlayerLocation(position.getX(), position.getY(), position.getZ(),
+                    (float) event.getToTransform().getYaw(), (float) event.getToTransform().getPitch(), set);
             p_189862_0_.setRotationYawHead((float) event.getToTransform().getYaw());
             // Sponge end
         }
@@ -160,7 +167,8 @@ public abstract class MixinCommandTeleport extends CommandBase {
             }
 
             Vector3d position = event.getToTransform().getPosition();
-            p_189862_0_.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), (float) event.getToTransform().getYaw(), (float) event.getToTransform().getPitch());
+            p_189862_0_.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), (float) event.getToTransform().getYaw(),
+                    (float) event.getToTransform().getPitch());
             p_189862_0_.setRotationYawHead((float) event.getToTransform().getYaw());
             // Sponge end
         }

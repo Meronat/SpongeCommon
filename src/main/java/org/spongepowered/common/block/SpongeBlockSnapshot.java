@@ -53,7 +53,6 @@ import org.spongepowered.api.data.manipulator.ImmutableDataManipulator;
 import org.spongepowered.api.data.merge.MergeFunction;
 import org.spongepowered.api.data.value.BaseValue;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.world.BlockChangeFlag;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
@@ -62,11 +61,10 @@ import org.spongepowered.common.data.persistence.NbtTranslator;
 import org.spongepowered.common.data.util.DataQueries;
 import org.spongepowered.common.data.util.DataUtil;
 import org.spongepowered.common.data.util.NbtDataUtil;
-import org.spongepowered.common.event.InternalNamedCauses;
+import org.spongepowered.common.event.tracking.CauseTracker;
 import org.spongepowered.common.event.tracking.IPhaseState;
 import org.spongepowered.common.event.tracking.PhaseContext;
 import org.spongepowered.common.event.tracking.phase.block.BlockPhase;
-import org.spongepowered.common.event.tracking.CauseTracker;
 import org.spongepowered.common.interfaces.block.IMixinBlock;
 import org.spongepowered.common.interfaces.world.IMixinWorldServer;
 import org.spongepowered.common.registry.type.block.TileEntityTypeRegistryModule;
@@ -123,7 +121,7 @@ public class SpongeBlockSnapshot implements BlockSnapshot {
         // This avoids cross contamination of block state based values versus tile entity values.
         // TODO - delegate this to NbtProcessors when schematics are merged.
         final ImmutableMap.Builder<Key<?>, ImmutableValue<?>> tileBuilder = ImmutableMap.builder();
-        this.extraData = builder.manipulators == null ? ImmutableList.<ImmutableDataManipulator<?, ?>>of() : ImmutableList.copyOf(builder.manipulators);
+        this.extraData = builder.manipulators == null ? ImmutableList.of() : ImmutableList.copyOf(builder.manipulators);
         for (ImmutableDataManipulator<?, ?> manipulator : this.extraData) {
             for (ImmutableValue<?> value : manipulator.getValues()) {
                 tileBuilder.put(value.getKey(), value);
@@ -194,7 +192,8 @@ public class SpongeBlockSnapshot implements BlockSnapshot {
         BlockPos pos = VecHelper.toBlockPos(this.pos);
         IBlockState current = world.getBlockState(pos);
         IBlockState replaced = (IBlockState) this.blockState;
-        if (!force && (current.getBlock() != replaced.getBlock() || current.getBlock().getMetaFromState(current) != replaced.getBlock().getMetaFromState(replaced))) {
+        if (!force && (current.getBlock() != replaced.getBlock() ||
+                current.getBlock().getMetaFromState(current) != replaced.getBlock().getMetaFromState(replaced))) {
             if (currentState.tracksBlockRestores()) {
                 causeTracker.completePhase(BlockPhase.State.RESTORING_BLOCKS);
             }
@@ -456,6 +455,7 @@ public class SpongeBlockSnapshot implements BlockSnapshot {
     }
 
     private Set<Key<?>> keys;
+
     @Override
     public Set<Key<?>> getKeys() {
         if (this.keys == null) {
@@ -463,6 +463,7 @@ public class SpongeBlockSnapshot implements BlockSnapshot {
         }
         return this.keys;
     }
+
     private ImmutableSet<ImmutableValue<?>> values;
 
     @Override
@@ -560,12 +561,12 @@ public class SpongeBlockSnapshot implements BlockSnapshot {
             return false;
         }
         SpongeBlockSnapshot that = (SpongeBlockSnapshot) o;
-        return this.changeFlag == that.changeFlag &&
-               Objects.equal(this.extendedState, that.extendedState) &&
-               Objects.equal(this.worldUniqueId, that.worldUniqueId) &&
-               Objects.equal(this.pos, that.pos) &&
-               Objects.equal(this.extraData, that.extraData) &&
-               Objects.equal(this.compound, that.compound);
+        return this.changeFlag == that.changeFlag
+                && Objects.equal(this.extendedState, that.extendedState)
+                && Objects.equal(this.worldUniqueId, that.worldUniqueId)
+                && Objects.equal(this.pos, that.pos)
+                && Objects.equal(this.extraData, that.extraData)
+                && Objects.equal(this.compound, that.compound);
     }
 
     @Override

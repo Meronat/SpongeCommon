@@ -26,8 +26,6 @@ package org.spongepowered.common.interfaces;
 
 import net.minecraft.world.WorldServer;
 
-import java.util.Hashtable;
-
 public interface IMixinMinecraftServer {
 
     long[] getWorldTickTimes(int dimensionId);

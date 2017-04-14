@@ -45,7 +45,8 @@ public abstract class MixinEntitySkeleton extends MixinAbstractSkeleton implemen
     @Deprecated
     @Override
     public Value<org.spongepowered.api.data.type.SkeletonType> variant() {
-        return new SpongeValue<>(Keys.SKELETON_TYPE, org.spongepowered.api.data.type.SkeletonTypes.NORMAL, org.spongepowered.api.data.type.SkeletonTypes.NORMAL);
+        return new SpongeValue<>(Keys.SKELETON_TYPE, org.spongepowered.api.data.type.SkeletonTypes.NORMAL,
+                org.spongepowered.api.data.type.SkeletonTypes.NORMAL);
     }
 
 

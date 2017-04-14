@@ -27,7 +27,6 @@ package org.spongepowered.common.data.manipulator.immutable.common;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.collect.ComparisonChain;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.manipulator.DataManipulator;
@@ -39,8 +38,8 @@ import org.spongepowered.common.util.ReflectionUtil;
 
 import java.lang.reflect.Modifier;
 
-public abstract class AbstractImmutableBooleanData<I extends ImmutableDataManipulator<I, M>, M extends DataManipulator<M, I>> extends
-        AbstractImmutableSingleData<Boolean, I, M> {
+public abstract class AbstractImmutableBooleanData<I extends ImmutableDataManipulator<I, M>, M extends DataManipulator<M, I>>
+        extends AbstractImmutableSingleData<Boolean, I, M> {
 
     private final Class<? extends M> mutableClass;
     private final boolean defaultValue;

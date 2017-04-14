@@ -34,7 +34,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Locale;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

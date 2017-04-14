@@ -97,7 +97,8 @@ public class DamageEventHandler {
         if ((damageSource instanceof FallingBlockDamageSource) && entityLivingBase.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null) {
             DamageModifier modifier = DamageModifier.builder()
                 .cause(
-                    Cause.of(NamedCause.of(DamageEntityEvent.HARD_HAT_ARMOR, ((ItemStack) entityLivingBase.getItemStackFromSlot(EntityEquipmentSlot.HEAD)).createSnapshot())))
+                    Cause.of(NamedCause.of(DamageEntityEvent.HARD_HAT_ARMOR,
+                            ((ItemStack) entityLivingBase.getItemStackFromSlot(EntityEquipmentSlot.HEAD)).createSnapshot())))
                 .type(DamageModifierTypes.HARD_HAT)
                 .build();
             return Optional.of(new Tuple<>(modifier, HARD_HAT_FUNCTION));
@@ -107,11 +108,12 @@ public class DamageEventHandler {
 
     private static double damageToHandle;
 
-    public static Optional<List<Tuple<DamageModifier, Function<? super Double, Double>>>> createArmorModifiers(EntityLivingBase entityLivingBase,
-                                                                                                               DamageSource damageSource, double damage) {
+    public static Optional<List<Tuple<DamageModifier, Function<? super Double, Double>>>> createArmorModifiers(
+            EntityLivingBase entityLivingBase, DamageSource damageSource, double damage) {
         if (!damageSource.isDamageAbsolute()) {
             damage *= 25;
-            net.minecraft.item.ItemStack[] inventory = Iterables.toArray(entityLivingBase.getArmorInventoryList(), net.minecraft.item.ItemStack.class);
+            net.minecraft.item.ItemStack[] inventory =
+                    Iterables.toArray(entityLivingBase.getArmorInventoryList(), net.minecraft.item.ItemStack.class);
             List<Tuple<DamageModifier, Function<? super Double, Double>>> modifiers = new ArrayList<>();
             List<DamageObject> damageObjects = new ArrayList<>();
 
@@ -180,14 +182,15 @@ public class DamageEventHandler {
 
     /**
      * Only used in Vanilla. The Forge version is much different.
-     * Basically, this accepts the various "objects" needed to work for an armor piece to be "damaged".
+     * Basically, this accepts the various "objects" needed to work for
+     * an armor piece to be "damaged".
      *
-     * This is also where we can likely throw a damage item event.
+     * <p>This is also where we can likely throw a damage item event.</p>
      *
-     * @param entity
-     * @param damageSource
-     * @param modifier
-     * @param damage
+     * @param entity The entity whose armor we're modifying
+     * @param damageSource The source of damage
+     * @param modifier The modifier
+     * @param damage The amount of damage
      */
     public static void acceptArmorModifier(EntityLivingBase entity, DamageSource damageSource, DamageModifier modifier, double damage) {
         Optional<DamageObject> property = modifier.getCause().first(DamageObject.class);
@@ -232,7 +235,8 @@ public class DamageEventHandler {
 
     private static double enchantmentDamageTracked;
 
-    public static Optional<List<Tuple<DamageModifier, Function<? super Double, Double>>>> createEnchantmentModifiers(EntityLivingBase entityLivingBase, DamageSource damageSource) {
+    public static Optional<List<Tuple<DamageModifier, Function<? super Double, Double>>>> createEnchantmentModifiers(
+            EntityLivingBase entityLivingBase, DamageSource damageSource) {
         Iterable<net.minecraft.item.ItemStack> inventory = entityLivingBase.getArmorInventoryList();
         if (EnchantmentHelper.getEnchantmentModifierDamage(Lists.newArrayList(entityLivingBase.getArmorInventoryList()), damageSource) == 0) {
             return Optional.empty();
@@ -312,8 +316,8 @@ public class DamageEventHandler {
 
     }
 
-    public static Optional<Tuple<DamageModifier, Function<? super Double, Double>>> createAbsorptionModifier(EntityLivingBase entityLivingBase,
-                                                                                                             DamageSource damageSource) {
+    public static Optional<Tuple<DamageModifier, Function<? super Double, Double>>> createAbsorptionModifier(
+            EntityLivingBase entityLivingBase, DamageSource damageSource) {
         final float absorptionAmount = entityLivingBase.getAbsorptionAmount();
         if (absorptionAmount > 0) {
             Function<? super Double, Double> function = damage ->
@@ -466,7 +470,8 @@ public class DamageEventHandler {
         return new Tuple<>(modifier, function);
     }
 
-    public static Optional<Tuple<DamageModifier, Function<? super Double, Double>>> createShieldFunction(EntityLivingBase entity, DamageSource source, float amount) {
+    public static Optional<Tuple<DamageModifier, Function<? super Double, Double>>> createShieldFunction(EntityLivingBase entity,
+            DamageSource source, float amount) {
         if (entity.isActiveItemStackBlocking() && amount > 0.0 && entity.canBlockDamageSource(source)) {
             final DamageModifier modifier = DamageModifier.builder()
                     .cause(Cause.source(entity)

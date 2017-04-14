@@ -105,7 +105,8 @@ public abstract class TrackingPhase {
      * - post dispatch may loop several times until no more notifications
      *  are required to be dispatched. This may include block physics for
      *  neighbor notification events.
-     *  @param unwindingState The state that was unwinding
+     *
+     * @param unwindingState The state that was unwinding
      * @param unwindingContext The context of the state that was unwinding,
      *     contains the root cause for the state
      * @param postContext The post dispatch context captures containing any
@@ -198,7 +199,6 @@ public abstract class TrackingPhase {
 
     }
 
-
     public boolean isRestoring(IPhaseState state, PhaseContext context, int updateFlag) {
         return false;
     }
@@ -207,7 +207,6 @@ public abstract class TrackingPhase {
             CauseTracker causeTracker) {
 
     }
-
 
     /**
      * Associates any notifiers and owners for tracking as to what caused
@@ -244,7 +243,6 @@ public abstract class TrackingPhase {
      *
      * <p>NOTE: This method should only be called and handled if and only if {@link #allowEntitySpawns(IPhaseState)}
      * returns {@code true}. Violation of this will have unforseen consequences.</p>
-     *
      *
      * @param phaseState The current phase state
      * @param context The current context

@@ -29,10 +29,8 @@ import static org.spongepowered.api.command.args.GenericArguments.integer;
 import static org.spongepowered.common.util.SpongeCommonTranslationHelper.t;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.MapMaker;
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.ArgumentParseException;
 import org.spongepowered.api.command.args.ChildCommandElementExecutor;
 import org.spongepowered.api.command.args.CommandArgs;
@@ -58,7 +56,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 

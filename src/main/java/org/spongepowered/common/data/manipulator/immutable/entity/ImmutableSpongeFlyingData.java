@@ -31,7 +31,8 @@ import org.spongepowered.api.data.value.immutable.ImmutableValue;
 import org.spongepowered.common.data.manipulator.immutable.common.AbstractImmutableBooleanData;
 import org.spongepowered.common.data.manipulator.mutable.entity.SpongeFlyingData;
 
-public class ImmutableSpongeFlyingData extends AbstractImmutableBooleanData<ImmutableFlyingData, FlyingData> implements ImmutableFlyingData {
+public class ImmutableSpongeFlyingData extends AbstractImmutableBooleanData<ImmutableFlyingData, FlyingData>
+        implements ImmutableFlyingData {
 
     public ImmutableSpongeFlyingData(boolean value) {
         super(ImmutableFlyingData.class, value, Keys.IS_FLYING, SpongeFlyingData.class, false);

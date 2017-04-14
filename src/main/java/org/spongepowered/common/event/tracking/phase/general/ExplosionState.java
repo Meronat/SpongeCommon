@@ -273,12 +273,10 @@ final class ExplosionState extends GeneralState {
     }
 
     @Override
-    public boolean shouldCaptureBlockChangeOrSkip(PhaseContext phaseContext,
-        BlockPos pos) {
+    public boolean shouldCaptureBlockChangeOrSkip(PhaseContext phaseContext, BlockPos pos) {
         boolean match = false;
         final Vector3i blockPos = VecHelper.toVector3i(pos);
-        for (final Iterator<BlockSnapshot> iterator = phaseContext.getCapturedBlocks().iterator(); iterator.hasNext(); ) {
-            final BlockSnapshot capturedSnapshot = iterator.next();
+        for (final BlockSnapshot capturedSnapshot : phaseContext.getCapturedBlocks()) {
             if (capturedSnapshot.getPosition().equals(blockPos)) {
                 match = true;
             }

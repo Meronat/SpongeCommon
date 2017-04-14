@@ -55,9 +55,9 @@ import org.spongepowered.common.SpongeImpl;
 import org.spongepowered.common.config.DataSerializableTypeSerializer;
 import org.spongepowered.common.data.builder.manipulator.SpongeDataManipulatorBuilder;
 import org.spongepowered.common.data.builder.manipulator.SpongeImmutableDataManipulatorBuilder;
-import org.spongepowered.common.data.nbt.data.NbtDataProcessor;
 import org.spongepowered.common.data.nbt.NbtDataType;
 import org.spongepowered.common.data.nbt.SpongeNbtProcessorDelegate;
+import org.spongepowered.common.data.nbt.data.NbtDataProcessor;
 import org.spongepowered.common.data.nbt.validation.DelegateDataValidator;
 import org.spongepowered.common.data.nbt.validation.RawDataValidator;
 import org.spongepowered.common.data.nbt.validation.ValidationType;
@@ -87,7 +87,9 @@ public final class SpongeDataManager implements DataManager {
 
     private static final SpongeDataManager instance = new SpongeDataManager();
     private final Map<Class<?>, DataBuilder<?>> builders = Maps.newHashMap();
-    private final Map<Class<? extends ImmutableDataHolder<?>>, ImmutableDataBuilder<?, ?>> immutableDataBuilderMap = new MapMaker().concurrencyLevel(4).makeMap();
+    private final Map<Class<? extends ImmutableDataHolder<?>>, ImmutableDataBuilder<?, ?>> immutableDataBuilderMap = new MapMaker()
+            .concurrencyLevel(4)
+            .makeMap();
 
     // Builders
 
@@ -120,8 +122,8 @@ public final class SpongeDataManager implements DataManager {
     // Processor delegates
 
     private final Map<Key<? extends BaseValue<?>>, ValueProcessorDelegate<?, ?>> valueDelegates = new IdentityHashMap<>();
-    private final Map<Class<? extends DataManipulator<?, ?>>, DataProcessorDelegate<?, ?>> dataProcessorDelegates =  new IdentityHashMap<>();
-    private final Map<Class<? extends ImmutableDataManipulator<?, ?>>, DataProcessorDelegate<?, ?>> immutableDataProcessorDelegates =  new IdentityHashMap<>();
+    private final Map<Class<? extends DataManipulator<?, ?>>, DataProcessorDelegate<?, ?>> dataProcessorDelegates = new IdentityHashMap<>();
+    private final Map<Class<? extends ImmutableDataManipulator<?, ?>>, DataProcessorDelegate<?, ?>> immutableDataProcessorDelegates = new IdentityHashMap<>();
     private final Map<Class<? extends DataManipulator<?, ?>>, Class<? extends DataManipulator<?, ?>>> interfaceToImplDataManipulatorClasses = new IdentityHashMap<>();
     private ImmutableTable<Class<? extends DataManipulator<?, ?>>, NbtDataType, NbtDataProcessor<?, ?>> nbtProcessorTable = ImmutableTable.of();
     private ImmutableTable<Key<?>, NbtDataType, NbtValueProcessor<?, ?>> nbtValueTable = ImmutableTable.of();
@@ -130,6 +132,7 @@ public final class SpongeDataManager implements DataManager {
     private final Map<Class<? extends DataSerializable>, List<DataContentUpdater>> updatersMap = new IdentityHashMap<>();
 
     private static boolean allowRegistrations = true;
+
     public static SpongeDataManager getInstance() {
         return instance;
     }
@@ -141,7 +144,8 @@ public final class SpongeDataManager implements DataManager {
         checkNotNull(clazz);
         checkNotNull(builder);
         if (!this.builders.containsKey(clazz)) {
-            if (!(builder instanceof AbstractDataBuilder || builder instanceof SpongeDataManipulatorBuilder || builder instanceof SpongeImmutableDataManipulatorBuilder)) {
+            if (!(builder instanceof AbstractDataBuilder || builder instanceof SpongeDataManipulatorBuilder ||
+                    builder instanceof SpongeImmutableDataManipulatorBuilder)) {
                 SpongeImpl.getLogger().warn("A custom DataBuilder is not extending AbstractDataBuilder! It is recommended that "
                                             + "the custom data builder does extend it to gain automated content versioning updates and maintain "
                                             + "simplicity. The offending builder's class is: {}", builder.getClass());
@@ -161,7 +165,7 @@ public final class SpongeDataManager implements DataManager {
         }
         final List<DataContentUpdater> updaters = this.updatersMap.get(clazz);
         updaters.add(updater);
-        Collections.sort(updaters, ComparatorUtil.DATA_CONTENT_UPDATER_COMPARATOR);
+        updaters.sort(ComparatorUtil.DATA_CONTENT_UPDATER_COMPARATOR);
     }
 
     @Override
@@ -186,8 +190,8 @@ public final class SpongeDataManager implements DataManager {
         }
         if (version < toVersion || version > toVersion) { // There wasn't a registered updater for the version being requested
             Exception e = new IllegalStateException("The requested content version for: " + clazz.getSimpleName() + " was requested, "
-                                                    + "\nhowever, the versions supplied: from "+ fromVersion + " to " + toVersion + " is impossible"
-                                                    + "\nas the latest version registered is: " + version+". Please notify the developer of"
+                                                    + "\nhowever, the versions supplied: from " + fromVersion + " to " + toVersion + " is impossible"
+                                                    + "\nas the latest version registered is: " + version + ". Please notify the developer of"
                                                     + "\nthe requested consumed DataSerializable of this error.");
             e.printStackTrace();
             return Optional.empty();
@@ -245,53 +249,50 @@ public final class SpongeDataManager implements DataManager {
     public static void finalizeRegistration() {
         allowRegistrations = false;
         final SpongeDataManager registry = instance;
-        registry.valueProcessorMap.entrySet().forEach( entry -> {
+        registry.valueProcessorMap.forEach((key, value) -> {
             ImmutableList.Builder<ValueProcessor<?, ?>> valueListBuilder = ImmutableList.builder();
-            Collections.sort(entry.getValue(), ComparatorUtil.VALUE_PROCESSOR_COMPARATOR);
-            valueListBuilder.addAll(entry.getValue());
-            final ValueProcessorDelegate<?, ?> delegate = new ValueProcessorDelegate(entry.getKey(), valueListBuilder.build());
-            registry.valueDelegates.put(entry.getKey(), delegate);
+            value.sort(ComparatorUtil.VALUE_PROCESSOR_COMPARATOR);
+            valueListBuilder.addAll(value);
+            final ValueProcessorDelegate<?, ?> delegate = new ValueProcessorDelegate(key, valueListBuilder.build());
+            registry.valueDelegates.put(key, delegate);
         });
         registry.valueProcessorMap.clear();
-        registry.processorMap.entrySet().forEach(entry -> {
+        registry.processorMap.forEach((key, value) -> {
             ImmutableList.Builder<DataProcessor<?, ?>> dataListBuilder = ImmutableList.builder();
-            Collections.sort(entry.getValue(), ComparatorUtil.DATA_PROCESSOR_COMPARATOR);
-            dataListBuilder.addAll(entry.getValue());
+            value.sort(ComparatorUtil.DATA_PROCESSOR_COMPARATOR);
+            dataListBuilder.addAll(value);
             final DataProcessorDelegate<?, ?> delegate = new DataProcessorDelegate(dataListBuilder.build());
-            registry.dataProcessorDelegates.put(entry.getKey(), delegate);
+            registry.dataProcessorDelegates.put(key, delegate);
         });
         registry.processorMap.clear();
 
         SpongeDataManager serializationService = SpongeDataManager.getInstance();
-        registry.dataProcessorDelegates.entrySet().forEach(entry -> {
-            if (!Modifier.isInterface(entry.getKey().getModifiers()) && !Modifier.isAbstract(entry.getKey().getModifiers())) {
-                DataFunction<DataContainer, DataManipulator, Optional<? extends DataManipulator<?, ?>>> function =
-                        (dataContainer, dataManipulator) -> ((DataProcessor) entry.getValue()).fill(dataContainer, dataManipulator);
-                SpongeDataManipulatorBuilder builder = new SpongeDataManipulatorBuilder(entry.getValue(), entry.getKey(), function);
-                registry.builderMap.put(entry.getKey(), checkNotNull(builder));
-                serializationService.registerBuilder(entry.getKey(), builder);
+        registry.dataProcessorDelegates.forEach((key, value) -> {
+            if (!Modifier.isInterface(key.getModifiers()) && !Modifier.isAbstract(key.getModifiers())) {
+                DataFunction<DataContainer, DataManipulator, Optional<? extends DataManipulator<?, ?>>> function = ((DataProcessor) value)::fill;
+                SpongeDataManipulatorBuilder builder = new SpongeDataManipulatorBuilder(value, key, function);
+                registry.builderMap.put(key, checkNotNull(builder));
+                serializationService.registerBuilder(key, builder);
             } else {
-                final Class<? extends DataManipulator<?, ?>> clazz = registry.interfaceToImplDataManipulatorClasses.get(entry.getKey());
-                DataFunction<DataContainer, DataManipulator, Optional<? extends DataManipulator<?, ?>>> function =
-                        (dataContainer, dataManipulator) -> ((DataProcessor) entry.getValue()).fill(dataContainer, dataManipulator);
-                SpongeDataManipulatorBuilder builder = new SpongeDataManipulatorBuilder(entry.getValue(), clazz, function);
-                registry.builderMap.put(entry.getKey(), checkNotNull(builder));
-                serializationService.registerBuilder(entry.getKey(), builder);
+                final Class<? extends DataManipulator<?, ?>> clazz = registry.interfaceToImplDataManipulatorClasses.get(key);
+                DataFunction<DataContainer, DataManipulator, Optional<? extends DataManipulator<?, ?>>> function = ((DataProcessor) value)::fill;
+                SpongeDataManipulatorBuilder builder = new SpongeDataManipulatorBuilder(value, clazz, function);
+                registry.builderMap.put(key, checkNotNull(builder));
+                serializationService.registerBuilder(key, builder);
             }
         });
-        registry.immutableProcessorMap.entrySet().forEach(entry -> {
+        registry.immutableProcessorMap.forEach((key, value) -> {
             ImmutableList.Builder<DataProcessor<?, ?>> dataListBuilder = ImmutableList.builder();
-            Collections.sort(entry.getValue(), ComparatorUtil.DATA_PROCESSOR_COMPARATOR);
-            dataListBuilder.addAll(entry.getValue());
+            value.sort(ComparatorUtil.DATA_PROCESSOR_COMPARATOR);
+            dataListBuilder.addAll(value);
             final DataProcessorDelegate<?, ?> delegate = new DataProcessorDelegate(dataListBuilder.build());
-            registry.immutableDataProcessorDelegates.put(entry.getKey(), delegate);
+            registry.immutableDataProcessorDelegates.put(key, delegate);
         });
         registry.immutableProcessorMap.clear();
 
         ImmutableTable.Builder<Class<? extends DataManipulator<?, ?>>, NbtDataType, NbtDataProcessor<?, ?>> builder = ImmutableTable.builder();
-        registry.nbtProcessorMap.entrySet().forEach(entry -> {
+        registry.nbtProcessorMap.forEach((key, value) -> {
             final HashMultimap<NbtDataType, NbtDataProcessor<?, ?>> processorMultimap = HashMultimap.create();
-            final List<NbtDataProcessor<?, ?>> value = entry.getValue();
             for (NbtDataProcessor<?, ?> nbtDataProcessor : value) {
                 processorMultimap.put(nbtDataProcessor.getTargetType(), nbtDataProcessor);
             }
@@ -299,14 +300,13 @@ public final class SpongeDataManager implements DataManager {
                 ImmutableList.Builder<NbtDataProcessor<?, ?>> processorBuilder = ImmutableList.builder();
                 processorBuilder.addAll(nbtDataTypeCollectionEntry.getValue());
                 final NbtDataType dataType = nbtDataTypeCollectionEntry.getKey();
-                builder.put(entry.getKey(), dataType, new SpongeNbtProcessorDelegate(processorBuilder.build(), dataType));
+                builder.put(key, dataType, new SpongeNbtProcessorDelegate(processorBuilder.build(), dataType));
             }
         });
         registry.nbtProcessorMap.clear();
         registry.nbtProcessorTable = builder.build();
 
     }
-
 
     @SuppressWarnings("unchecked")
     @Override
@@ -325,14 +325,14 @@ public final class SpongeDataManager implements DataManager {
     @SuppressWarnings("unchecked")
     @Override
     public <T extends DataManipulator<T, I>, I extends ImmutableDataManipulator<I, T>> Optional<DataManipulatorBuilder<T, I>>
-    getManipulatorBuilder(Class<T> manipulatorClass) {
+            getManipulatorBuilder(Class<T> manipulatorClass) {
         return Optional.ofNullable((DataManipulatorBuilder<T, I>) this.builderMap.get(checkNotNull(manipulatorClass)));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T extends DataManipulator<T, I>, I extends ImmutableDataManipulator<I, T>> Optional<DataManipulatorBuilder<T, I>>
-    getImmutableManipulatorBuilder(Class<I> immutableManipulatorClass) {
+            getImmutableManipulatorBuilder(Class<I> immutableManipulatorClass) {
         return Optional.ofNullable((DataManipulatorBuilder<T, I>) this.immutableBuilderMap.get(checkNotNull(immutableManipulatorClass)));
     }
 
@@ -341,7 +341,8 @@ public final class SpongeDataManager implements DataManager {
         checkState(allowRegistrations, "Registrations are no longer allowed");
         checkNotNull(objectClass, "Target object class cannot be null!");
         checkNotNull(translator, "DataTranslator for : " + objectClass + " cannot be null!");
-        checkArgument(translator.getToken().isAssignableFrom(objectClass), "DataTranslator is not compatible with the target object class: " + objectClass);
+        checkArgument(translator.getToken().isAssignableFrom(objectClass),
+                "DataTranslator is not compatible with the target object class: " + objectClass);
         if (!this.dataSerializerMap.containsKey(checkNotNull(objectClass, "Target class cannot be null!"))) {
             this.dataSerializerMap.put(objectClass, translator);
             DataTranslatorRegistryModule.getInstance().registerAdditionalCatalog(translator);
@@ -355,8 +356,8 @@ public final class SpongeDataManager implements DataManager {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> Optional<DataTranslator<T>> getTranslator(Class<T> objectclass) {
-        return Optional.ofNullable((DataTranslator<T>) this.dataSerializerMap.get(checkNotNull(objectclass, "Target class cannot be null!")));
+    public <T> Optional<DataTranslator<T>> getTranslator(Class<T> objectClass) {
+        return Optional.ofNullable((DataTranslator<T>) this.dataSerializerMap.get(checkNotNull(objectClass, "Target class cannot be null!")));
     }
 
     public Optional<DataManipulatorBuilder<?, ?>> getWildManipulatorBuilder(Class<? extends DataManipulator<?, ?>> manipulatorClass) {
@@ -381,8 +382,8 @@ public final class SpongeDataManager implements DataManager {
      * @param <T> The type of data manipulator
      * @param <I> The type of immutable data manipulator
      */
-    public <T extends DataManipulator<T, I>, I extends ImmutableDataManipulator<I, T>> void
-    registerDataProcessorAndImpl(Class<T> manipulatorClass, Class<? extends T> implClass, Class<I> immutableDataManipulator,
+    public <T extends DataManipulator<T, I>, I extends ImmutableDataManipulator<I, T>> void registerDataProcessorAndImpl(
+            Class<T> manipulatorClass, Class<? extends T> implClass, Class<I> immutableDataManipulator,
             Class<? extends I> implImClass, DataProcessor<T, I> processor) {
         checkState(allowRegistrations, "Registrations are no longer allowed!");
         checkArgument(!Modifier.isAbstract(implClass.getModifiers()), "The Implemented DataManipulator class cannot be abstract!");
@@ -412,12 +413,13 @@ public final class SpongeDataManager implements DataManager {
         immutableProcessorList.add(processor);
     }
 
-    public <E, V extends BaseValue<E>, T extends DataManipulator<T, I>, I extends ImmutableDataManipulator<I, T>> void
-    registerDualProcessor(Class<T> manipulatorClass, Class<? extends T> implClass, Class<I> immutableDataManipulator,
+    public <E, V extends BaseValue<E>, T extends DataManipulator<T, I>, I extends ImmutableDataManipulator<I, T>> void registerDualProcessor(
+            Class<T> manipulatorClass, Class<? extends T> implClass, Class<I> immutableDataManipulator,
             Class<? extends I> implImClass, AbstractSingleDataSingleTargetProcessor<?, E, V, T, I> processor) {
         registerDataProcessorAndImpl(manipulatorClass, implClass, immutableDataManipulator, implImClass, processor);
         registerValueProcessor(processor.getKey(), processor);
     }
+
     /**
      * Gets the {@link DataProcessorDelegate} for the provided
      * {@link DataManipulator} class.
@@ -434,7 +436,7 @@ public final class SpongeDataManager implements DataManager {
     }
 
     /**
-     * Gets a wildcarded typed {@link DataProcessor} for the provided
+     * Gets a wildcard typed {@link DataProcessor} for the provided
      * {@link DataManipulator} class. This is primarily useful when the
      * type information is not known (due to type erasure).
      *
@@ -466,8 +468,8 @@ public final class SpongeDataManager implements DataManager {
      * @return The data processor
      */
     @SuppressWarnings("unchecked")
-    public <T extends DataManipulator<T, I>, I extends ImmutableDataManipulator<I, T>> Optional<DataProcessor<T, I>>
-    getImmutableProcessor(Class<I> immutableClass) {
+    public <T extends DataManipulator<T, I>, I extends ImmutableDataManipulator<I, T>> Optional<DataProcessor<T, I>> getImmutableProcessor(
+            Class<I> immutableClass) {
         return Optional.ofNullable((DataProcessor<T, I>) this.immutableDataProcessorDelegates.get(checkNotNull(immutableClass)));
     }
 
@@ -489,11 +491,8 @@ public final class SpongeDataManager implements DataManager {
         checkNotNull(valueProcessor);
         checkArgument(!(valueProcessor instanceof ValueProcessorDelegate), "Cannot register ValueProcessorDelegates! READ THE DOCS!");
         checkNotNull(key);
-        List<ValueProcessor<?, ?>> processorList = this.valueProcessorMap.get(key);
-        if (processorList == null) {
-            processorList = Collections.synchronizedList(Lists.newArrayList());
-            this.valueProcessorMap.put(key, processorList);
-        }
+        List<ValueProcessor<?, ?>> processorList = this.valueProcessorMap
+                .computeIfAbsent(key, k -> Collections.synchronizedList(Lists.newArrayList()));
         checkArgument(!processorList.contains(valueProcessor), "Duplicate ValueProcessor registration!");
         processorList.add(valueProcessor);
     }
@@ -518,8 +517,10 @@ public final class SpongeDataManager implements DataManager {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends DataManipulator<T, I>, I extends ImmutableDataManipulator<I, T>> Optional<NbtDataProcessor<T, I>> getNbtProcessor(NbtDataType dataType, Class<T> clazz) {
-        return Optional.ofNullable((NbtDataProcessor<T, I>) this.nbtProcessorTable.get(checkNotNull(clazz, "Manipulator class cannot be null!"), dataType));
+    public <T extends DataManipulator<T, I>, I extends ImmutableDataManipulator<I, T>> Optional<NbtDataProcessor<T, I>> getNbtProcessor(
+            NbtDataType dataType, Class<T> clazz) {
+        return Optional.ofNullable((NbtDataProcessor<T, I>) this.nbtProcessorTable.get(checkNotNull(clazz,
+                "Manipulator class cannot be null!"), dataType));
     }
 
     @SuppressWarnings("unchecked")

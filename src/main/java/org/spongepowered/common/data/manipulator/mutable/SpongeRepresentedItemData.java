@@ -35,10 +35,10 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.common.data.manipulator.immutable.ImmutableSpongeRepresentedItemData;
 import org.spongepowered.common.data.manipulator.mutable.common.AbstractSingleData;
-import org.spongepowered.common.data.util.ImplementationRequiredForTest;
 import org.spongepowered.common.data.value.mutable.SpongeValue;
 
-public class SpongeRepresentedItemData extends AbstractSingleData<ItemStackSnapshot, RepresentedItemData, ImmutableRepresentedItemData> implements RepresentedItemData {
+public class SpongeRepresentedItemData extends AbstractSingleData<ItemStackSnapshot, RepresentedItemData, ImmutableRepresentedItemData>
+        implements RepresentedItemData {
 
     public SpongeRepresentedItemData() {
         this(((ItemStack) new net.minecraft.item.ItemStack(Items.STICK, 1)).createSnapshot());

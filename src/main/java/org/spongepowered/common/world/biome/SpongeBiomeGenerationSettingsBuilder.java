@@ -26,31 +26,31 @@ package org.spongepowered.common.world.biome;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.collect.Lists;
 import org.spongepowered.api.world.biome.BiomeGenerationSettings;
 import org.spongepowered.api.world.biome.BiomeGenerationSettings.Builder;
 import org.spongepowered.api.world.biome.GroundCoverLayer;
 import org.spongepowered.api.world.gen.GenerationPopulator;
 import org.spongepowered.api.world.gen.Populator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpongeBiomeGenerationSettingsBuilder implements BiomeGenerationSettings.Builder {
 
     private float min = 0;
     private float max = 0;
-    private final List<GroundCoverLayer> groundCover = Lists.newArrayList();
-    private final List<Populator> populators = Lists.newArrayList();
-    private final List<GenerationPopulator> genpop = Lists.newArrayList();
+    private final List<GroundCoverLayer> groundCoverLayers = new ArrayList<>();
+    private final List<Populator> populators = new ArrayList<>();
+    private final List<GenerationPopulator> generationPopulators = new ArrayList<>();
 
     @Override
     public Builder from(BiomeGenerationSettings value) {
         this.min = value.getMinHeight();
         this.max = value.getMaxHeight();
-        this.groundCover.clear();
-        this.groundCover.addAll(value.getGroundCoverLayers());
-        this.genpop.clear();
-        this.genpop.addAll(value.getGenerationPopulators());
+        this.groundCoverLayers.clear();
+        this.groundCoverLayers.addAll(value.getGroundCoverLayers());
+        this.generationPopulators.clear();
+        this.generationPopulators.addAll(value.getGenerationPopulators());
         this.populators.clear();
         this.populators.addAll(value.getPopulators());
         return this;
@@ -60,9 +60,9 @@ public class SpongeBiomeGenerationSettingsBuilder implements BiomeGenerationSett
     public Builder reset() {
         this.min = 0;
         this.max = 0;
-        this.groundCover.clear();
+        this.groundCoverLayers.clear();
         this.populators.clear();
-        this.genpop.clear();
+        this.generationPopulators.clear();
         return this;
     }
 
@@ -80,60 +80,60 @@ public class SpongeBiomeGenerationSettingsBuilder implements BiomeGenerationSett
 
     @Override
     public Builder groundCover(GroundCoverLayer... coverLayers) {
-        checkNotNull(coverLayers, "coverLayers");
-        this.groundCover.clear();
+        checkNotNull(coverLayers, "The ground cover layers cannot be null!");
+        this.groundCoverLayers.clear();
         for (GroundCoverLayer layer : coverLayers) {
-            this.groundCover.add(checkNotNull(layer, "layer"));
+            this.groundCoverLayers.add(checkNotNull(layer, "A ground cover layer cannot be null!"));
         }
         return this;
     }
 
     @Override
     public Builder groundCover(Iterable<GroundCoverLayer> coverLayers) {
-        checkNotNull(coverLayers, "coverLayers");
-        this.groundCover.clear();
+        checkNotNull(coverLayers, "The ground cover layers cannot be null!");
+        this.groundCoverLayers.clear();
         for (GroundCoverLayer layer : coverLayers) {
-            this.groundCover.add(checkNotNull(layer, "layer"));
+            this.groundCoverLayers.add(checkNotNull(layer, "A ground cover layer cannot be null!"));
         }
         return this;
     }
 
     @Override
-    public Builder generationPopulators(GenerationPopulator... genpop) {
-        checkNotNull(genpop, "genpop");
-        this.genpop.clear();
-        for (GenerationPopulator pop : genpop) {
-            this.genpop.add(checkNotNull(pop, "pop"));
+    public Builder generationPopulators(GenerationPopulator... generationPopulators) {
+        checkNotNull(generationPopulators, "The generation populators cannot be null!");
+        this.generationPopulators.clear();
+        for (GenerationPopulator pop : generationPopulators) {
+            this.generationPopulators.add(checkNotNull(pop, "A generation populator cannot be null!"));
         }
         return this;
     }
 
     @Override
-    public Builder generationPopulators(Iterable<GenerationPopulator> genpop) {
-        checkNotNull(genpop, "genpop");
-        this.genpop.clear();
-        for (GenerationPopulator pop : genpop) {
-            this.genpop.add(checkNotNull(pop, "pop"));
+    public Builder generationPopulators(Iterable<GenerationPopulator> generationPopulators) {
+        checkNotNull(generationPopulators, "The generation populators cannot be null!");
+        this.generationPopulators.clear();
+        for (GenerationPopulator pop : generationPopulators) {
+            this.generationPopulators.add(checkNotNull(pop, "A generation populator cannot be null!"));
         }
         return this;
     }
 
     @Override
     public Builder populators(Populator... populators) {
-        checkNotNull(populators, "populators");
+        checkNotNull(populators, "The populators cannot be null!");
         this.populators.clear();
         for (Populator pop : populators) {
-            this.populators.add(checkNotNull(pop, "pop"));
+            this.populators.add(checkNotNull(pop, "A populator cannot be null!"));
         }
         return this;
     }
 
     @Override
     public Builder populators(Iterable<Populator> populators) {
-        checkNotNull(populators, "populators");
+        checkNotNull(populators, "The populators cannot be null!");
         this.populators.clear();
         for (Populator pop : populators) {
-            this.populators.add(checkNotNull(pop, "pop"));
+            this.populators.add(checkNotNull(pop, "A populator cannot be null!"));
         }
         return this;
     }
@@ -143,9 +143,9 @@ public class SpongeBiomeGenerationSettingsBuilder implements BiomeGenerationSett
         SpongeBiomeGenerationSettings settings = new SpongeBiomeGenerationSettings();
         settings.setMinHeight(this.min);
         settings.setMaxHeight(this.max);
-        settings.getGroundCoverLayers().addAll(this.groundCover);
+        settings.getGroundCoverLayers().addAll(this.groundCoverLayers);
         settings.getPopulators().addAll(this.populators);
-        settings.getGenerationPopulators().addAll(this.genpop);
+        settings.getGenerationPopulators().addAll(this.generationPopulators);
         return settings;
     }
 

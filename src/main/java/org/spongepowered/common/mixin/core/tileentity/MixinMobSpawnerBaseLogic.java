@@ -59,7 +59,8 @@ public abstract class MixinMobSpawnerBaseLogic {
     private static final String WORLD_SPAWN_ENTITY = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z";
     private static final String
             ANVIL_CHUNK_LOADER_READ_ENTITY =
-            "Lnet/minecraft/world/chunk/storage/AnvilChunkLoader;readWorldEntityPos(Lnet/minecraft/nbt/NBTTagCompound;Lnet/minecraft/world/World;DDDZ)Lnet/minecraft/entity/Entity;";
+            "Lnet/minecraft/world/chunk/storage/AnvilChunkLoader;"
+                    + "readWorldEntityPos(Lnet/minecraft/nbt/NBTTagCompound;Lnet/minecraft/world/World;DDDZ)Lnet/minecraft/entity/Entity;";
 
     @Shadow private int spawnRange;
 

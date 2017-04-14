@@ -51,7 +51,6 @@ import org.spongepowered.common.world.storage.SpongeChunkLayout;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -440,7 +439,8 @@ public class SpongeChunkPreGenerateTask implements ChunkPreGenerate, Consumer<Ta
         @Override
         public ChunkPreGenerate start() {
             checkNotNull(plugin, "owner cannot be null");
-            checkArgument(this.chunksPerTick > 0 || this.tickPercent > 0, "Must use at least one of \"chunks per tick\" or \"tick percent limit\"");
+            checkArgument(this.chunksPerTick > 0 || this.tickPercent > 0,
+                    "Must use at least one of \"chunks per tick\" or \"tick percent limit\"");
 
             return new SpongeChunkPreGenerateTask(this.plugin, this.world, this.center, this.diameter, this.chunksPerTick, this.tickPercent,
                     this.tickInterval, Cause.of(NamedCause.owner(this.plugin)), this.eventListeners);

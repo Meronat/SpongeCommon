@@ -125,11 +125,11 @@ public final class ClassEventListenerFactory implements AnnotatedEventListener.F
         final String handleName = Type.getInternalName(handle);
         final String handleDescriptor = Type.getDescriptor(handle);
         final String filterName = Type.getInternalName(filter);
-        String eventDescriptor = "(";
+        StringBuilder eventDescriptor = new StringBuilder("(");
         for (int i = 0; i < method.getParameterCount(); i++) {
-            eventDescriptor += Type.getDescriptor(method.getParameterTypes()[i]);
+            eventDescriptor.append(Type.getDescriptor(method.getParameterTypes()[i]));
         }
-        eventDescriptor += ")V";
+        eventDescriptor.append(")V");
 
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
         MethodVisitor mv;
@@ -181,7 +181,7 @@ public final class ClassEventListenerFactory implements AnnotatedEventListener.F
                 Type paramType = Type.getType(method.getParameterTypes()[i]);
                 GeneratorUtils.visitUnboxingMethod(mv, paramType);
             }
-            mv.visitMethodInsn(INVOKEVIRTUAL, handleName, method.getName(), eventDescriptor, false);
+            mv.visitMethodInsn(INVOKEVIRTUAL, handleName, method.getName(), eventDescriptor.toString(), false);
             mv.visitLabel(l2);
             mv.visitInsn(RETURN);
             mv.visitMaxs(0, 0);

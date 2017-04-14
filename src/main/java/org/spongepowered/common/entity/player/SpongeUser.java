@@ -65,11 +65,16 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 /**
- * Implements things that are not implemented by mixins into this class. <p>This
- * class is concrete in order to create instances of User.</p>
+ * Implements things that are not implemented by mixins into this class.
  *
- * <p>List of mixins mixing into this class: <ul>
- * <li>MixinSpongeUser</li><li>MixinDataHolder</li><li>MixinSubject</li> </ul>
+ * <p>This class is concrete in order to create instances of User.</p>
+ *
+ * <p>List of mixins mixing into this class:
+ * <ul>
+ * <li>MixinSpongeUser</li>
+ * <li>MixinDataHolder</li>
+ * <li>MixinSubject</li>
+ * </ul></p>
  *
  * TODO Future note about data: The following data manipulators are always
  * applicable to User: BanData, WhitelistData, JoinData
@@ -175,7 +180,8 @@ public class SpongeUser implements ArmorEquipable, Tamer, DataSerializable, Carr
     }
 
     private Player getUserIfOnlineForInventory() {
-        return this.self.getPlayer().orElseThrow(() -> new UnsupportedOperationException("User is offline, offline inventory API yet to be implemented"));
+        return this.self.getPlayer().orElseThrow(
+                () -> new UnsupportedOperationException("User is offline, offline inventory API yet to be implemented"));
     }
 
     @Override
@@ -254,10 +260,10 @@ public class SpongeUser implements ArmorEquipable, Tamer, DataSerializable, Carr
     }
 
     @Override
-    public Map<UUID, RespawnLocation> getBedlocations() {
+    public Map<UUID, RespawnLocation> getBedLocations() {
         Optional<Player> player = this.self.getPlayer();
         if (player.isPresent()) {
-            return ((ISpongeUser) player.get()).getBedlocations();
+            return ((ISpongeUser) player.get()).getBedLocations();
         }
         return this.spawnLocations;
     }

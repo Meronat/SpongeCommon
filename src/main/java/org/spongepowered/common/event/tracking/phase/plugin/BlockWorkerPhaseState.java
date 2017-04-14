@@ -39,6 +39,5 @@ public class BlockWorkerPhaseState extends PluginPhaseState {
         });
         phaseContext.getCapturedBlockSupplier()
                 .ifPresentAndNotEmpty(snapshots -> TrackingUtil.processBlockCaptures(snapshots, this, phaseContext));
-
     }
 }

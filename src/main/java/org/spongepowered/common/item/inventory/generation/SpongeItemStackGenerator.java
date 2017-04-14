@@ -123,9 +123,7 @@ public final class SpongeItemStackGenerator implements ItemStackGenerator {
             checkNotNull(value, "ItemStackGenerator cannot be null!");
             checkArgument(value instanceof SpongeItemStackGenerator, "Cannot use from on a non-Sponge implemented ItemStackGenerator!");
             SpongeItemStackGenerator generator = (SpongeItemStackGenerator) value;
-            for (BiConsumer<ItemStack.Builder, Random> consumer : generator.biConsumers) {
-                this.consumers.add(consumer);
-            }
+            this.consumers.addAll(generator.biConsumers);
             this.baseItem = generator.baseType;
             return this;
         }

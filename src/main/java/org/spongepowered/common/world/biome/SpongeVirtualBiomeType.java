@@ -38,7 +38,7 @@ public class SpongeVirtualBiomeType implements VirtualBiomeType {
 
     private final String id;
     private final String name;
-    private final double tempterature;
+    private final double temperature;
     private final double humidity;
     private final BiomeType persisted;
     private final Function<World, BiomeGenerationSettings> defaultSettings;
@@ -46,7 +46,7 @@ public class SpongeVirtualBiomeType implements VirtualBiomeType {
     public SpongeVirtualBiomeType(String id, String name, double t, double h, BiomeType persist, Function<World, BiomeGenerationSettings> func) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
-        this.tempterature = t;
+        this.temperature = t;
         this.humidity = h;
         this.persisted = checkNotNull(persist);
         this.defaultSettings = func;
@@ -54,7 +54,7 @@ public class SpongeVirtualBiomeType implements VirtualBiomeType {
 
     @Override
     public double getTemperature() {
-        return this.tempterature;
+        return this.temperature;
     }
 
     @Override

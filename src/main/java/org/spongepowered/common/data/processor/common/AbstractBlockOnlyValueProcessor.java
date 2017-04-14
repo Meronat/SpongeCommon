@@ -33,8 +33,8 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 import java.util.Optional;
 
-public abstract class AbstractBlockOnlyValueProcessor<T, V extends Value<T>> extends
-        AbstractSpongeValueProcessor<ItemStack, T, V> {
+public abstract class AbstractBlockOnlyValueProcessor<T, V extends Value<T>>
+        extends AbstractSpongeValueProcessor<ItemStack, T, V> {
 
     protected AbstractBlockOnlyValueProcessor(Key<V> key) {
         super(ItemStack.class, key);

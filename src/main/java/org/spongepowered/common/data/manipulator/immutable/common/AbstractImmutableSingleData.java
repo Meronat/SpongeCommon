@@ -80,7 +80,7 @@ public abstract class AbstractImmutableSingleData<T, I extends ImmutableDataMani
 
     @Override
     public Set<Key<?>> getKeys() {
-        return ImmutableSet.<Key<?>>of(this.usedKey);
+        return ImmutableSet.of(this.usedKey);
     }
 
 }

@@ -55,7 +55,6 @@ import org.spongepowered.common.event.tracking.PhaseContext;
 import org.spongepowered.common.event.tracking.phase.generation.GenerationPhase;
 import org.spongepowered.common.interfaces.IMixinChunk;
 import org.spongepowered.common.interfaces.world.IMixinWorldInfo;
-import org.spongepowered.common.interfaces.world.IMixinWorldServer;
 import org.spongepowered.common.profile.SpongeProfileManager;
 import org.spongepowered.common.util.SpongeHooks;
 import org.spongepowered.common.util.SpongeUsernameCache;
@@ -116,7 +115,8 @@ public abstract class MixinChunk_Tracker implements Chunk, IMixinChunk {
             }
         }
 
-        if (!SpongeHooks.getActiveConfig((WorldServer) this.world).getConfig().getBlockTracking().getBlockBlacklist().contains(((BlockType) block).getId())) {
+        if (!SpongeHooks.getActiveConfig((WorldServer) this.world).getConfig().getBlockTracking().getBlockBlacklist()
+                .contains(((BlockType) block).getId())) {
             SpongeHooks.logBlockTrack(this.world, block, pos, user, true);
         } else {
             SpongeHooks.logBlockTrack(this.world, block, pos, user, false);

@@ -41,12 +41,12 @@ import org.spongepowered.api.data.Queries;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.manipulator.DataManipulator;
 import org.spongepowered.api.data.manipulator.ImmutableDataManipulator;
+import org.spongepowered.api.data.persistence.AbstractDataBuilder;
 import org.spongepowered.api.data.persistence.InvalidDataException;
 import org.spongepowered.api.data.value.BaseValue;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.storage.WorldProperties;
-import org.spongepowered.api.data.persistence.AbstractDataBuilder;
 import org.spongepowered.common.data.persistence.NbtTranslator;
 import org.spongepowered.common.data.util.DataQueries;
 import org.spongepowered.common.data.util.DataUtil;
@@ -110,21 +110,6 @@ public class SpongeBlockSnapshotBuilder extends AbstractDataBuilder<BlockSnapsho
     }
 
     @Override
-    public SpongeBlockSnapshotBuilder from(Location<World> location) {
-        this.blockState = location.getBlock();
-        this.worldUuid = location.getExtent().getUniqueId();
-        this.coords = location.getBlockPosition();
-        if (this.blockState.getType() instanceof ITileEntityProvider) {
-            if (location.hasTileEntity()) {
-                this.compound = new NBTTagCompound();
-                ((TileEntity) location.getTileEntity().get()).writeToNBT(this.compound);
-                this.manipulators = location.getContainers().stream().map(DataManipulator::asImmutable).collect(Collectors.toList());
-            }
-        }
-        return this;
-    }
-
-    @Override
     public BlockSnapshot.Builder creator(UUID uuid) {
         this.creatorUuid = checkNotNull(uuid);
         return this;
@@ -152,12 +137,7 @@ public class SpongeBlockSnapshotBuilder extends AbstractDataBuilder<BlockSnapsho
         if (this.manipulators == null) {
             this.manipulators = Lists.newArrayList();
         }
-        for (Iterator<ImmutableDataManipulator<?, ?>> iterator = this.manipulators.iterator(); iterator.hasNext();) {
-            final ImmutableDataManipulator<?, ?> existing = iterator.next();
-            if (manipulator.getClass().isInstance(existing)) {
-                iterator.remove();
-            }
-        }
+        this.manipulators.removeIf(existing -> manipulator.getClass().isInstance(existing));
         this.manipulators.add(manipulator);
         return this;
     }
@@ -167,8 +147,23 @@ public class SpongeBlockSnapshotBuilder extends AbstractDataBuilder<BlockSnapsho
         checkNotNull(key, "key");
         checkState(this.blockState != null);
         this.blockState = this.blockState.with(key, value).orElse(this.blockState);
-        if(this.extendedState != null) {
+        if (this.extendedState != null) {
             this.extendedState = this.extendedState.with(key, value).orElse(this.extendedState);
+        }
+        return this;
+    }
+
+    @Override
+    public SpongeBlockSnapshotBuilder from(Location<World> location) {
+        this.blockState = location.getBlock();
+        this.worldUuid = location.getExtent().getUniqueId();
+        this.coords = location.getBlockPosition();
+        if (this.blockState.getType() instanceof ITileEntityProvider) {
+            if (location.hasTileEntity()) {
+                this.compound = new NBTTagCompound();
+                ((TileEntity) location.getTileEntity().get()).writeToNBT(this.compound);
+                this.manipulators = location.getContainers().stream().map(DataManipulator::asImmutable).collect(Collectors.toList());
+            }
         }
         return this;
     }
@@ -224,12 +219,10 @@ public class SpongeBlockSnapshotBuilder extends AbstractDataBuilder<BlockSnapsho
         final SpongeBlockSnapshotBuilder builder = new SpongeBlockSnapshotBuilder();
         final UUID worldUuid = UUID.fromString(container.getString(Queries.WORLD_ID).get());
         final Vector3i coordinate = DataUtil.getPosition3i(container);
-        Optional<String> creatorUuid = container.getString(Queries.CREATOR_ID);
-        Optional<String> notifierUuid = container.getString(Queries.NOTIFIER_ID);
 
         // We now reconstruct the custom data and all extra data.
         final BlockState blockState = container.getSerializable(DataQueries.BLOCK_STATE, BlockState.class).get();
-        BlockState extendedState = null;
+        final BlockState extendedState;
         if (container.contains(DataQueries.BLOCK_EXTENDED_STATE)) {
             extendedState = container.getSerializable(DataQueries.BLOCK_EXTENDED_STATE, BlockState.class).get();
         } else {
@@ -240,12 +233,8 @@ public class SpongeBlockSnapshotBuilder extends AbstractDataBuilder<BlockSnapsho
                 .extendedState(extendedState)
                 .position(coordinate)
                 .worldId(worldUuid);
-        if (creatorUuid.isPresent()) {
-            builder.creator(UUID.fromString(creatorUuid.get()));
-        }
-        if (notifierUuid.isPresent()) {
-            builder.notifier(UUID.fromString(notifierUuid.get()));
-        }
+        container.getString(Queries.CREATOR_ID).ifPresent(c -> builder.creator(UUID.fromString(c)));
+        container.getString(Queries.NOTIFIER_ID).ifPresent(n -> builder.notifier(UUID.fromString(n)));
         Optional<DataView> unsafeCompound = container.getView(DataQueries.UNSAFE_NBT);
         final NBTTagCompound compound = unsafeCompound.isPresent() ? NbtTranslator.getInstance().translateData(unsafeCompound.get()) : null;
         if (compound != null) {
@@ -253,7 +242,7 @@ public class SpongeBlockSnapshotBuilder extends AbstractDataBuilder<BlockSnapsho
         }
         if (container.contains(DataQueries.SNAPSHOT_TILE_DATA)) {
             final List<DataView> dataViews = container.getViewList(DataQueries.SNAPSHOT_TILE_DATA).get();
-            DataUtil.deserializeImmutableManipulatorList(dataViews).stream().forEach(builder::add);
+            DataUtil.deserializeImmutableManipulatorList(dataViews).forEach(builder::add);
         }
         return Optional.of(new SpongeBlockSnapshot(builder));
     }

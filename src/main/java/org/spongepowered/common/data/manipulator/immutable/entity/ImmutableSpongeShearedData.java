@@ -31,7 +31,8 @@ import org.spongepowered.api.data.value.immutable.ImmutableValue;
 import org.spongepowered.common.data.manipulator.immutable.common.AbstractImmutableBooleanData;
 import org.spongepowered.common.data.manipulator.mutable.entity.SpongeShearedData;
 
-public class ImmutableSpongeShearedData extends AbstractImmutableBooleanData<ImmutableShearedData, ShearedData> implements ImmutableShearedData {
+public class ImmutableSpongeShearedData extends AbstractImmutableBooleanData<ImmutableShearedData, ShearedData>
+        implements ImmutableShearedData {
 
     public ImmutableSpongeShearedData(boolean value) {
         super(ImmutableShearedData.class, value, Keys.IS_SHEARED, SpongeShearedData.class, false);

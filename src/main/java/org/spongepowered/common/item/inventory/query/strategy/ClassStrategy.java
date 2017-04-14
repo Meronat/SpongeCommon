@@ -37,7 +37,7 @@ public class ClassStrategy<TInventory, TStack> extends QueryStrategy<TInventory,
 
     @Override
     public QueryStrategy<TInventory, TStack, Class<?>> with(Class<?>[] args) {
-        this.classes = ImmutableSet.<Class<?>>copyOf(args);
+        this.classes = ImmutableSet.copyOf(args);
         return this;
     }
     

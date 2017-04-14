@@ -79,7 +79,7 @@ public class GlobalPalette implements BlockPalette {
 
     @Override
     public boolean remove(BlockState state) {
-        throw new UnsupportedOperationException("Cannot remove blockstates from the global palette");
+        throw new UnsupportedOperationException("Cannot remove block states from the global palette!");
     }
 
     @Override

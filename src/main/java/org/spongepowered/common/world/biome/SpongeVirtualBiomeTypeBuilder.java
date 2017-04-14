@@ -69,7 +69,7 @@ public class SpongeVirtualBiomeTypeBuilder implements VirtualBiomeType.Builder {
     @Override
     public Builder persistedType(BiomeType biome) {
         checkNotNull(biome, "biome");
-        checkArgument(!(biome instanceof VirtualBiomeType), "persisted type cannot be a virtual biome");
+        checkArgument(!(biome instanceof VirtualBiomeType), "The persisted type cannot be a virtual biome!");
         this.persisted = biome;
         return this;
     }
@@ -84,7 +84,7 @@ public class SpongeVirtualBiomeTypeBuilder implements VirtualBiomeType.Builder {
 
     @Override
     public Builder settingsBuilder(Function<World, BiomeGenerationSettings> settingsBuilder) {
-        this.func = checkNotNull(settingsBuilder, "settingsBuilder");
+        this.func = checkNotNull(settingsBuilder, "The setting builder cannot be null.");
         return this;
     }
 
@@ -100,10 +100,10 @@ public class SpongeVirtualBiomeTypeBuilder implements VirtualBiomeType.Builder {
 
     @Override
     public VirtualBiomeType build(String id) throws IllegalStateException {
-        checkNotNull(this.name, "name");
-        checkNotNull(id, "id");
-        checkNotNull(this.persisted, "persistedBiome");
-        checkNotNull(this.func, "settings_function");
+        checkNotNull(this.name, "The name cannot be null!");
+        checkNotNull(id, "The id cannot be null!");
+        checkNotNull(this.persisted, "The persisted biome type cannot be null!");
+        checkNotNull(this.func, "The setting function cannot be null!");
         checkArgument(!id.isEmpty());
         return new SpongeVirtualBiomeType(id, this.name, this.temperature, this.humidity, this.persisted, this.func);
     }

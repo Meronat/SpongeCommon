@@ -30,6 +30,7 @@ import org.spongepowered.api.entity.ai.task.AITaskType;
 import org.spongepowered.api.entity.living.Agent;
 
 public final class SpongeAITaskType implements AITaskType {
+
     private final String id, name;
     private final Class<? extends AITask<? extends Agent>> aiClass;
 

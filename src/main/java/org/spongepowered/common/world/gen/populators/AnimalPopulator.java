@@ -46,9 +46,9 @@ public class AnimalPopulator implements Populator {
     public void populate(World world, Extent extent, Random random) {
         Vector3i min = extent.getBlockMin();
         Vector3i size = extent.getBlockSize();
-        Biome biomegenbase = (Biome) extent.getBiome(size.getX() / 2 + min.getX(), 0, size.getZ() / 2 + min.getZ());
+        Biome biomeGenBase = (Biome) extent.getBiome(size.getX() / 2 + min.getX(), 0, size.getZ() / 2 + min.getZ());
 
-        WorldEntitySpawner.performWorldGenSpawning((net.minecraft.world.World) world, biomegenbase, min.getX(), min.getZ(), size.getX(), size.getZ(),
+        WorldEntitySpawner.performWorldGenSpawning((net.minecraft.world.World) world, biomeGenBase, min.getX(), min.getZ(), size.getX(), size.getZ(),
                 random);
     }
 

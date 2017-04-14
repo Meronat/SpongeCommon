@@ -175,11 +175,9 @@ public abstract class MixinInventoryPlayer implements IMixinInventoryPlayer, Pla
     public void dropAllItems() { // dropAllItems
         for (NonNullList<ItemStack> aitemstack : this.allInventories)
         {
-            for (int i = 0; i < aitemstack.size(); ++i)
-            {
-                if (aitemstack.get(i) != null)
-                {
-                    this.player.dropItem(aitemstack.get(i), true, false);
+            for (ItemStack itemStack : aitemstack) {
+                if (itemStack != null) {
+                    this.player.dropItem(itemStack, true, false);
                     //aitemstack[i] = null; // Sponge - we handle this after calling the death event
                 }
             }
@@ -196,12 +194,16 @@ public abstract class MixinInventoryPlayer implements IMixinInventoryPlayer, Pla
                 return i;
             }
 
-            if (this.mainInventory.get(i).getItem() == itemstack.getItem() && this.mainInventory.get(i).isStackable() && this.mainInventory.get(i).getCount() < this.mainInventory
-                    .get(i).getMaxStackSize() && this.mainInventory.get(i).getCount() < this.getInventoryStackLimit() && (!this.mainInventory.get(i).getHasSubtypes() || this.mainInventory
-                                                                                                                                                                                    .get(i).getItemDamage() == itemstack.getItemDamage()) && ItemStack.areItemStackTagsEqual(this.mainInventory
-                    .get(i), itemstack)) {
-                stackSize -= (this.mainInventory.get(i).getMaxStackSize() < this.getInventoryStackLimit() ? this.mainInventory.get(i).getMaxStackSize() : this.getInventoryStackLimit()) - this.mainInventory
-                        .get(i).getCount();
+            if (this.mainInventory.get(i).getItem() == itemstack.getItem()
+                    && this.mainInventory.get(i).isStackable()
+                    && this.mainInventory.get(i).getCount() < this.mainInventory.get(i).getMaxStackSize()
+                    && this.mainInventory.get(i).getCount() < this.getInventoryStackLimit()
+                    && (!this.mainInventory.get(i).getHasSubtypes() || this.mainInventory.get(i).getItemDamage() == itemstack.getItemDamage())
+                    && ItemStack.areItemStackTagsEqual(this.mainInventory.get(i), itemstack)) {
+
+                stackSize -= (this.mainInventory.get(i).getMaxStackSize() < this.getInventoryStackLimit()
+                        ? this.mainInventory.get(i).getMaxStackSize() : this.getInventoryStackLimit()) - this.mainInventory.get(i).getCount();
+
             }
 
             if (stackSize <= 0) {

@@ -63,7 +63,6 @@ import org.spongepowered.api.world.extent.Extent;
 import org.spongepowered.common.util.VecHelper;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -397,12 +396,7 @@ public class ExtentViewDownsize implements DefaultedExtent {
     public Collection<TileEntity> getTileEntities() {
         final Collection<TileEntity> tileEntities = this.extent.getTileEntities();
         final Vector3i max = this.blockMax.add(Vector3i.ONE);
-        for (Iterator<TileEntity> iterator = tileEntities.iterator(); iterator.hasNext(); ) {
-            final TileEntity tileEntity = iterator.next();
-            if (!VecHelper.inBounds(tileEntity.getLocation().getPosition(), this.blockMin, max)) {
-                iterator.remove();
-            }
-        }
+        tileEntities.removeIf(tileEntity -> !VecHelper.inBounds(tileEntity.getLocation().getPosition(), this.blockMin, max));
         return tileEntities;
     }
 
@@ -440,12 +434,7 @@ public class ExtentViewDownsize implements DefaultedExtent {
     public Collection<Entity> getEntities() {
         final Collection<Entity> entities = this.extent.getEntities();
         final Vector3i max = this.blockMax.add(Vector3i.ONE);
-        for (Iterator<Entity> iterator = entities.iterator(); iterator.hasNext(); ) {
-            final Entity tileEntity = iterator.next();
-            if (!VecHelper.inBounds(tileEntity.getLocation().getPosition(), this.blockMin, max)) {
-                iterator.remove();
-            }
-        }
+        entities.removeIf(tileEntity -> !VecHelper.inBounds(tileEntity.getLocation().getPosition(), this.blockMin, max));
         return entities;
     }
 

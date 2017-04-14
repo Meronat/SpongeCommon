@@ -101,7 +101,8 @@ public class AITaskTypeModule implements AlternateCatalogRegistryModule<AITaskTy
         createAITaskType("minecraft:run_around_like_crazy", "Run Around Like Crazy", RunAroundLikeCrazyAITask.class);
         createAITaskType("minecraft:swimming", "Swimming", SwimmingAITask.class);
         createAITaskType("minecraft:watch_closest", "Watch Closest", WatchClosestAITask.class);
-        createAITaskType("minecraft:find_nearest_attackable_target", "Find Nearest Attackable Target", FindNearestAttackableTargetAITask.class);
+        createAITaskType("minecraft:find_nearest_attackable_target", "Find Nearest Attackable Target",
+                FindNearestAttackableTargetAITask.class);
         createAITaskType("minecraft:attack_living", "Attack Living", AttackLivingAITask.class);
     }
 

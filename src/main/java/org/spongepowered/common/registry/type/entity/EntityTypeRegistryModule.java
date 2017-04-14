@@ -178,13 +178,20 @@ public final class EntityTypeRegistryModule implements ExtraClassCatalogRegistry
         this.entityTypeMappings.put("shulker_bullet", newEntityTypeFromName("shulker_bullet"));
         this.entityTypeMappings.put("spectral_arrow", newEntityTypeFromName("spectral_arrow"));
         this.entityTypeMappings.put("polar_bear", newEntityTypeFromName("polar_bear"));
-        this.entityTypeMappings.put("egg", new SpongeEntityType(-1, "egg", EntityEgg.class, new SpongeTranslation("item.egg.name")));
-        this.entityTypeMappings.put("fishing_hook", new SpongeEntityType(-2, "FishingHook", EntityFishHook.class, new SpongeTranslation("item.fishingRod.name")));
-        this.entityTypeMappings.put("lightning", new SpongeEntityType(-3, "lightning", EntityLightningBolt.class, null));
-        this.entityTypeMappings.put("weather", new SpongeEntityType(-4, "Weather", EntityWeatherEffect.class, new SpongeTranslation("soundCategory.weather")));
-        this.entityTypeMappings.put("player", new SpongeEntityType(-5, "Player", EntityPlayerMP.class, new SpongeTranslation("soundCategory.player")));
-        this.entityTypeMappings.put("complex_part", new SpongeEntityType(-6, "ComplexPart", EntityDragonPart.class, null));
-        this.entityTypeMappings.put("human", registerCustomEntity(EntityHuman.class, "human", "Human", 300, null)); // TODO: Figure out what id to use, as negative ids no longer work
+        this.entityTypeMappings.put("egg",
+                new SpongeEntityType(-1, "egg", EntityEgg.class, new SpongeTranslation("item.egg.name")));
+        this.entityTypeMappings.put("fishing_hook",
+                new SpongeEntityType(-2, "FishingHook", EntityFishHook.class, new SpongeTranslation("item.fishingRod.name")));
+        this.entityTypeMappings.put("lightning",
+                new SpongeEntityType(-3, "lightning", EntityLightningBolt.class, null));
+        this.entityTypeMappings.put("weather",
+                new SpongeEntityType(-4, "Weather", EntityWeatherEffect.class, new SpongeTranslation("soundCategory.weather")));
+        this.entityTypeMappings.put("player",
+                new SpongeEntityType(-5, "Player", EntityPlayerMP.class, new SpongeTranslation("soundCategory.player")));
+        this.entityTypeMappings.put("complex_part",
+                new SpongeEntityType(-6, "ComplexPart", EntityDragonPart.class, null));
+        this.entityTypeMappings.put("human",
+                registerCustomEntity(EntityHuman.class, "human", "Human", 300, null)); // TODO: Figure out what id to use, as negative ids no longer work
         //this.entityClassToTypeMappings.put("human", new SpongeEntityType(-6))
     }
 

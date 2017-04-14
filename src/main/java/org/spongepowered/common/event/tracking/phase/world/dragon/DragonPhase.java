@@ -44,7 +44,6 @@ public final class DragonPhase extends TrackingPhase {
 
         public static final IPhaseState RESPAWN_DRAGON = new GeneralDragonPhaseState();
 
-
         private State() {
             throw new IllegalStateException("Cannot construct State!");
         }

@@ -121,11 +121,7 @@ public class SpongeInventoryBuilder implements Inventory.Builder {
 
     @Override
     public <E extends InteractInventoryEvent> Inventory.Builder listener(Class<E> type, Consumer<E> listener) {
-        List<Consumer<? extends InteractInventoryEvent>> list = this.listeners.get(type);
-        if (list == null) {
-            list = new ArrayList<>();
-            this.listeners.put(type, list);
-        }
+        List<Consumer<? extends InteractInventoryEvent>> list = this.listeners.computeIfAbsent(type, k -> new ArrayList<>());
         list.add(listener);
         return this;
     }

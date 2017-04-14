@@ -71,13 +71,7 @@ public class MinecraftCommandWrapper implements CommandCallable {
     private static final String TRANSLATION_NO_PERMISSION = "commands.generic.permission";
     private final PluginContainer owner;
     protected final ICommand command;
-    private static final ThreadLocal<Deque<Throwable>> commandErrors = new ThreadLocal<Deque<Throwable>>() {
-
-        @Override
-        protected Deque<Throwable> initialValue() {
-            return new LinkedList<>();
-        }
-    };
+    private static final ThreadLocal<Deque<Throwable>> commandErrors = ThreadLocal.withInitial(LinkedList::new);
     // This differs from null in that null means "not active".
     private static final Exception noError = new Exception();
 
@@ -126,9 +120,9 @@ public class MinecraftCommandWrapper implements CommandCallable {
             try {
                 list = EntitySelector.matchEntities(mcSender, splitArgs[usernameIndex], Entity.class);
             } catch (net.minecraft.command.CommandException e) {
-                Throwables.propagate(e);
+                throw new RuntimeException(e);
             }
-            String previousNameVal = splitArgs[usernameIndex];
+            final String previousNameVal = splitArgs[usernameIndex];
             affectedEntities = list.size();
 
             ((IMixinCommandHandler) handler).setExpandedSelector(true);

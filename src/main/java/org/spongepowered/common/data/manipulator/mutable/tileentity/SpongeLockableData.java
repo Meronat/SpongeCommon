@@ -50,7 +50,7 @@ public class SpongeLockableData extends AbstractSingleData<String, LockableData,
 
     @Override
     protected Value<String> getValueGetter() {
-        return new SpongeValue<String>(Keys.LOCK_TOKEN, "", this.getValue());
+        return new SpongeValue<>(Keys.LOCK_TOKEN, "", this.getValue());
     }
 
     @Override

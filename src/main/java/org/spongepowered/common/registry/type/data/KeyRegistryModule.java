@@ -43,7 +43,6 @@ import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.data.manipulator.mutable.entity.DominantHandData;
 import org.spongepowered.api.data.meta.ItemEnchantment;
 import org.spongepowered.api.data.meta.PatternLayer;
 import org.spongepowered.api.data.type.*;
@@ -91,7 +90,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-@SuppressWarnings({"rawTypes", "deprecation"})
+@SuppressWarnings({"rawTypes", "deprecation", "WeakerAccess"})
 public class KeyRegistryModule implements AdditionalCatalogRegistryModule<Key<?>> {
 
     public static final TypeToken<Double> DOUBLE_TOKEN = new TypeToken<Double>() {

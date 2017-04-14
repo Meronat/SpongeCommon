@@ -61,9 +61,7 @@ public abstract class MixinServerCommandManager extends CommandHandler implement
     private List<MinecraftCommandWrapper> earlyRegisterCommands = Lists.newArrayList();
 
     private void updateStat(ICommandSender sender, CommandResultStats.Type type, Optional<Integer> count) {
-        if (count.isPresent()) {
-            sender.setCommandStat(type, count.get());
-        }
+        count.ifPresent(integer -> sender.setCommandStat(type, integer));
     }
 
     /**
@@ -168,6 +166,7 @@ public abstract class MixinServerCommandManager extends CommandHandler implement
         if (pos != null) {
             targetPos = new Location<>((org.spongepowered.api.world.World) sender.getEntityWorld(), VecHelper.toVector3i(pos));
         }
-        return ((SpongeCommandManager) SpongeImpl.getGame().getCommandManager()).getSuggestions((CommandSource) sender, input, targetPos, false);
+        return ((SpongeCommandManager) SpongeImpl.getGame().getCommandManager()).getSuggestions((CommandSource) sender, input, targetPos,
+                false);
     }
 }

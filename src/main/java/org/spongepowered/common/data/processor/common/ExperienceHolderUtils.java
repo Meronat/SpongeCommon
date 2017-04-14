@@ -24,7 +24,6 @@
  */
 package org.spongepowered.common.data.processor.common;
 
-
 public class ExperienceHolderUtils {
     
     public static int getExpBetweenLevels(int level) {

@@ -221,7 +221,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
     private static final Vector3i BLOCK_MIN = new Vector3i(-30000000, 0, -30000000);
     private static final Vector3i BLOCK_MAX = new Vector3i(30000000, 256, 30000000).sub(1, 1, 1);
 
-    private static final EnumSet<EnumFacing> NOTIFY_DIRECTIONS = EnumSet.of(EnumFacing.WEST, EnumFacing.EAST, EnumFacing.DOWN, EnumFacing.UP, EnumFacing.NORTH, EnumFacing.SOUTH);
+    private static final EnumSet<EnumFacing> NOTIFY_DIRECTIONS = EnumSet.of(EnumFacing.WEST, EnumFacing.EAST, EnumFacing.DOWN, EnumFacing.UP,
+            EnumFacing.NORTH, EnumFacing.SOUTH);
 
     private final Map<net.minecraft.entity.Entity, Vector3d> rotationUpdates = new HashMap<>();
     private SpongeChunkGenerator spongegen;
@@ -268,7 +269,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void onConstruct(MinecraftServer server, ISaveHandler saveHandlerIn, WorldInfo info, int dimensionId, Profiler profilerIn, CallbackInfo callbackInfo) {
+    public void onConstruct(MinecraftServer server, ISaveHandler saveHandlerIn, WorldInfo info, int dimensionId, Profiler profilerIn,
+            CallbackInfo callbackInfo) {
         this.worldInfo = info;
         this.dimensionId = dimensionId;
         this.prevWeather = getWeather();
@@ -335,7 +337,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
             this.createBonusChest();
         }
 
-        if ((generatorType != null && generatorType.equals(GeneratorTypes.THE_END)) || ((((WorldServer) (Object) this)).getChunkProvider().chunkGenerator instanceof ChunkProviderEnd)) {
+        if ((generatorType != null && generatorType.equals(GeneratorTypes.THE_END))
+                || ((((WorldServer) (Object) this)).getChunkProvider().chunkGenerator instanceof ChunkProviderEnd)) {
             this.worldInfo.setSpawn(new BlockPos(100, 50, 0));
             ci.cancel();
         }
@@ -555,7 +558,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
             this.timings.updateBlocksThunder.startTiming();
 
             //if (this.provider.canDoLightning(chunk) && flag && flag1 && this.rand.nextInt(100000) == 0) // Sponge - Add SpongeImplHooks for forge
-            if (this.weatherThunderEnabled && SpongeImplHooks.canDoLightning(this.provider, chunk) && flag && flag1 && this.rand.nextInt(100000) == 0)
+            if (this.weatherThunderEnabled && SpongeImplHooks.canDoLightning(this.provider, chunk)
+                    && flag && flag1 && this.rand.nextInt(100000) == 0)
             {
                 if (CauseTracker.ENABLED) {
                     causeTracker.switchToPhase(TickPhase.Tick.WEATHER, PhaseContext.start()
@@ -579,7 +583,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
                     {
                         // Sponge Start - Throw construction events
                         SpawnCause horseCause = WeatherSpawnCause.builder().weather(this.getWeather()).type(SpawnTypes.WEATHER).build();
-                        ConstructEntityEvent.Pre constructEntityEvent = SpongeEventFactory.createConstructEntityEventPre(Cause.source(horseCause).build(), EntityTypes.HORSE, transform);
+                        ConstructEntityEvent.Pre constructEntityEvent =
+                                SpongeEventFactory.createConstructEntityEventPre(Cause.source(horseCause).build(), EntityTypes.HORSE, transform);
                         SpongeImpl.postEvent(constructEntityEvent);
                         if (!constructEntityEvent.isCancelled()) {
                             // Sponge End
@@ -592,11 +597,13 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
                         }
 
                         SpawnCause lightiningCause = WeatherSpawnCause.builder().weather(this.getWeather()).type(SpawnTypes.WEATHER).build();
-                        ConstructEntityEvent.Pre lightning = SpongeEventFactory.createConstructEntityEventPre(Cause.source(lightiningCause).build(), EntityTypes.LIGHTNING, transform);
+                        ConstructEntityEvent.Pre lightning =
+                                SpongeEventFactory.createConstructEntityEventPre(Cause.source(lightiningCause).build(), EntityTypes.LIGHTNING, transform);
                         SpongeImpl.postEvent(lightning);
                         if (!lightning.isCancelled()) {
                             // Sponge End
-                            this.addWeatherEffect(new EntityLightningBolt((WorldServer) (Object) this, (double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ(), true));
+                            this.addWeatherEffect(new EntityLightningBolt((WorldServer) (Object) this, (double)blockpos.getX(),
+                                    (double)blockpos.getY(), (double)blockpos.getZ(), true));
                         } // Sponge - Brackets.
                     }
                     else
@@ -609,7 +616,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
                         SpongeImpl.postEvent(event);
                         if (!event.isCancelled()) {
                             // Sponge End
-                            this.addWeatherEffect(new EntityLightningBolt((WorldServer) (Object) this, (double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ(), false));
+                            this.addWeatherEffect(new EntityLightningBolt((WorldServer) (Object) this, (double)blockpos.getX(),
+                                    (double)blockpos.getY(), (double)blockpos.getZ(), false));
                         } // Sponge - Brackets.
                     }
                 }
@@ -709,7 +717,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
         // } // Sponge- Remove unecessary else
     }
 
-    @Redirect(method = "updateBlockTick", at = @At(value = "INVOKE", target= "Lnet/minecraft/world/WorldServer;isAreaLoaded(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockPos;)Z"))
+    @Redirect(method = "updateBlockTick", at = @At(value = "INVOKE",
+            target= "Lnet/minecraft/world/WorldServer;isAreaLoaded(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockPos;)Z"))
     public boolean onBlockTickIsAreaLoaded(WorldServer worldIn, BlockPos fromPos, BlockPos toPos) {
         int posX = fromPos.getX() + 8;
         int posZ = fromPos.getZ() + 8;
@@ -718,7 +727,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
             posX = fromPos.getX();
             posZ = fromPos.getZ();
         }
-        final net.minecraft.world.chunk.Chunk chunk = ((IMixinChunkProviderServer) this.getChunkProvider()).getLoadedChunkWithoutMarkingActive(posX >> 4, posZ >> 4);
+        final net.minecraft.world.chunk.Chunk chunk = ((IMixinChunkProviderServer)
+                this.getChunkProvider()).getLoadedChunkWithoutMarkingActive(posX >> 4, posZ >> 4);
         if (chunk == null || !((IMixinChunk) chunk).areNeighborsLoaded()) {
             return false;
         }
@@ -754,18 +764,23 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
         super.updateEntities();
     }
 
-    @Redirect(method = "updateBlockTick", at = @At(value = "INVOKE", target="Lnet/minecraft/block/Block;updateTick(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;)V"))
+    @Redirect(method = "updateBlockTick", at = @At(value = "INVOKE",
+            target="Lnet/minecraft/block/Block;updateTick(Lnet/minecraft/world/World;"
+                    + "Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;)V"))
     public void onUpdateBlockTick(Block block, net.minecraft.world.World worldIn, BlockPos pos, IBlockState state, Random rand) {
         this.onUpdateTick(block, worldIn, pos, state, rand);
     }
 
     // This ticks pending updates to blocks, Requires mixin for NextTickListEntry so we use the correct tracking
-    @Redirect(method = "tickUpdates", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;updateTick(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;)V"))
+    @Redirect(method = "tickUpdates", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/block/Block;updateTick(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;"
+                    + "Lnet/minecraft/block/state/IBlockState;Ljava/util/Random;)V"))
     public void onUpdateTick(Block block, net.minecraft.world.World worldIn, BlockPos pos, IBlockState state, Random rand) {
         final CauseTracker causeTracker = CauseTracker.getInstance();
         final PhaseData phaseData = causeTracker.getCurrentPhaseData();
         final IPhaseState phaseState = phaseData.state;
-        if (phaseState.getPhase().alreadyCapturingBlockTicks(phaseState, phaseData.context) || phaseState.getPhase().ignoresBlockUpdateTick(phaseData)) {
+        if (phaseState.getPhase().alreadyCapturingBlockTicks(phaseState, phaseData.context)
+                || phaseState.getPhase().ignoresBlockUpdateTick(phaseData)) {
             block.updateTick(worldIn, pos, state, rand);
             return;
         }
@@ -776,7 +791,9 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
         spongeBlock.getTimingsHandler().stopTiming();
     }
 
-    @Redirect(method = "tickUpdates", at = @At(value = "INVOKE", target = "Lnet/minecraft/crash/CrashReportCategory;addBlockInfo(Lnet/minecraft/crash/CrashReportCategory;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)V"))
+    @Redirect(method = "tickUpdates", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/crash/CrashReportCategory;addBlockInfo(Lnet/minecraft/crash/CrashReportCategory;"
+                    + "Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;)V"))
     private void onBlockInfo(CrashReportCategory category, BlockPos pos, IBlockState state) {
         try {
             CrashReportCategory.addBlockInfo(category, pos, state);
@@ -788,7 +805,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
 
     }
 
-    @Redirect(method = "addBlockEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldServer$ServerBlockEventList;add(Ljava/lang/Object;)Z", remap = false))
+    @Redirect(method = "addBlockEvent", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/WorldServer$ServerBlockEventList;add(Ljava/lang/Object;)Z", remap = false))
     public boolean onAddBlockEvent(WorldServer.ServerBlockEventList list, Object obj, BlockPos pos, Block blockIn, int eventId, int eventParam) {
         final BlockEventData blockEventData = (BlockEventData) obj;
         IMixinBlockEventData blockEvent = (IMixinBlockEventData) blockEventData;
@@ -801,7 +819,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
             }
 
             blockEvent.setCaptureBlocks(false);
-        } else if (SpongeCommonEventFactory.callChangeBlockEventPre(this, pos, NamedCause.of(NamedCause.BLOCK_EVENT, this)).isCancelled()) {
+        } else if (SpongeCommonEventFactory.callChangeBlockEventPre(this, pos, NamedCause.of(NamedCause.BLOCK_EVENT, this))
+                .isCancelled()) {
             return false;
         }
 
@@ -912,16 +931,19 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
                         SpongeEventFactory.createSaveWorldEventPre(Cause.of(NamedCause.source(SpongeImpl.getServer())), this));
     }
 
-    @Inject(method = "saveAllChunks", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/gen/ChunkProviderServer;getLoadedChunks()Ljava/util/Collection;"), cancellable = true)
+    @Inject(method = "saveAllChunks", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/gen/ChunkProviderServer;getLoadedChunks()Ljava/util/Collection;"), cancellable = true)
     public void onSaveAllChunks(boolean saveAllChunks, IProgressUpdate progressCallback, CallbackInfo ci) {
-        Sponge.getEventManager().post(SpongeEventFactory.createSaveWorldEventPost(Cause.of(NamedCause.source(SpongeImpl.getServer())), this));
+        Sponge.getEventManager().post(SpongeEventFactory
+                .createSaveWorldEventPost(Cause.of(NamedCause.source(SpongeImpl.getServer())), this));
         // The chunk GC handles all queuing for chunk unloads so we cancel here to avoid it during a save.
         if (this.chunkGCTickInterval > 0) {
             ci.cancel();
         }
     }
 
-    @Redirect(method = "sendQueuedBlockEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/DimensionType;getId()I"), expect = 0, require = 0)
+    @Redirect(method = "sendQueuedBlockEvents", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/DimensionType;getId()I"), expect = 0, require = 0)
     private int onGetDimensionIdForBlockEvents(DimensionType dimensionType) {
         return this.getDimensionId();
     }
@@ -1090,7 +1112,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
      * @return True if the spawn was successful and the effect is played.
      */
     // We expect 0 because forge patches it correctly
-    @Redirect(method = "addWeatherEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/DimensionType;getId()I"), expect = 0, require = 0)
+    @Redirect(method = "addWeatherEffect", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/DimensionType;getId()I"), expect = 0, require = 0)
     public int getDimensionIdForWeatherEffect(DimensionType id) {
         return this.getDimensionId();
     }
@@ -1131,7 +1154,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
         List<NamedCause> causes = new ArrayList<>();
         causes.add(NamedCause.source(cause));
         causes.add(NamedCause.of("World", this));
-        SpawnEntityEvent.ChunkLoad chunkLoad = SpongeEventFactory.createSpawnEntityEventChunkLoad(Cause.of(causes), Lists.newArrayList(entityList));
+        SpawnEntityEvent.ChunkLoad chunkLoad = SpongeEventFactory
+                .createSpawnEntityEventChunkLoad(Cause.of(causes), Lists.newArrayList(entityList));
         SpongeImpl.postEvent(chunkLoad);
         if (!chunkLoad.isCancelled() && chunkLoad.getEntities().size() > 0) {
             for (Entity successful : chunkLoad.getEntities()) {
@@ -1610,7 +1634,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
         // Sponge Start - More cause tracking
         if (CauseTracker.ENABLED) {
             try {
-                CauseTracker.getInstance().getCurrentContext().getCaptureExplosion().addExplosion(((org.spongepowered.api.world.explosion.Explosion) explosion));
+                CauseTracker.getInstance().getCurrentContext().getCaptureExplosion()
+                        .addExplosion(((org.spongepowered.api.world.explosion.Explosion) explosion));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1669,7 +1694,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
     @Override
     protected boolean spongeIsAreaLoadedForCheckingLight(World thisWorld, BlockPos pos, int radius, boolean allowEmtpy, EnumSkyBlock lightType,
             BlockPos samePosition) {
-        final Chunk chunk = ((IMixinChunkProviderServer) this.chunkProvider).getLoadedChunkWithoutMarkingActive(pos.getX() >> 4, pos.getZ() >> 4);
+        final Chunk chunk = ((IMixinChunkProviderServer) this.chunkProvider)
+                .getLoadedChunkWithoutMarkingActive(pos.getX() >> 4, pos.getZ() >> 4);
         return !(chunk == null || !((IMixinChunk) chunk).areNeighborsLoaded());
     }
 
@@ -1748,7 +1774,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
                 // Sponge - Gets only loaded chunks, unloaded chunks will not get loaded to check lighting
                 // Chunk chunk = this.getChunkFromBlockCoords(pos);
                 // return chunk.getLightSubtracted(pos, this.skylightSubtracted);
-                final Chunk chunk = ((IMixinChunkProviderServer) this.chunkProvider).getLoadedChunkWithoutMarkingActive(pos.getX() >> 4, pos.getZ() >> 4);
+                final Chunk chunk = ((IMixinChunkProviderServer) this.chunkProvider)
+                        .getLoadedChunkWithoutMarkingActive(pos.getX() >> 4, pos.getZ() >> 4);
                 return chunk == null ? 0 : chunk.getLightSubtracted(pos, this.getSkylightSubtracted());
                 // Sponge End
             }
@@ -1777,7 +1804,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
             // Sponge End
             return type.defaultLightValue;
         } else {
-            Chunk chunk = ((IMixinChunkProviderServer) ((WorldServer) (Object) this).getChunkProvider()).getLoadedChunkWithoutMarkingActive(pos.getX() >> 4, pos.getZ() >> 4);
+            Chunk chunk = ((IMixinChunkProviderServer) ((WorldServer) (Object) this)
+                    .getChunkProvider()).getLoadedChunkWithoutMarkingActive(pos.getX() >> 4, pos.getZ() >> 4);
             if (chunk == null) {
                 return type.defaultLightValue;
             }
@@ -1881,7 +1909,8 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
         return (PortalAgent) this.worldTeleporter;
     }
 
-    @Redirect(method = "canAddEntity", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;[Ljava/lang/Object;)V", ordinal = 1, remap = false))
+    @Redirect(method = "canAddEntity", at = @At(value = "INVOKE",
+            target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;[Ljava/lang/Object;)V", ordinal = 1, remap = false))
     public void onCanAddEntityLogWarn(Logger logger, String message, Object... params) {
         // don't log anything to avoid useless spam
     }

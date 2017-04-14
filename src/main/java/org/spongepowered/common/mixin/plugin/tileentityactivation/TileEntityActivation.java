@@ -189,7 +189,8 @@ public class TileEntityActivation {
         // Make sure not on edge of unloaded chunk
         int x = tileEntity.getPos().getX();
         int z = tileEntity.getPos().getZ();
-        IMixinChunk spongeChunk = (IMixinChunk)((IMixinChunkProviderServer) world.getChunkProvider()).getLoadedChunkWithoutMarkingActive(x >> 4, z >> 4);
+        IMixinChunk spongeChunk = (IMixinChunk)((IMixinChunkProviderServer)
+                world.getChunkProvider()).getLoadedChunkWithoutMarkingActive(x >> 4, z >> 4);
         if (isActive && (spongeChunk == null || (!spongeChunk.isPersistedChunk() && !spongeChunk.areNeighborsLoaded()))) {
             isActive = false;
         }

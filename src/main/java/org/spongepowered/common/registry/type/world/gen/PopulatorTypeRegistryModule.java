@@ -99,9 +99,8 @@ public final class PopulatorTypeRegistryModule implements AdditionalCatalogRegis
     public Function<Class<?>, PopulatorType> customTypeFunction;
 
     PopulatorTypeRegistryModule() {
-        this.customTypeFunction = (type) -> {
-            return new SpongePopulatorType(type.getSimpleName(), type.getName().contains("net.minecraft.") ? "minecraft" : "unknown");
-        };
+        this.customTypeFunction = (type) -> new SpongePopulatorType(type.getSimpleName(),
+                type.getName().contains("net.minecraft.") ? "minecraft" : "unknown");
     }
 
     @Override

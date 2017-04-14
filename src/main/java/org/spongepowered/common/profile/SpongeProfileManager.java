@@ -55,7 +55,8 @@ public final class SpongeProfileManager implements GameProfileManager {
     private static final int LOOKUP_INTERVAL = SpongeImpl.getGlobalConfig().getConfig().getWorld().getGameProfileQueryTaskInterval();
     private final GameProfileCache defaultCache = (GameProfileCache) SpongeImpl.getServer().getPlayerProfileCache();
     private GameProfileCache cache = this.defaultCache;
-    private ExecutorService gameLookupExecutorService = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("Sponge - Async User Lookup Thread").build());
+    private ExecutorService gameLookupExecutorService =
+            Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat("Sponge - Async User Lookup Thread").build());
     @Inject private static SpongeScheduler scheduler;
 
     public SpongeProfileManager() {
@@ -69,9 +70,7 @@ public final class SpongeProfileManager implements GameProfileManager {
 
             try {
                 Sponge.getServer().getGameProfileManager().get(checkNotNull(uuid, "uniqueId")).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
 
@@ -91,7 +90,8 @@ public final class SpongeProfileManager implements GameProfileManager {
 
     @Override
     public ProfileProperty createProfileProperty(String name, String value, @Nullable String signature) {
-        return (ProfileProperty) new com.mojang.authlib.properties.Property(checkNotNull(name, "name"), checkNotNull(value, "value"), signature);
+        return (ProfileProperty) new com.mojang.authlib.properties.Property(checkNotNull(name, "name"),
+                checkNotNull(value, "value"), signature);
     }
 
     @Override

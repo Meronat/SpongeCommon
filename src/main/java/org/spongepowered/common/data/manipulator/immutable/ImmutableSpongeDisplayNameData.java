@@ -24,7 +24,6 @@
  */
 package org.spongepowered.common.data.manipulator.immutable;
 
-import com.google.common.collect.ComparisonChain;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.immutable.ImmutableDisplayNameData;
@@ -36,7 +35,8 @@ import org.spongepowered.common.data.manipulator.immutable.common.AbstractImmuta
 import org.spongepowered.common.data.manipulator.mutable.SpongeDisplayNameData;
 import org.spongepowered.common.data.value.immutable.ImmutableSpongeValue;
 
-public class ImmutableSpongeDisplayNameData extends AbstractImmutableSingleData<Text, ImmutableDisplayNameData, DisplayNameData> implements ImmutableDisplayNameData {
+public class ImmutableSpongeDisplayNameData extends AbstractImmutableSingleData<Text, ImmutableDisplayNameData, DisplayNameData>
+        implements ImmutableDisplayNameData {
 
     private final ImmutableSpongeValue<Text> nameValue;
 

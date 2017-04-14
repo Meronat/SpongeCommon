@@ -88,9 +88,7 @@ public abstract class MixinChunk_Async_Lighting implements IMixinChunk {
     @Inject(method = "recheckGaps", at = @At("HEAD"), cancellable = true)
     private void onRecheckGaps(boolean onlyOnce, CallbackInfo ci) {
         if (!this.world.isRemote) {
-            ((IMixinWorldServer) this.world).getLightingExecutor().execute(() -> {
-                this.recheckGapsAsync(onlyOnce);
-            });
+            ((IMixinWorldServer) this.world).getLightingExecutor().execute(() -> this.recheckGapsAsync(onlyOnce));
             ci.cancel();
         }
     }
@@ -145,7 +143,6 @@ public abstract class MixinChunk_Async_Lighting implements IMixinChunk {
      * @author blood - February 20th, 2017
      * @reason Since lighting updates run async, we need to always return true to send client updates.
      *
-     * @param pos The position to get the light for
      * @return Whether block position can see sky
      */
     @Overwrite

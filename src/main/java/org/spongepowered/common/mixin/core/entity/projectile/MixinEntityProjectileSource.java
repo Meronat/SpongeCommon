@@ -59,7 +59,8 @@ public abstract class MixinEntityProjectileSource extends EntityLivingBase imple
 
     @Override
     public <T extends Projectile> Optional<T> launchProjectile(Class<T> projectileClass, Vector3d velocity) {
-        return ProjectileLauncher.launch(checkNotNull(projectileClass, "projectileClass"), this, checkNotNull(velocity, "velocity"));
+        return ProjectileLauncher.launch(checkNotNull(projectileClass, "projectileClass"), this,
+                checkNotNull(velocity, "velocity"));
     }
 
 }

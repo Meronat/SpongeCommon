@@ -37,7 +37,7 @@ public class GenericStrategy<TInventory, TStack> extends QueryStrategy<TInventor
 
     @Override
     public QueryStrategy<TInventory, TStack, Object> with(Object[] args) {
-        this.args = ImmutableSet.<Object>copyOf(args);
+        this.args = ImmutableSet.copyOf(args);
         return this;
     }
     

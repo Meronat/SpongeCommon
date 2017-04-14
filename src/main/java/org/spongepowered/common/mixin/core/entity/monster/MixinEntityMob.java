@@ -85,7 +85,8 @@ public abstract class MixinEntityMob extends MixinEntityCreature implements Mons
 
         if (targetEntity instanceof EntityLivingBase) {
             // Sponge Start - Gather modifiers
-            originalFunctions.addAll(DamageEventHandler.createAttackEnchamntmentFunction(this.getHeldItemMainhand(), ((EntityLivingBase) targetEntity).getCreatureAttribute(), 1.0F)); // 1.0F is for full attack strength since mobs don't have the concept
+            originalFunctions.addAll(DamageEventHandler.createAttackEnchamntmentFunction(this.getHeldItemMainhand(),
+                    ((EntityLivingBase) targetEntity).getCreatureAttribute(), 1.0F)); // 1.0F is for full attack strength since mobs don't have the concept
             // baseDamage += EnchantmentHelper.getModifierForCreature(this.getHeldItem(), ((EntityLivingBase) targetEntity).getCreatureAttribute());
             knockbackModifier += EnchantmentHelper.getKnockbackModifier((EntityMob) (Object) this);
         }
@@ -104,7 +105,9 @@ public abstract class MixinEntityMob extends MixinEntityCreature implements Mons
         // Sponge End
         if (attackSucceeded) {
             if (knockbackModifier > 0 && targetEntity instanceof EntityLivingBase) {
-                ((EntityLivingBase) targetEntity).knockBack((EntityMob) (Object) this, (float) knockbackModifier * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+                ((EntityLivingBase) targetEntity).knockBack((EntityMob) (Object) this,
+                        (float) knockbackModifier * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F),
+                        (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
                 this.motionX *= 0.6D;
                 this.motionZ *= 0.6D;
             }
@@ -148,7 +151,8 @@ public abstract class MixinEntityMob extends MixinEntityCreature implements Mons
     protected boolean isValidLightLevel()
     {
         final BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
-        final Chunk chunk = ((IMixinChunkProviderServer) this.world.getChunkProvider()).getLoadedChunkWithoutMarkingActive(blockpos.getX() >> 4, blockpos.getZ() >> 4);
+        final Chunk chunk = ((IMixinChunkProviderServer) this.world.getChunkProvider())
+                .getLoadedChunkWithoutMarkingActive(blockpos.getX() >> 4, blockpos.getZ() >> 4);
         if (chunk == null || chunk.unloadQueued) {
             return false;
         }

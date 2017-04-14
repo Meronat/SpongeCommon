@@ -64,7 +64,6 @@ import org.spongepowered.common.data.util.NbtDataUtil;
 import org.spongepowered.common.event.tracking.CauseTracker;
 import org.spongepowered.common.interfaces.block.tile.IMixinTileEntity;
 import org.spongepowered.common.interfaces.data.IMixinCustomDataHolder;
-import org.spongepowered.common.interfaces.world.IMixinWorldServer;
 import org.spongepowered.common.registry.type.block.TileEntityTypeRegistryModule;
 import org.spongepowered.common.util.VecHelper;
 
@@ -191,7 +190,8 @@ public abstract class MixinTileEntity implements TileEntity, IMixinTileEntity {
      * @param compound The compound vanilla writes to (unused because we write to SpongeData)
      * @param ci (Unused) callback info
      */
-    @Inject(method = "Lnet/minecraft/tileentity/TileEntity;writeToNBT(Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/nbt/NBTTagCompound;", at = @At("HEAD"))
+    @Inject(method = "Lnet/minecraft/tileentity/TileEntity;writeToNBT(Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/nbt/NBTTagCompound;",
+            at = @At("HEAD"))
     public void onWriteToNBT(NBTTagCompound compound, CallbackInfoReturnable<NBTTagCompound> ci) {
         this.writeToNbt(this.getSpongeData());
     }
@@ -291,7 +291,7 @@ public abstract class MixinTileEntity implements TileEntity, IMixinTileEntity {
     public LocatableBlock getLocatableBlock() {
         if (this.locatableBlock == null) {
             this.locatableBlock = LocatableBlock.builder()
-                    .location(new Location<World>((World) this.world, pos.getX(), pos.getY(), pos.getZ()))
+                    .location(new Location<>((World) this.world, pos.getX(), pos.getY(), pos.getZ()))
                     .state(this.getBlock())
                     .build();
         }

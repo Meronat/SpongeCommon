@@ -31,8 +31,8 @@ import org.spongepowered.common.data.manipulator.mutable.common.AbstractBooleanD
 
 @SuppressWarnings("deprecation")
 public class SpongeElderData extends AbstractBooleanData<org.spongepowered.api.data.manipulator.mutable.entity.ElderData,
-    org.spongepowered.api.data.manipulator.immutable.entity.ImmutableElderData>
-    implements org.spongepowered.api.data.manipulator.mutable.entity.ElderData {
+        org.spongepowered.api.data.manipulator.immutable.entity.ImmutableElderData>
+        implements org.spongepowered.api.data.manipulator.mutable.entity.ElderData {
 
     public SpongeElderData() {
         this(false);

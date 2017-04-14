@@ -180,7 +180,7 @@ public class SpongeItemStackBuilder implements ItemStack.Builder {
             final List<DataView> views = container.getViewList(DataQueries.DATA_MANIPULATORS).get();
             final List<DataManipulator<?, ?>> manipulators = DataUtil.deserializeManipulatorList(views);
             this.itemDataSet = new HashSet<>();
-            manipulators.forEach(this.itemDataSet::add);
+            this.itemDataSet.addAll(manipulators);
         }
         return this;
     }
@@ -277,7 +277,7 @@ public class SpongeItemStackBuilder implements ItemStack.Builder {
             final List<DataView> views = container.getViewList(DataQueries.DATA_MANIPULATORS).get();
             final List<DataManipulator<?, ?>> manipulators = DataUtil.deserializeManipulatorList(views);
             this.itemDataSet = new HashSet<>();
-            manipulators.forEach(this.itemDataSet::add);
+            this.itemDataSet.addAll(manipulators);
         }
         return Optional.of(this.build());
     }
@@ -308,7 +308,7 @@ public class SpongeItemStackBuilder implements ItemStack.Builder {
         }
 
         if (this.keyValues != null) {
-            this.keyValues.entrySet().forEach(entry -> stack.offer((Key) entry.getKey(), entry.getValue()));
+            this.keyValues.forEach((key, value) -> stack.offer((Key) key, value));
         }
 
         return stack;

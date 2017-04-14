@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.function.Function;
 
 public abstract class ImmutableSpongeCollectionValue<E, V extends Collection<E>, I extends ImmutableCollectionValue<E, V, I, L>,
-    L extends CollectionValue<E, V, L, I>> extends ImmutableSpongeValue<V> implements ImmutableCollectionValue<E, V, I, L> {
+        L extends CollectionValue<E, V, L, I>> extends ImmutableSpongeValue<V> implements ImmutableCollectionValue<E, V, I, L> {
 
     protected ImmutableSpongeCollectionValue(Key<? extends BaseValue<V>> key, V defaultValue) {
         super(key, defaultValue);

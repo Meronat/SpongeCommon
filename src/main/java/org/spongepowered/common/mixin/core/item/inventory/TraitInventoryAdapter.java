@@ -30,11 +30,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryEnderChest;
 import net.minecraft.inventory.InventoryLargeChest;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.tileentity.TileEntityLockable;
-import net.minecraft.tileentity.TileEntityLockableLoot;
 import org.spongepowered.api.item.inventory.EmptyInventory;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.Slot;
@@ -68,7 +64,7 @@ public abstract class TraitInventoryAdapter implements MinecraftInventoryAdapter
     protected Inventory parent;
     protected Inventory next;
     protected SlotCollection slots;
-    protected List<Inventory> children = new ArrayList<Inventory>();
+    protected List<Inventory> children = new ArrayList<>();
     protected Iterable<Slot> slotIterator;
 
     @Override

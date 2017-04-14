@@ -471,19 +471,9 @@ public class EntityHuman extends EntityCreature implements TeamMember, IRangedAt
      */
     public void pushPackets(@Nullable EntityPlayerMP player, Packet<?>... packets) {
         if (player == null) {
-            List<Packet<?>[]> queue = this.playerPacketMap.get(null);
-            if (queue == null) {
-                queue = new ArrayList<>();
-                this.playerPacketMap.put(null, queue);
-            }
-            queue.add(packets);
+            this.playerPacketMap.computeIfAbsent(null, k -> new ArrayList<>()).add(packets);
         } else {
-            List<Packet<?>[]> queue = this.playerPacketMap.get(player.getUniqueID());
-            if (queue == null) {
-                queue = new ArrayList<>();
-                this.playerPacketMap.put(player.getUniqueID(), queue);
-            }
-            queue.add(packets);
+            this.playerPacketMap.computeIfAbsent(player.getUniqueID(), k -> new ArrayList<>()).add(packets);
         }
     }
 

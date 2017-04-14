@@ -87,7 +87,8 @@ public abstract class AbstractBiomeViewDownsize<V extends BiomeVolume> implement
     public MutableBiomeVolume getBiomeCopy(StorageType type) {
         switch (type) {
             case STANDARD:
-                return new ByteArrayMutableBiomeBuffer(ExtentBufferUtil.copyToArray(this, this.min, this.max, this.size), this.min, this.size);
+                return new ByteArrayMutableBiomeBuffer(ExtentBufferUtil
+                        .copyToArray(this, this.min, this.max, this.size), this.min, this.size);
             case THREAD_SAFE:
             default:
                 throw new UnsupportedOperationException(type.name());

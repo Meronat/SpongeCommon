@@ -120,7 +120,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
@@ -575,8 +574,10 @@ public abstract class MixinMinecraftServer implements Server, ConsoleSource, IMi
 
     @Redirect(method = "getTabCompletions", at = @At(value = "INVOKE", target = "Lnet/minecraft/command/ICommandManager;getTabCompletions"
             + "(Lnet/minecraft/command/ICommandSender;Ljava/lang/String;Lnet/minecraft/util/math/BlockPos;)Ljava/util/List;"))
-    public List<String> onGetTabCompletionOptions(ICommandManager manager, ICommandSender sender, String input, @Nullable BlockPos pos, ICommandSender sender_, String input_, BlockPos pos_, boolean hasTargetBlock) {
-        return ((SpongeCommandManager) SpongeImpl.getGame().getCommandManager()).getSuggestions((CommandSource) sender, input, getTarget(sender, pos), hasTargetBlock);
+    public List<String> onGetTabCompletionOptions(ICommandManager manager, ICommandSender sender, String input,
+            @Nullable BlockPos pos, ICommandSender sender_, String input_, BlockPos pos_, boolean hasTargetBlock) {
+        return ((SpongeCommandManager) SpongeImpl.getGame().getCommandManager()).getSuggestions((CommandSource) sender, input,
+                getTarget(sender, pos), hasTargetBlock);
     }
 
     @Nullable
@@ -597,9 +598,7 @@ public abstract class MixinMinecraftServer implements Server, ConsoleSource, IMi
     // This prevents a situation where a chunk is requested to load then unloads at end of tick.
     @Inject(method = "updateTimeLightAndEntities", at = @At("HEAD"))
     public void onUpdateTimeLightAndEntitiesHead(CallbackInfo ci) {
-        for (int i = 0; i < this.worlds.length; ++i)
-        {
-            WorldServer worldServer = this.worlds[i];
+        for (WorldServer worldServer : this.worlds) {
             // ChunkGC needs to be processed before a world tick in order to guarantee any chunk  queued for unload
             // can still be marked active and avoid unload if accessed during the same tick.
             // Note: This injection must come before Forge's pre world tick event or it will cause issues with mods.
@@ -608,19 +607,18 @@ public abstract class MixinMinecraftServer implements Server, ConsoleSource, IMi
                 spongeWorld.doChunkGC();
             }
             // Moved from PlayerChunkMap to avoid chunks from unloading after being requested in same tick
-            if (worldServer.getPlayerChunkMap().players.isEmpty())
-            {
+            if (worldServer.getPlayerChunkMap().players.isEmpty()) {
                 WorldProvider worldprovider = worldServer.provider;
 
-                if (!worldprovider.canRespawnHere())
-                {
+                if (!worldprovider.canRespawnHere()) {
                     worldServer.getChunkProvider().queueUnloadAll();
                 }
             }
         }
     }
 
-    @Redirect(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldServer;getEntityTracker()Lnet/minecraft/entity/EntityTracker;"))
+    @Redirect(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/WorldServer;getEntityTracker()"
+            + "Lnet/minecraft/entity/EntityTracker;"))
     public EntityTracker onUpdateTimeLightAndEntitiesGetEntityTracker(WorldServer worldServer) {
         // Chunk unloads must run after a world tick to guarantee any chunks accessed during the world tick have
         // been marked active and will not unload.
@@ -644,9 +642,11 @@ public abstract class MixinMinecraftServer implements Server, ConsoleSource, IMi
         int lastSecondaryTick = SpongeCommonEventFactory.lastSecondaryPacketTick;
         if (SpongeCommonEventFactory.lastAnimationPlayer != null) {
             EntityPlayerMP player = SpongeCommonEventFactory.lastAnimationPlayer.get();
-            if (player != null && lastAnimTick != lastPrimaryTick && lastAnimTick != lastSecondaryTick && lastAnimTick != 0 && lastAnimTick - lastPrimaryTick > 3 && lastAnimTick - lastSecondaryTick > 3) {
+            if (player != null && lastAnimTick != lastPrimaryTick && lastAnimTick != lastSecondaryTick && lastAnimTick != 0
+                    && lastAnimTick - lastPrimaryTick > 3 && lastAnimTick - lastSecondaryTick > 3) {
                 if (player.getHeldItemMainhand() != null) {
-                    if (SpongeCommonEventFactory.callInteractItemEventPrimary(player, player.getHeldItemMainhand(), EnumHand.MAIN_HAND, Optional.empty(), BlockSnapshot.NONE).isCancelled()) {
+                    if (SpongeCommonEventFactory.callInteractItemEventPrimary(player, player.getHeldItemMainhand(),
+                            EnumHand.MAIN_HAND, Optional.empty(), BlockSnapshot.NONE).isCancelled()) {
                         SpongeCommonEventFactory.lastAnimationPacketTick = 0;
                         return;
                     }
@@ -661,13 +661,15 @@ public abstract class MixinMinecraftServer implements Server, ConsoleSource, IMi
 
     private int dimensionId;
 
-    @Redirect(method = "addServerStatsToSnooper", at = @At(value = "FIELD", target = "Lnet/minecraft/world/WorldServer;provider:Lnet/minecraft/world/WorldProvider;", opcode = Opcodes.GETFIELD))
+    @Redirect(method = "addServerStatsToSnooper", at = @At(value = "FIELD",
+            target = "Lnet/minecraft/world/WorldServer;provider:Lnet/minecraft/world/WorldProvider;", opcode = Opcodes.GETFIELD))
     private WorldProvider onGetWorldProviderForSnooper(WorldServer world) {
         this.dimensionId = WorldManager.getDimensionId(world);
         return world.provider;
     }
 
-    @ModifyArg(method = "addServerStatsToSnooper", at = @At(value = "INVOKE", target = "Ljava/lang/Integer;valueOf(I)Ljava/lang/Integer;", ordinal = 5))
+    @ModifyArg(method = "addServerStatsToSnooper", at = @At(value = "INVOKE",
+            target = "Ljava/lang/Integer;valueOf(I)Ljava/lang/Integer;", ordinal = 5))
     private int onValueOfInteger(int dimensionId) {
         return this.dimensionId;
     }
@@ -771,7 +773,8 @@ public abstract class MixinMinecraftServer implements Server, ConsoleSource, IMi
         return this.serverThread == Thread.currentThread();
     }
 
-    @Redirect(method = "callFromMainThread", at = @At(value = "INVOKE", target = "Ljava/util/concurrent/Callable;call()Ljava/lang/Object;", remap = false))
+    @Redirect(method = "callFromMainThread", at = @At(value = "INVOKE",
+            target = "Ljava/util/concurrent/Callable;call()Ljava/lang/Object;", remap = false))
     public Object onCall(Callable<?> callable) throws Exception {
         CauseTracker.getInstance().switchToPhase(PluginPhase.State.SCHEDULED_TASK, PhaseContext.start()
             .add(NamedCause.source(callable))
@@ -790,7 +793,8 @@ public abstract class MixinMinecraftServer implements Server, ConsoleSource, IMi
         return value;
     }
 
-    @Redirect(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Util;runTask(Ljava/util/concurrent/FutureTask;Lorg/apache/logging/log4j/Logger;)Ljava/lang/Object;"))
+    @Redirect(method = "updateTimeLightAndEntities", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/util/Util;runTask(Ljava/util/concurrent/FutureTask;Lorg/apache/logging/log4j/Logger;)Ljava/lang/Object;"))
     private Object onRun(FutureTask<?> task, Logger logger) {
         return SpongeImplHooks.onUtilRunTask(task, logger);
     }

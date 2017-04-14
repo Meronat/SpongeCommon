@@ -64,7 +64,7 @@ public class SpongePropertyRegistry implements PropertyRegistry {
         final SpongePropertyRegistry registry = getInstance();
         for (Map.Entry<Class<? extends Property<?, ?>>, List<PropertyStore<?>>> entry : registry.propertyStoreMap.entrySet()) {
             ImmutableList.Builder<PropertyStore<?>> propertyStoreBuilder = ImmutableList.builder();
-            Collections.sort(entry.getValue(), ComparatorUtil.PROPERTY_STORE_COMPARATOR);
+            entry.getValue().sort(ComparatorUtil.PROPERTY_STORE_COMPARATOR);
             propertyStoreBuilder.addAll(entry.getValue());
             final PropertyStoreDelegate<?> delegate = new PropertyStoreDelegate(propertyStoreBuilder.build());
             registry.delegateMap.put(entry.getKey(), delegate);
@@ -77,7 +77,7 @@ public class SpongePropertyRegistry implements PropertyRegistry {
         checkState(allowRegistrations, "Registrations are no longer allowed!");
         checkArgument(propertyClass != null, "The property class can not be null!");
         if (!this.propertyStoreMap.containsKey(propertyClass)) {
-            this.propertyStoreMap.put(propertyClass, Collections.synchronizedList(Lists.<PropertyStore<?>>newArrayList()));
+            this.propertyStoreMap.put(propertyClass, Collections.synchronizedList(Lists.newArrayList()));
         }
         final List<PropertyStore<?>> propertyStores = this.propertyStoreMap.get(propertyClass);
         propertyStores.add(checkNotNull(propertyStore));
@@ -98,9 +98,7 @@ public class SpongePropertyRegistry implements PropertyRegistry {
         final ImmutableList.Builder<Property<?, ?>> builder = ImmutableList.builder();
         for (Map.Entry<Class<? extends Property<?, ?>>, PropertyStoreDelegate<?>> entry : this.delegateMap.entrySet()) {
             final Optional<? extends Property<?, ?>> optional = entry.getValue().getFor(holder);
-            if (optional.isPresent()) {
-                builder.add(optional.get());
-            }
+            optional.ifPresent(builder::add);
         }
         return builder.build();
     }

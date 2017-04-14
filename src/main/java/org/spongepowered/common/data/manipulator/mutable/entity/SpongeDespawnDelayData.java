@@ -62,7 +62,8 @@ public final class SpongeDespawnDelayData extends AbstractIntData<DespawnDelayDa
 
     @Override
     public Value<Boolean> infinite() {
-        return new SpongeValue<>(Keys.INFINITE_DESPAWN_DELAY, false, this.getValue() == DataConstants.Entity.Item.MAGIC_NO_DESPAWN);
+        return new SpongeValue<>(Keys.INFINITE_DESPAWN_DELAY, false,
+                this.getValue() == DataConstants.Entity.Item.MAGIC_NO_DESPAWN);
     }
 
     @Override

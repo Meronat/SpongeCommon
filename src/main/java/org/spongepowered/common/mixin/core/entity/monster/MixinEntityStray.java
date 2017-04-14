@@ -45,7 +45,8 @@ public abstract class MixinEntityStray extends MixinAbstractSkeleton implements 
     @Deprecated
     @Override
     public Value<org.spongepowered.api.data.type.SkeletonType> variant() {
-        return new SpongeValue<>(Keys.SKELETON_TYPE, org.spongepowered.api.data.type.SkeletonTypes.STRAY, org.spongepowered.api.data.type.SkeletonTypes.STRAY);
+        return new SpongeValue<>(Keys.SKELETON_TYPE, org.spongepowered.api.data.type.SkeletonTypes.STRAY,
+                org.spongepowered.api.data.type.SkeletonTypes.STRAY);
     }
 
 }

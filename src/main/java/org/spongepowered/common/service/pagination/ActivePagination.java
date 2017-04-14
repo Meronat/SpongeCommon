@@ -51,12 +51,9 @@ abstract class ActivePagination {
     private final UUID id = UUID.randomUUID();
     private final Text nextPageText;
     private final Text prevPageText;
-    @Nullable
-    private final Text title;
-    @Nullable
-    private final Text header;
-    @Nullable
-    private final Text footer;
+    @Nullable private final Text title;
+    @Nullable private final Text header;
+    @Nullable private final Text footer;
     private int currentPage;
     private final int maxContentLinesPerPage;
     protected final PaginationCalculator calc;

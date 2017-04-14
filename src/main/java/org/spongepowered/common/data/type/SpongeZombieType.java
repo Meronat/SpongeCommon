@@ -41,5 +41,4 @@ public class SpongeZombieType extends SpongeCatalogType implements org.spongepow
         return this.name;
     }
 
-
 }

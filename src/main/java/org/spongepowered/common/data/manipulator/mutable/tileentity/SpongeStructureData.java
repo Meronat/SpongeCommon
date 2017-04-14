@@ -34,7 +34,6 @@ import org.spongepowered.api.data.value.mutable.Value;
 import org.spongepowered.common.data.manipulator.immutable.tileentity.ImmutableSpongeStructureData;
 import org.spongepowered.common.data.manipulator.mutable.common.AbstractData;
 import org.spongepowered.common.data.util.DataConstants;
-import org.spongepowered.common.data.util.ImplementationRequiredForTest;
 import org.spongepowered.common.data.value.mutable.SpongeValue;
 
 public final class SpongeStructureData extends AbstractData<StructureData, ImmutableStructureData> implements StructureData {
@@ -57,7 +56,8 @@ public final class SpongeStructureData extends AbstractData<StructureData, Immut
                 DataConstants.DEFAULT_STRUCTURE_SIZE);
     }
 
-    public SpongeStructureData(String author, boolean ignoreEntities, float integrity, StructureMode mode, Vector3i position, boolean powered, boolean showAir, boolean showBoundingBox, long seed, Vector3i size) {
+    public SpongeStructureData(String author, boolean ignoreEntities, float integrity, StructureMode mode,
+            Vector3i position, boolean powered, boolean showAir, boolean showBoundingBox, long seed, Vector3i size) {
         super(StructureData.class);
 
         this.author = author;
@@ -240,12 +240,14 @@ public final class SpongeStructureData extends AbstractData<StructureData, Immut
 
     @Override
     public StructureData copy() {
-        return new SpongeStructureData(this.author, this.ignoreEntities, this.integrity, this.mode, this.position, this.powered, this.showAir, this.showBoundingBox, this.seed, this.size);
+        return new SpongeStructureData(this.author, this.ignoreEntities, this.integrity, this.mode,
+                this.position, this.powered, this.showAir, this.showBoundingBox, this.seed, this.size);
     }
 
     @Override
     public ImmutableStructureData asImmutable() {
-        return new ImmutableSpongeStructureData(this.author, this.ignoreEntities, this.integrity, this.mode, this.position, this.powered, this.showAir, this.showBoundingBox, this.seed, this.size);
+        return new ImmutableSpongeStructureData(this.author, this.ignoreEntities, this.integrity, this.mode,
+                this.position, this.powered, this.showAir, this.showBoundingBox, this.seed, this.size);
     }
 
     @Override

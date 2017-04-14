@@ -42,9 +42,8 @@ import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings("deprecation")
-public class ZombieDataProcessor
-        extends AbstractEntityDataProcessor<EntityZombie, org.spongepowered.api.data.manipulator.mutable.entity.ZombieData,
-    org.spongepowered.api.data.manipulator.immutable.entity.ImmutableZombieData> {
+public class ZombieDataProcessor extends AbstractEntityDataProcessor<EntityZombie, org.spongepowered.api.data.manipulator.mutable.entity.ZombieData,
+        org.spongepowered.api.data.manipulator.immutable.entity.ImmutableZombieData> {
 
     public ZombieDataProcessor() {
         super(EntityZombie.class);

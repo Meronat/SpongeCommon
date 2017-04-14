@@ -34,9 +34,7 @@ import org.spongepowered.api.item.inventory.property.SlotIndex;
 import org.spongepowered.api.item.inventory.transaction.InventoryTransactionResult;
 import org.spongepowered.api.item.inventory.type.OrderedInventory;
 import org.spongepowered.common.item.inventory.adapter.impl.Adapter;
-import org.spongepowered.common.item.inventory.adapter.impl.slots.SlotAdapter;
 import org.spongepowered.common.item.inventory.lens.Fabric;
-import org.spongepowered.common.item.inventory.lens.Lens;
 import org.spongepowered.common.item.inventory.lens.comp.OrderedInventoryLens;
 import org.spongepowered.common.item.inventory.lens.slots.SlotLens;
 

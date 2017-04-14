@@ -58,11 +58,9 @@ import org.spongepowered.api.util.TextMessageException;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import org.spongepowered.common.SpongeImpl;
-import org.spongepowered.common.event.InternalNamedCauses;
 import org.spongepowered.common.event.tracking.CauseTracker;
 import org.spongepowered.common.event.tracking.PhaseContext;
 import org.spongepowered.common.event.tracking.phase.general.GeneralPhase;
-import org.spongepowered.common.interfaces.world.IMixinWorldServer;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -87,6 +85,7 @@ import javax.inject.Inject;
  */
 @Singleton
 public class SpongeCommandManager implements CommandManager {
+
     private final Logger log;
     private final SimpleDispatcher dispatcher;
     private final Multimap<PluginContainer, CommandMapping> owners = HashMultimap.create();
@@ -107,7 +106,8 @@ public class SpongeCommandManager implements CommandManager {
      * Construct a simple {@link CommandManager}.
      *
      * @param logger The logger to log error messages to
-     * @param disambiguator The function to resolve a single command when multiple options are available
+     * @param disambiguator The function to resolve a single command when
+     *     multiple options are available
      */
     public SpongeCommandManager(Logger logger, Disambiguator disambiguator) {
         this.log = logger;
@@ -144,7 +144,8 @@ public class SpongeCommandManager implements CommandManager {
             List<String> aliasesWithPrefix = new ArrayList<>(aliases.size() * 3);
             for (String alias : aliases) {
                 if (alias.contains(" ")) {
-                    throw new IllegalArgumentException("Plugin '" + container.getId() + "' attempted to register an alias ('" + alias + "') which contained a space.");
+                    throw new IllegalArgumentException("Plugin '" + container.getId() + "' attempted to register an alias ('" + alias
+                            + "') which contained a space.");
                 }
                 final Collection<CommandMapping> ownedCommands = this.owners.get(container);
                 for (CommandMapping mapping : this.dispatcher.getAll(alias)) {
@@ -176,9 +177,7 @@ public class SpongeCommandManager implements CommandManager {
         synchronized (this.lock) {
             Optional<CommandMapping> removed = this.dispatcher.removeMapping(mapping);
 
-            if (removed.isPresent()) {
-                forgetMapping(removed.get());
-            }
+            removed.ifPresent(this::forgetMapping);
 
             return removed;
         }
@@ -339,8 +338,8 @@ public class SpongeCommandManager implements CommandManager {
                         .replace("\r", "\n")))); // I mean I guess somebody could be running this on like OS 9?
             }
             source.sendMessage(error(t("Error occurred while executing command: %s", excBuilder.build())));
-            this.log.error(TextSerializers.PLAIN.serialize(t("Error occurred while executing command '%s' for source %s: %s", commandLine, source.toString(), String
-                    .valueOf(thr.getMessage()))), thr);
+            this.log.error(TextSerializers.PLAIN.serialize(t("Error occurred while executing command '%s' for source %s: %s",
+                    commandLine, source.toString(), String.valueOf(thr.getMessage()))), thr);
         }
         return CommandResult.empty();
     }
@@ -355,9 +354,9 @@ public class SpongeCommandManager implements CommandManager {
             final String[] argSplit = arguments.split(" ", 2);
             List<String> suggestions = new ArrayList<>(this.dispatcher.getSuggestions(src, arguments, targetPosition));
             final TabCompleteEvent.Command event = SpongeEventFactory.createTabCompleteEventCommand(Cause.source(src).build(),
-                    ImmutableList.copyOf(suggestions), suggestions, argSplit.length > 1 ? argSplit[1] : "", argSplit[0], arguments, Optional.ofNullable(targetPosition), usingBlock); // TODO zml: Should this be exposed in the API?
-            Sponge.getGame().getEventManager().post(event);
-            if (event.isCancelled()) {
+                    ImmutableList.copyOf(suggestions), suggestions, argSplit.length > 1 ? argSplit[1] : "", argSplit[0], arguments,
+                    Optional.ofNullable(targetPosition), usingBlock); // TODO zml: Should this be exposed in the API?
+            if (Sponge.getEventManager().post(event)) {
                 return ImmutableList.of();
             } else {
                 return ImmutableList.copyOf(event.getTabCompletions());

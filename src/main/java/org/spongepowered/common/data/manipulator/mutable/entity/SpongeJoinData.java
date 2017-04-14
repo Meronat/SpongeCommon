@@ -26,7 +26,6 @@ package org.spongepowered.common.data.manipulator.mutable.entity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.collect.ComparisonChain;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.immutable.entity.ImmutableJoinData;
@@ -57,11 +56,13 @@ public class SpongeJoinData extends AbstractData<JoinData, ImmutableJoinData> im
     @Override
     protected void registerGettersAndSetters() {
         registerFieldGetter(Keys.FIRST_DATE_PLAYED, () -> this.firstJoined);
-        registerFieldSetter(Keys.FIRST_DATE_PLAYED, instant -> this.firstJoined = checkNotNull(instant, "First join instant cannot be null!"));
+        registerFieldSetter(Keys.FIRST_DATE_PLAYED, instant ->
+                this.firstJoined = checkNotNull(instant, "First join instant cannot be null!"));
         registerKeyValue(Keys.FIRST_DATE_PLAYED, this::firstPlayed);
 
         registerFieldGetter(Keys.LAST_DATE_PLAYED, () -> this.lastJoined);
-        registerFieldSetter(Keys.LAST_DATE_PLAYED, instant -> this.lastJoined = checkNotNull(instant, "Last join instant cannot be null!"));
+        registerFieldSetter(Keys.LAST_DATE_PLAYED,
+                instant -> this.lastJoined = checkNotNull(instant, "Last join instant cannot be null!"));
         registerKeyValue(Keys.LAST_DATE_PLAYED, this::lastPlayed);
     }
 

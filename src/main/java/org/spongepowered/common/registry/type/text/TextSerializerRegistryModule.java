@@ -27,11 +27,8 @@ package org.spongepowered.common.registry.type.text;
 import static org.spongepowered.common.text.SpongeTexts.COLOR_CHAR;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import org.spongepowered.api.registry.AdditionalCatalogRegistryModule;
 import org.spongepowered.api.registry.AlternateCatalogRegistryModule;
-import org.spongepowered.api.registry.CatalogRegistryModule;
-import org.spongepowered.api.registry.RegistryModule;
 import org.spongepowered.api.registry.util.RegisterCatalog;
 import org.spongepowered.api.text.serializer.TextSerializer;
 import org.spongepowered.api.text.serializer.TextSerializers;

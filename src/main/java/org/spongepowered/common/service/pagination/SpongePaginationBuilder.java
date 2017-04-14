@@ -35,6 +35,7 @@ import org.spongepowered.api.text.channel.MessageReceiver;
 import javax.annotation.Nullable;
 
 public class SpongePaginationBuilder implements PaginationList.Builder {
+
     private final SpongePaginationService service;
     private Iterable<Text> contents;
     private Text title;

@@ -40,7 +40,7 @@ public class ItemTypeStrategy<TInventory> extends QueryStrategy<TInventory, Item
 
     @Override
     public QueryStrategy<TInventory, ItemStack, ItemType> with(ItemType[] types) {
-        this.types = ImmutableSet.<ItemType>copyOf(types);
+        this.types = ImmutableSet.copyOf(types);
         return this;
     }
     

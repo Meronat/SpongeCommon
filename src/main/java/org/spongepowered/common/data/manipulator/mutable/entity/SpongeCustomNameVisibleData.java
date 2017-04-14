@@ -31,8 +31,8 @@ import org.spongepowered.api.data.value.mutable.Value;
 import org.spongepowered.common.data.manipulator.immutable.entity.ImmutableSpongeCustomNameVisibleData;
 import org.spongepowered.common.data.manipulator.mutable.common.AbstractBooleanData;
 
-public class SpongeCustomNameVisibleData extends AbstractBooleanData<CustomNameVisibleData, ImmutableCustomNameVisibleData> implements
-        CustomNameVisibleData {
+public class SpongeCustomNameVisibleData extends AbstractBooleanData<CustomNameVisibleData, ImmutableCustomNameVisibleData>
+        implements CustomNameVisibleData {
 
     public SpongeCustomNameVisibleData() {
         this(false);

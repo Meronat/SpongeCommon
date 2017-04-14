@@ -36,7 +36,6 @@ import org.spongepowered.api.data.value.immutable.ImmutableMapValue;
 import org.spongepowered.api.data.value.mutable.MapValue;
 import org.spongepowered.common.data.value.immutable.ImmutableSpongeMapValue;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -99,12 +98,7 @@ public class SpongeMapValue<K, V> extends SpongeValue<Map<K, V>> implements MapV
 
     @Override
     public MapValue<K, V> removeAll(Predicate<Map.Entry<K, V>> predicate) {
-        for (Iterator<Map.Entry<K, V>> iterator = this.actualValue.entrySet().iterator(); iterator.hasNext(); ) {
-            final Map.Entry<K, V> entry = iterator.next();
-            if (!checkNotNull(predicate).test(entry)) {
-                iterator.remove();
-            }
-        }
+        this.actualValue.entrySet().removeIf(entry -> !checkNotNull(predicate).test(entry));
         return this;
     }
 

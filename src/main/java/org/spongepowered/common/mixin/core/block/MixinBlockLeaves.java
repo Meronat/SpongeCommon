@@ -76,7 +76,8 @@ public abstract class MixinBlockLeaves extends MixinBlock {
         this.setTickRandomly(SpongeImpl.getGlobalConfig().getConfig().getWorld().getLeafDecay());
     }
 
-    @Redirect(method = "updateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;I)Z"))
+    @Redirect(method = "updateTick", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;I)Z"))
     public boolean onUpdateDecayState(net.minecraft.world.World worldIn, BlockPos pos, IBlockState state, int flags) {
         IMixinWorldServer spongeWorld = (IMixinWorldServer) worldIn;
         final CauseTracker causeTracker = CauseTracker.getInstance();
@@ -85,7 +86,7 @@ public abstract class MixinBlockLeaves extends MixinBlock {
         final boolean isWorldGen = currentState.getPhase().isWorldGeneration(currentState);
         if (isBlockAlready && !isWorldGen) {
             final LocatableBlock locatable = LocatableBlock.builder()
-                    .location(new Location<World>((World) worldIn, pos.getX(), pos.getY(), pos.getZ()))
+                    .location(new Location<>((World) worldIn, pos.getX(), pos.getY(), pos.getZ()))
                     .state((BlockState) state)
                     .build();
             causeTracker.switchToPhase(BlockPhase.State.BLOCK_DECAY, PhaseContext.start()
@@ -125,7 +126,7 @@ public abstract class MixinBlockLeaves extends MixinBlock {
             final boolean isBlockAlready = causeTracker.getCurrentState().getPhase() != TrackingPhases.BLOCK;
             if (isBlockAlready && !isWorldGen) {
                 final LocatableBlock locatable = LocatableBlock.builder()
-                        .location(new Location<World>((World) worldIn, pos.getX(), pos.getY(), pos.getZ()))
+                        .location(new Location<>((World) worldIn, pos.getX(), pos.getY(), pos.getZ()))
                         .state((BlockState) state)
                         .build();
                 causeTracker.switchToPhase(BlockPhase.State.BLOCK_DECAY, PhaseContext.start()

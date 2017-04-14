@@ -37,7 +37,7 @@ import org.spongepowered.api.event.cause.entity.damage.source.common.AbstractDam
 import java.lang.ref.WeakReference;
 
 public class SpongeFallingBlockDamgeSourceBuilder extends AbstractDamageSourceBuilder<FallingBlockDamageSource, FallingBlockDamageSource.Builder>
-    implements FallingBlockDamageSource.Builder {
+        implements FallingBlockDamageSource.Builder {
 
     protected WeakReference<Entity> reference = null;
     private ImmutableFallingBlockData blockData = null;

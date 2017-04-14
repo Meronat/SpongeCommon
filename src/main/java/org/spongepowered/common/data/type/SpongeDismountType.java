@@ -32,4 +32,5 @@ public class SpongeDismountType extends SpongeCatalogType implements DismountTyp
     public SpongeDismountType(String id) {
         super(id);
     }
+
 }

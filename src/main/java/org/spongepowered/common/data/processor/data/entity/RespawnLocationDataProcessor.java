@@ -44,8 +44,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RespawnLocationDataProcessor extends
-        AbstractSingleDataSingleTargetProcessor<User, Map<UUID, RespawnLocation>, MapValue<UUID, RespawnLocation>, RespawnLocationData, ImmutableRespawnLocation> {
+public class RespawnLocationDataProcessor extends AbstractSingleDataSingleTargetProcessor<User, Map<UUID, RespawnLocation>,
+        MapValue<UUID, RespawnLocation>, RespawnLocationData, ImmutableRespawnLocation> {
 
     public RespawnLocationDataProcessor() {
         super(Keys.RESPAWN_LOCATIONS, User.class);
@@ -75,7 +75,7 @@ public class RespawnLocationDataProcessor extends
     @Override
     protected Optional<Map<UUID, RespawnLocation>> getVal(User user) {
         if (user instanceof ISpongeUser) {
-            return Optional.of(((ISpongeUser) user).getBedlocations());
+            return Optional.of(((ISpongeUser) user).getBedLocations());
         }
         return Optional.empty();
     }

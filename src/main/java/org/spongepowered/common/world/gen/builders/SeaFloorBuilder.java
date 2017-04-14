@@ -100,8 +100,7 @@ public class SeaFloorBuilder implements SeaFloor.Builder {
 
     @Override
     public SeaFloor build() throws IllegalStateException {
-        SeaFloor pop = new SeaFloorPopulator(this.block, this.radius, this.count, this.depth, this.check);
-        return pop;
+        return new SeaFloorPopulator(this.block, this.radius, this.count, this.depth, this.check);
     }
 
 }

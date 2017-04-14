@@ -67,30 +67,16 @@ public final class WorldGenConstants {
         return false;
     }
 
-    public static final SeededVariableAmount<Double> GROUND_COVER_DEPTH = new SeededVariableAmount<Double>() {
+    public static final SeededVariableAmount<Double> GROUND_COVER_DEPTH = (rand, seed) -> (int) (seed / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
 
-        @Override
-        public double getAmount(Random rand, Double seed) {
-            return (int) (seed / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
-        }
+    public static final Predicate<BlockState> DIRT_OR_GRASS = (input) ->
+            input.getType().equals(BlockTypes.DIRT) || input.getType().equals(BlockTypes.GRASS);
 
-    };
+    public static final Predicate<BlockState> DIRT = (input) -> input.getType().equals(BlockTypes.DIRT);
 
-    public static final Predicate<BlockState> DIRT_OR_GRASS = (input) -> {
-        return input.getType().equals(BlockTypes.DIRT) || input.getType().equals(BlockTypes.GRASS);
-    };
+    public static final Predicate<BlockState> STONE = (input) -> input.getType().equals(BlockTypes.STONE);
 
-    public static final Predicate<BlockState> DIRT = (input) -> {
-        return input.getType().equals(BlockTypes.DIRT);
-    };
-
-    public static final Predicate<BlockState> STONE = (input) -> {
-        return input.getType().equals(BlockTypes.STONE);
-    };
-
-    public static final Predicate<Location<World>> STONE_LOCATION = (input) -> {
-        return input.getBlock().getType().equals(BlockTypes.STONE);
-    };
+    public static final Predicate<Location<World>> STONE_LOCATION = (input) -> input.getBlock().getType().equals(BlockTypes.STONE);
 
     public static final Predicate<Location<World>> CAVE_LIQUIDS = (input) -> {
         if (input.getBlockY() <= 0 || input.getBlockY() >= 255) {

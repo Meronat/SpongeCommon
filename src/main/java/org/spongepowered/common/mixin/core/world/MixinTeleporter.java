@@ -110,7 +110,8 @@ public class MixinTeleporter implements PortalAgent, IMixinTeleporter {
             }
         } else {
             this.createEndPortal(targetLocation); // Sponge - move end portal create logic to its own method
-            entityIn.setLocationAndAngles(targetLocation.getX(), targetLocation.getY() - 1, targetLocation.getZ(), entityIn.rotationYaw, 0.0F);
+            entityIn.setLocationAndAngles(targetLocation.getX(), targetLocation.getY() - 1, targetLocation.getZ(), entityIn.rotationYaw,
+                    0.0F);
             entityIn.motionX = entityIn.motionY = entityIn.motionZ = 0.0D;
         }
     }
@@ -198,8 +199,8 @@ public class MixinTeleporter implements PortalAgent, IMixinTeleporter {
 
                 for (int j1 = -this.searchRadius; j1 <= this.searchRadius; ++j1) {
                     for (BlockPos blockpos1 =
-                            blockSearchPosition.add(i1, this.worldServerInstance.getActualHeight() - 1 - blockSearchPosition.getY(), j1); blockpos1
-                                    .getY() >= 0; blockpos1 = blockpos2) {
+                            blockSearchPosition.add(i1, this.worldServerInstance.getActualHeight() - 1 - blockSearchPosition.getY(), j1);
+                            blockpos1.getY() >= 0; blockpos1 = blockpos2) {
                         blockpos2 = blockpos1.down();
 
                         if (this.worldServerInstance.getBlockState(blockpos1).getBlock() == Blocks.PORTAL) {
@@ -225,7 +226,7 @@ public class MixinTeleporter implements PortalAgent, IMixinTeleporter {
                         ((Teleporter) (Object) this).new PortalPosition(portalPosition, this.worldServerInstance.getTotalWorldTime()));
             }
 
-            return Optional.of(new Location<World>(searchLocation.getExtent(), VecHelper.toVector3d(portalPosition)));
+            return Optional.of(new Location<>(searchLocation.getExtent(), VecHelper.toVector3d(portalPosition)));
         } else {
             return Optional.empty();
         }
@@ -238,7 +239,8 @@ public class MixinTeleporter implements PortalAgent, IMixinTeleporter {
         double zTarget = portalLocation.getZ() + 0.5D;
         BlockPattern.PatternHelper blockpattern$patternhelper = Blocks.PORTAL.createPatternHelper(this.worldServerInstance, blockPos);
         boolean flag1 = blockpattern$patternhelper.getForwards().rotateY().getAxisDirection() == EnumFacing.AxisDirection.NEGATIVE;
-        double d2 = blockpattern$patternhelper.getForwards().getAxis() == EnumFacing.Axis.X ? (double) blockpattern$patternhelper.getFrontTopLeft().getZ()
+        double d2 = blockpattern$patternhelper.getForwards().getAxis() == EnumFacing.Axis.X
+                ? (double) blockpattern$patternhelper.getFrontTopLeft().getZ()
                 : (double) blockpattern$patternhelper.getFrontTopLeft().getX();
         yTarget = (double) (blockpattern$patternhelper.getFrontTopLeft().getY() + 1)
                 - entityIn.getLastPortalVec().yCoord * (double) blockpattern$patternhelper.getHeight();
@@ -503,7 +505,7 @@ public class MixinTeleporter implements PortalAgent, IMixinTeleporter {
 //            }
         }
 
-        return Optional.of(new Location<World>((World) this.worldServerInstance, new Vector3i(xFinalTarget, yFinalTarget, zFinalTarget)));
+        return Optional.of(new Location<>((World) this.worldServerInstance, new Vector3i(xFinalTarget, yFinalTarget, zFinalTarget)));
     }
 
     @Override

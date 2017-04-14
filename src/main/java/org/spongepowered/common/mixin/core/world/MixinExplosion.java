@@ -226,7 +226,8 @@ public abstract class MixinExplosion implements Explosion, IMixinExplosion {
 
         // Sponge Start - Check if this explosion should damage entities
         List<Entity> list = this.shouldDamageEntities
-                            ? this.world.getEntitiesWithinAABBExcludingEntity(this.exploder, new AxisAlignedBB((double) k1, (double) i2, (double) j2, (double) l1, (double) i1, (double) j1))
+                            ? this.world.getEntitiesWithinAABBExcludingEntity(this.exploder, new AxisAlignedBB((double) k1,
+                (double) i2, (double) j2, (double) l1, (double) i1, (double) j1))
                             : Collections.emptyList();
         // Now we can throw our Detonate Event
         final List<Location<World>> blockPositions = new ArrayList<>(this.affectedBlockPositions.size());
@@ -238,7 +239,8 @@ public abstract class MixinExplosion implements Explosion, IMixinExplosion {
         for (Entity entity : list) {
             entities.add((org.spongepowered.api.entity.Entity) entity);
         }
-        ExplosionEvent.Detonate detonate = SpongeEventFactory.createExplosionEventDetonate(createCause(), blockPositions, entities, this, spongeWorld);
+        ExplosionEvent.Detonate detonate = SpongeEventFactory.createExplosionEventDetonate(createCause(), blockPositions,
+                entities, this, spongeWorld);
         SpongeImpl.postEvent(detonate);
         if (detonate.isCancelled()) {
             this.affectedBlockPositions.clear();
@@ -284,7 +286,8 @@ public abstract class MixinExplosion implements Explosion, IMixinExplosion {
                         double d14 = (double) this.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
                         double d10 = (1.0D - d12) * d14;
                         entity.attackEntityFrom(
-                                DamageSource.causeExplosionDamage((net.minecraft.world.Explosion) (Object) this), (float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D)));
+                                DamageSource.causeExplosionDamage((net.minecraft.world.Explosion) (Object) this),
+                                (float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D)));
                         double d11 = 1.0D;
 
                         if (entity instanceof EntityLivingBase) {
@@ -368,14 +371,16 @@ public abstract class MixinExplosion implements Explosion, IMixinExplosion {
                     d3 = d3 * d7;
                     d4 = d4 * d7;
                     d5 = d5 * d7;
-                    this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, (d0 + this.explosionX) / 2.0D, (d1 + this.explosionY) / 2.0D,
+                    this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, (d0 + this.explosionX) / 2.0D,
+                            (d1 + this.explosionY) / 2.0D,
                         (d2 + this.explosionZ) / 2.0D, d3, d4, d5, new int[0]);
                     this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5, new int[0]);
                 }
 
                 if (iblockstate.getMaterial() != Material.AIR) {
                     if (block.canDropFromExplosion((net.minecraft.world.Explosion) (Object) this)) {
-                        block.dropBlockAsItemWithChance(this.world, blockpos, this.world.getBlockState(blockpos), 1.0F / this.explosionSize, 0);
+                        block.dropBlockAsItemWithChance(this.world, blockpos, this.world.getBlockState(blockpos),
+                                1.0F / this.explosionSize, 0);
                     }
 
                     // Sponge Start - Track the block position being destroyed

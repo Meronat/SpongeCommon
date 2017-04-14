@@ -31,7 +31,8 @@ import org.spongepowered.api.data.value.immutable.ImmutableValue;
 import org.spongepowered.common.data.manipulator.immutable.common.AbstractImmutableBooleanData;
 import org.spongepowered.common.data.manipulator.mutable.entity.SpongePlayingData;
 
-public class ImmutableSpongePlayingData extends AbstractImmutableBooleanData<ImmutablePlayingData, PlayingData> implements ImmutablePlayingData {
+public class ImmutableSpongePlayingData extends AbstractImmutableBooleanData<ImmutablePlayingData, PlayingData>
+        implements ImmutablePlayingData {
 
     public ImmutableSpongePlayingData(boolean value) {
         super(ImmutablePlayingData.class, value, Keys.IS_PLAYING, SpongePlayingData.class, false);

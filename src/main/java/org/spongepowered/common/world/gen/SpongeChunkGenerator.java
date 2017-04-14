@@ -47,7 +47,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.ChunkProviderOverworld;
-import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
 import net.minecraft.world.gen.structure.MapGenScatteredFeature;
@@ -336,7 +335,8 @@ public class SpongeChunkGenerator implements WorldGenerator, IChunkGenerator {
         List<String> flags = Lists.newArrayList();
         Vector3i min = new Vector3i(chunkX * 16 + 8, 0, chunkZ * 16 + 8);
         org.spongepowered.api.world.World spongeWorld = (org.spongepowered.api.world.World) this.world;
-        Extent volume = new SoftBufferExtentViewDownsize(chunk.getWorld(), min, min.add(15, 255, 15), min.sub(8, 0, 8), min.add(23, 255, 23));
+        Extent volume = new SoftBufferExtentViewDownsize(chunk.getWorld(), min, min.add(15, 255, 15), min.sub(8, 0, 8),
+                min.add(23, 255, 23));
         for (Populator populator : populators) {
             final PopulatorType type = populator.getType();
             if (type == null) {
@@ -479,7 +479,8 @@ public class SpongeChunkGenerator implements WorldGenerator, IChunkGenerator {
 
     public void replaceBiomeBlocks(World world, Random rand, int x, int z, ChunkPrimer chunk, ImmutableBiomeVolume biomes) {
         double d0 = 0.03125D;
-        this.stoneNoise = this.noise4.getRegion(this.stoneNoise, x * 16, z * 16, 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
+        this.stoneNoise = this.noise4.getRegion(this.stoneNoise, x * 16, z * 16, 16, 16,
+                d0 * 2.0D, d0 * 2.0D, 1.0D);
         Vector3i min = biomes.getBiomeMin();
         for (int x0 = 0; x0 < 16; ++x0) {
             for (int z0 = 0; z0 < 16; ++z0) {

@@ -47,7 +47,8 @@ import javax.inject.Inject;
  */
 class PluginConfigurationModule extends AbstractModule {
 
-    private static final TypeLiteral<ConfigurationLoader<CommentedConfigurationNode>> COMMENTED_CONFIGURATION_NODE_LOADER = new TypeLiteral<ConfigurationLoader<CommentedConfigurationNode>>() {};
+    private static final TypeLiteral<ConfigurationLoader<CommentedConfigurationNode>> COMMENTED_CONFIGURATION_NODE_LOADER =
+            new TypeLiteral<ConfigurationLoader<CommentedConfigurationNode>>() {};
     /**
      * Provides a non-shared (private) directory.
      *
@@ -89,17 +90,22 @@ class PluginConfigurationModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        this.bind(Path.class).annotatedWith(ConfigDirAnnotation.NON_SHARED).toProvider(() -> SpongeConfigManager.getPrivateRoot(this.container).getDirectory());
+        this.bind(Path.class).annotatedWith(ConfigDirAnnotation.NON_SHARED).toProvider(
+                () -> SpongeConfigManager.getPrivateRoot(this.container).getDirectory());
         this.bind(File.class).annotatedWith(ConfigDirAnnotation.NON_SHARED).toProvider(NON_SHARED_CONFIG_DIR);
         // Plugin-private directory config file
-        this.bind(Path.class).annotatedWith(DefaultConfigAnnotation.NON_SHARED).toProvider(() -> SpongeConfigManager.getPrivateRoot(this.container).getConfigPath());
+        this.bind(Path.class).annotatedWith(DefaultConfigAnnotation.NON_SHARED).toProvider(
+                () -> SpongeConfigManager.getPrivateRoot(this.container).getConfigPath());
         this.bind(File.class).annotatedWith(DefaultConfigAnnotation.NON_SHARED).toProvider(NON_SHARED_CONFIG_FILE);
         // Shared-directory config file
-        this.bind(Path.class).annotatedWith(DefaultConfigAnnotation.SHARED).toProvider(() -> SpongeConfigManager.getSharedRoot(this.container).getConfigPath());
+        this.bind(Path.class).annotatedWith(DefaultConfigAnnotation.SHARED).toProvider(
+                () -> SpongeConfigManager.getSharedRoot(this.container).getConfigPath());
         this.bind(File.class).annotatedWith(DefaultConfigAnnotation.SHARED).toProvider(SHARED_CONFIG_FILE);
         // Loader for shared-directory config file
-        this.bind(COMMENTED_CONFIGURATION_NODE_LOADER).annotatedWith(DefaultConfigAnnotation.SHARED).toProvider(() -> SpongeConfigManager.getSharedRoot(this.container).getConfig());
+        this.bind(COMMENTED_CONFIGURATION_NODE_LOADER).annotatedWith(DefaultConfigAnnotation.SHARED).toProvider(
+                () -> SpongeConfigManager.getSharedRoot(this.container).getConfig());
         // Loader for plugin-private directory config file
-        this.bind(COMMENTED_CONFIGURATION_NODE_LOADER).annotatedWith(DefaultConfigAnnotation.NON_SHARED).toProvider(() -> SpongeConfigManager.getPrivateRoot(this.container).getConfig());
+        this.bind(COMMENTED_CONFIGURATION_NODE_LOADER).annotatedWith(DefaultConfigAnnotation.NON_SHARED).toProvider(
+                () -> SpongeConfigManager.getPrivateRoot(this.container).getConfig());
     }
 }

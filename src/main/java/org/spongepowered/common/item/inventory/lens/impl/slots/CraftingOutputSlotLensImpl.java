@@ -42,7 +42,8 @@ public class CraftingOutputSlotLensImpl extends OutputSlotLensImpl implements Cr
         this(index, CraftingOutputAdapter.class, stackFilter, typeFilter);
     }
 
-    public CraftingOutputSlotLensImpl(int index, Class<? extends Inventory> adapterType, Predicate<ItemStack> stackFilter, Predicate<ItemType> typeFilter) {
+    public CraftingOutputSlotLensImpl(int index, Class<? extends Inventory> adapterType, Predicate<ItemStack> stackFilter,
+            Predicate<ItemType> typeFilter) {
         super(index, adapterType, stackFilter, typeFilter);
     }
     

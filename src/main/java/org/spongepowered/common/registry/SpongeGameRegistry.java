@@ -179,9 +179,7 @@ public class SpongeGameRegistry implements GameRegistry {
 
                 final Collection<? extends CatalogType> all = module.getSecond().getAll();
                 final List<CatalogType> catalogTypes = new ArrayList<>();
-                for (CatalogType o : all) {
-                    catalogTypes.add(o);
-                }
+                catalogTypes.addAll(all);
                 catalogTypes.sort(Comparator.comparing(CatalogType::getId));
                 for (CatalogType catalogType : catalogTypes) {
                     printer.add("  -%s", catalogType.getId());

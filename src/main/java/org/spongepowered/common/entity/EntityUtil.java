@@ -138,14 +138,10 @@ public final class EntityUtil {
     private EntityUtil() {
     }
 
-    static final Predicate<Entity> TRACEABLE = Predicates.and(EntitySelectors.NOT_SPECTATING, new Predicate<Entity>() {
-        @Override
-        public boolean apply(Entity entity) {
-            return entity != null && entity.canBeCollidedWith();
-        }
-    });
+    static final Predicate<Entity> TRACEABLE = Predicates.and(EntitySelectors.NOT_SPECTATING, entity -> entity != null && entity.canBeCollidedWith());
 
-    public static final Function<Humanoid, EntityPlayer> HUMANOID_TO_PLAYER = (humanoid) -> humanoid instanceof EntityPlayer ? (EntityPlayer) humanoid : null;
+    public static final Function<Humanoid, EntityPlayer> HUMANOID_TO_PLAYER =
+            (humanoid) -> humanoid instanceof EntityPlayer ? (EntityPlayer) humanoid : null;
 
     /**
      * Called specifically from {@link MixinEntity#changeDimension(int)} to overwrite
@@ -883,10 +879,11 @@ public final class EntityUtil {
     /**
      * A simple redirected static util method for {@link Entity#entityDropItem(ItemStack, float)}
      * for easy debugging.
-     * @param entity
-     * @param itemStack
-     * @param offsetY
-     * @return
+     *
+     * @param entity The entity dropping the item
+     * @param itemStack The item stack to drop
+     * @param offsetY The offset to drop it off
+     * @return The spawned/dropped item entity
      */
     public static EntityItem entityOnDropItem(Entity entity, ItemStack itemStack, float offsetY) {
         final IMixinEntity mixinEntity = EntityUtil.toMixin(entity);
@@ -927,8 +924,8 @@ public final class EntityUtil {
         if (!item.isEmpty()) {
             if (CauseTracker.ENABLED && !currentState.getPhase().ignoresItemPreMerging(currentState) && SpongeImpl.getGlobalConfig().getConfig().getOptimizations().doDropsPreMergeItemDrops()) {
                 if (currentState.tracksEntitySpecificDrops()) {
-                    final Multimap<UUID, ItemDropData> multimap = phaseContext.getCapturedEntityDropSupplier().get();
-                    final Collection<ItemDropData> itemStacks = multimap.get(entity.getUniqueID());
+                    final Multimap<UUID, ItemDropData> multiMap = phaseContext.getCapturedEntityDropSupplier().get();
+                    final Collection<ItemDropData> itemStacks = multiMap.get(entity.getUniqueID());
                     SpongeImplHooks.addItemStackToListForSpawning(itemStacks, ItemDropData.item(item)
                             .position(new Vector3d(posX, posY, posZ))
                             .build());
@@ -941,24 +938,24 @@ public final class EntityUtil {
                     return null;
                 }
             }
-            EntityItem entityitem = new EntityItem(entity.world, posX, posY, posZ, item);
-            entityitem.setDefaultPickupDelay();
+            EntityItem entityItem = new EntityItem(entity.world, posX, posY, posZ, item);
+            entityItem.setDefaultPickupDelay();
 
             // FIFTH - Capture the entity maybe?
             if (CauseTracker.ENABLED && currentState.getPhase().doesCaptureEntityDrops(currentState)) {
                 if (currentState.tracksEntitySpecificDrops()) {
                     // We are capturing per entity drop
-                    phaseContext.getCapturedEntityItemDropSupplier().get().put(entity.getUniqueID(), entityitem);
+                    phaseContext.getCapturedEntityItemDropSupplier().get().put(entity.getUniqueID(), entityItem);
                 } else {
                     // We are adding to a general list - usually for EntityPhase.State.DEATH
-                    phaseContext.getCapturedItemsSupplier().get().add(entityitem);
+                    phaseContext.getCapturedItemsSupplier().get().add(entityItem);
                 }
                 // Return the item, even if it wasn't spawned in the world.
-                return entityitem;
+                return entityItem;
             }
             // FINALLY - Spawn the entity in the world if all else didn't fail
-            entity.world.spawnEntity(entityitem);
-            return entityitem;
+            entity.world.spawnEntity(entityItem);
+            return entityItem;
         }
         return null;
     }
@@ -987,9 +984,9 @@ public final class EntityUtil {
         // SECOND throw the ConstructEntityEvent
         Transform<World> suggested = new Transform<>(mixinPlayer.getWorld(), new Vector3d(posX, adjustedPosY, posZ));
         SpawnCause cause = EntitySpawnCause.builder().entity(mixinPlayer).type(SpawnTypes.DROPPED_ITEM).build();
-        ConstructEntityEvent.Pre event = SpongeEventFactory.createConstructEntityEventPre(Cause.of(NamedCause.source(cause)), EntityTypes.ITEM, suggested);
-        SpongeImpl.postEvent(event);
-        item = event.isCancelled() ? null : ItemStackUtil.fromSnapshotToNative(dropEvent.getDroppedItems().get(0));
+        ConstructEntityEvent.Pre event = SpongeEventFactory.createConstructEntityEventPre(
+                Cause.of(NamedCause.source(cause)), EntityTypes.ITEM, suggested);
+        item = SpongeImpl.postEvent(event) ? null : ItemStackUtil.fromSnapshotToNative(dropEvent.getDroppedItems().get(0));
         if (item == null) {
             return null;
         }
@@ -997,7 +994,8 @@ public final class EntityUtil {
         final IPhaseState currentState = peek.state;
         final PhaseContext phaseContext = peek.context;
 
-        if (CauseTracker.ENABLED && !currentState.getPhase().ignoresItemPreMerging(currentState) && SpongeImpl.getGlobalConfig().getConfig().getOptimizations().doDropsPreMergeItemDrops()) {
+        if (CauseTracker.ENABLED && !currentState.getPhase().ignoresItemPreMerging(currentState) &&
+                SpongeImpl.getGlobalConfig().getConfig().getOptimizations().doDropsPreMergeItemDrops()) {
             if (currentState.tracksEntitySpecificDrops()) {
                 final Multimap<UUID, ItemDropData> multimap = phaseContext.getCapturedEntityDropSupplier().get();
                 final Collection<ItemDropData> itemStacks = multimap.get(player.getUniqueID());

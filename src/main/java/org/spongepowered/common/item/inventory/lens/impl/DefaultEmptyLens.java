@@ -92,12 +92,12 @@ public class DefaultEmptyLens extends ObservableLens<IInventory, ItemStack> {
 
     @Override
     public List<Lens<IInventory, ItemStack>> getChildren() {
-        return Collections.<Lens<IInventory, ItemStack>>emptyList();
+        return Collections.emptyList();
     }
 
     @Override
     public List<Lens<IInventory, ItemStack>> getSpanningChildren() {
-        return Collections.<Lens<IInventory, ItemStack>>emptyList();
+        return Collections.emptyList();
     }
 
     @Override
@@ -111,12 +111,12 @@ public class DefaultEmptyLens extends ObservableLens<IInventory, ItemStack> {
 
     @Override
     public Collection<InventoryProperty<?, ?>> getProperties(int index) {
-        return Collections.<InventoryProperty<?, ?>>emptyList();
+        return Collections.emptyList();
     }
     
     @Override
     public Collection<InventoryProperty<?, ?>> getProperties(Lens<IInventory, ItemStack> child) {
-        return Collections.<InventoryProperty<?, ?>>emptyList();
+        return Collections.emptyList();
     }
 
     @Override

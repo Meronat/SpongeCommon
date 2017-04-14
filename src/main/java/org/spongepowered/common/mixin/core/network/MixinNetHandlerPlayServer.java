@@ -110,7 +110,6 @@ import org.spongepowered.common.interfaces.network.IMixinNetHandlerPlayServer;
 import org.spongepowered.common.interfaces.world.IMixinWorldServer;
 import org.spongepowered.common.text.SpongeTexts;
 import org.spongepowered.common.util.VecHelper;
-import org.spongepowered.common.world.WorldManager;
 
 import java.net.InetSocketAddress;
 import java.util.Deque;
@@ -216,7 +215,8 @@ public abstract class MixinNetHandlerPlayServer implements PlayerConnection, IMi
      * @param packet The original packet to be sent
      * @author kashike
      */
-    @Redirect(method = "sendPacket(Lnet/minecraft/network/Packet;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkManager;sendPacket(Lnet/minecraft/network/Packet;)V"))
+    @Redirect(method = "sendPacket(Lnet/minecraft/network/Packet;)V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/network/NetworkManager;sendPacket(Lnet/minecraft/network/Packet;)V"))
     public void onSendPacket(NetworkManager manager, Packet<?> packet) {
         if (!this.allowClientLocationUpdate && packet instanceof SPacketPlayerPosLook) {
             return;
@@ -272,8 +272,10 @@ public abstract class MixinNetHandlerPlayServer implements PlayerConnection, IMi
      * @param tileentity Injected tilentity param
      * @param tileentitysign Injected tileentitysign param
      */
-    @Inject(method = "processUpdateSign", at = @At(value = "INVOKE", target = UPDATE_SIGN), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-    public void callSignChangeEvent(CPacketUpdateSign packetIn, CallbackInfo ci, WorldServer worldserver, BlockPos blockpos, IBlockState iblockstate, TileEntity tileentity, TileEntitySign tileentitysign) {
+    @Inject(method = "processUpdateSign",
+            at = @At(value = "INVOKE", target = UPDATE_SIGN), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
+    public void callSignChangeEvent(CPacketUpdateSign packetIn, CallbackInfo ci, WorldServer worldserver, BlockPos blockpos, IBlockState iblockstate,
+            TileEntity tileentity, TileEntitySign tileentitysign) {
         ci.cancel();
         final Optional<SignData> existingSignData = ((Sign) tileentitysign).get(SignData.class);
         if (!existingSignData.isPresent()) {
@@ -327,7 +329,8 @@ public abstract class MixinNetHandlerPlayServer implements PlayerConnection, IMi
                 NBTTagCompound nbttagcompound = itemstack.getTagCompound().getCompoundTag("BlockEntityTag");
 
                 if (nbttagcompound.hasKey("x") && nbttagcompound.hasKey("y") && nbttagcompound.hasKey("z")) {
-                    BlockPos blockpos = new BlockPos(nbttagcompound.getInteger("x"), nbttagcompound.getInteger("y"), nbttagcompound.getInteger("z"));
+                    BlockPos blockpos = new BlockPos(nbttagcompound.getInteger("x"), nbttagcompound.getInteger("y"),
+                            nbttagcompound.getInteger("z"));
                     TileEntity tileentity = this.player.world.getTileEntity(blockpos);
 
                     if (tileentity != null) {
@@ -391,7 +394,8 @@ public abstract class MixinNetHandlerPlayServer implements PlayerConnection, IMi
         ((IMixinContainer) this.player.openContainer).detectAndSendChanges(true);
     }
 
-    @Redirect(method = "processChatMessage", at = @At(value = "INVOKE", target = "Lorg/apache/commons/lang3/StringUtils;normalizeSpace(Ljava/lang/String;)Ljava/lang/String;", remap = false))
+    @Redirect(method = "processChatMessage", at = @At(value = "INVOKE",
+            target = "Lorg/apache/commons/lang3/StringUtils;normalizeSpace(Ljava/lang/String;)Ljava/lang/String;", remap = false))
     public String onNormalizeSpace(String input) {
         return input;
     }
@@ -458,7 +462,8 @@ public abstract class MixinNetHandlerPlayServer implements PlayerConnection, IMi
             if (deltaSquared > ((1f / 16) * (1f / 16)) || deltaAngleSquared > (.15f * .15f)) {
                 Transform<World> fromTransform = player.getTransform().setLocation(from).setRotation(fromrot);
                 Transform<World> toTransform = player.getTransform().setLocation(to).setRotation(torot);
-                MoveEntityEvent event = SpongeEventFactory.createMoveEntityEvent(Cause.of(NamedCause.source(player)), fromTransform, toTransform, player);
+                MoveEntityEvent event = SpongeEventFactory.createMoveEntityEvent(Cause.of(NamedCause.source(player)),
+                        fromTransform, toTransform, player);
                 SpongeImpl.postEvent(event);
                 if (event.isCancelled()) {
                     mixinPlayer.setLocationAndAngles(fromTransform);
@@ -498,7 +503,8 @@ public abstract class MixinNetHandlerPlayServer implements PlayerConnection, IMi
      * @param packetIn The packet movement
      * @return The lowest riding entity
      */
-    @Redirect(method = "processVehicleMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayerMP;getLowestRidingEntity()Lnet/minecraft/entity/Entity;"))
+    @Redirect(method = "processVehicleMove", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/entity/player/EntityPlayerMP;getLowestRidingEntity()Lnet/minecraft/entity/Entity;"))
     private Entity processVehicleMoveEvent(EntityPlayerMP playerMP, CPacketVehicleMove packetIn) {
         return playerMP.getLowestRidingEntity();
     }
@@ -526,8 +532,13 @@ public abstract class MixinNetHandlerPlayServer implements PlayerConnection, IMi
         }
     }
 
-    @Redirect(method = "processTryUseItemOnBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/management/PlayerInteractionManager;processRightClickBlock(Lnet/minecraft/entity/player/EntityPlayer;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/EnumHand;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/EnumFacing;FFF)Lnet/minecraft/util/EnumActionResult;"))
-    public EnumActionResult onProcessRightClickBlock(PlayerInteractionManager interactionManager, EntityPlayer player, net.minecraft.world.World worldIn, @Nullable ItemStack stack, EnumHand hand, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    @Redirect(method = "processTryUseItemOnBlock", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/server/management/PlayerInteractionManager;processRightClickBlock(Lnet/minecraft/entity/player/EntityPlayer;"
+                    + "Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/EnumHand;Lnet/minecraft/util/math/BlockPos;"
+                    + "Lnet/minecraft/util/EnumFacing;FFF)Lnet/minecraft/util/EnumActionResult;"))
+    public EnumActionResult onProcessRightClickBlock(PlayerInteractionManager interactionManager, EntityPlayer player,
+            net.minecraft.world.World worldIn, @Nullable ItemStack stack, EnumHand hand, BlockPos pos, EnumFacing facing,
+            float hitX, float hitY, float hitZ) {
         EnumActionResult actionResult = interactionManager.processRightClickBlock(this.player, worldIn, stack, hand, pos, facing, hitX, hitY, hitZ);
         // If result is not SUCCESS, we need to avoid throwing an InteractBlockEvent.Secondary for AIR
         // since the client will send the server a CPacketTryUseItem right after this packet is done processing.
@@ -553,7 +564,8 @@ public abstract class MixinNetHandlerPlayServer implements PlayerConnection, IMi
     }
 
     @Nullable
-    @Redirect(method = "processPlayerDigging", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayerMP;dropItem(Z)Lnet/minecraft/entity/item/EntityItem;"))
+    @Redirect(method = "processPlayerDigging",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayerMP;dropItem(Z)Lnet/minecraft/entity/item/EntityItem;"))
     public EntityItem onPlayerDropItem(EntityPlayerMP player, boolean dropAll) {
         EntityItem item = null;
         ItemStack stack = this.player.inventory.getCurrentItem();
@@ -623,7 +635,8 @@ public abstract class MixinNetHandlerPlayServer implements PlayerConnection, IMi
                     if(SpongeCommonEventFactory.callInteractItemEventSecondary(this.player, itemstack, hand, interactionPoint, entity).isCancelled()) {
                         return;
                     }
-                    if (!SpongeCommonEventFactory.callInteractEntityEventSecondary(this.player, entity, packetIn.getHand(), interactionPoint).isCancelled()) {
+                    if (!SpongeCommonEventFactory.callInteractEntityEventSecondary(this.player, entity, packetIn.getHand(), interactionPoint)
+                            .isCancelled()) {
                         // If INTERACT_AT returns a false result, we assume this packet was meant for interactWith
                         if (entity.applyPlayerInteraction(this.player, packetIn.getHitVec(), hand) != EnumActionResult.SUCCESS) {
                             this.player.interactOn(entity, hand);

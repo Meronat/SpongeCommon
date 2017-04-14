@@ -70,7 +70,6 @@ import org.spongepowered.common.event.tracking.PhaseData;
 import org.spongepowered.common.interfaces.data.IMixinCustomDataHolder;
 import org.spongepowered.common.interfaces.item.IMixinItem;
 import org.spongepowered.common.interfaces.item.IMixinItemStack;
-import org.spongepowered.common.interfaces.world.IMixinWorldServer;
 import org.spongepowered.common.item.inventory.SpongeItemStackSnapshot;
 import org.spongepowered.common.registry.type.ItemTypeRegistryModule;
 import org.spongepowered.common.text.translation.SpongeTranslation;
@@ -415,10 +414,7 @@ public abstract class MixinItemStack implements ItemStack, IMixinItemStack, IMix
 
     @Override
     public boolean supportsCustom(Key<?> key) {
-        return this.manipulators.stream()
-                .filter(manipulator -> manipulator.supports(key))
-                .findFirst()
-                .isPresent();
+        return this.manipulators.stream().anyMatch(manipulator -> manipulator.supports(key));
     }
 
     @Override

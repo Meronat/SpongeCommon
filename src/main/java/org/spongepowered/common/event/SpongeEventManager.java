@@ -27,7 +27,6 @@ package org.spongepowered.common.event;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import co.aikar.timings.TimingsManager;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.google.common.collect.HashMultimap;
@@ -69,7 +68,8 @@ public class SpongeEventManager implements EventManager {
     protected final Logger logger;
     private final PluginManager pluginManager;
     private final DefineableClassLoader classLoader = new DefineableClassLoader(getClass().getClassLoader());
-    private final AnnotatedEventListener.Factory handlerFactory = new ClassEventListenerFactory("org.spongepowered.common.event.listener",
+    private final AnnotatedEventListener.Factory handlerFactory =
+            new ClassEventListenerFactory("org.spongepowered.common.event.listener",
             new FilterFactory("org.spongepowered.common.event.filters", this.classLoader), this.classLoader);
     private final Multimap<Class<?>, RegisteredListener<?>> handlersByEvent = HashMultimap.create();
     private final Set<Object> registeredListeners = Sets.newHashSet();
@@ -78,11 +78,12 @@ public class SpongeEventManager implements EventManager {
 
     /**
      * A cache of all the handlers for an event type for quick event posting.
+     *
      * <p>The cache is currently entirely invalidated if handlers are added or
      * removed.</p>
      */
     private final LoadingCache<Class<? extends Event>, RegisteredListener.Cache> handlersCache =
-            Caffeine.newBuilder().initialCapacity(150).build((eventClass) -> bakeHandlers(eventClass));
+            Caffeine.newBuilder().initialCapacity(150).build(this::bakeHandlers);
 
     @Inject
     public SpongeEventManager(Logger logger, PluginManager pluginManager) {
@@ -105,7 +106,8 @@ public class SpongeEventManager implements EventManager {
             Class<?> innerCacheClass = innerCacheValue.getClass(); // UnboundedLocalCache
             Field cacheData = innerCacheClass.getDeclaredField("data");
             cacheData.setAccessible(true);
-            ConcurrentHashMap<Class<? extends Event>, RegisteredListener.Cache> newBackingData = new ConcurrentHashMap<>(150, 0.75f, 1);
+            ConcurrentHashMap<Class<? extends Event>, RegisteredListener.Cache> newBackingData =
+                    new ConcurrentHashMap<>(150, 0.75f, 1);
             cacheData.set(innerCacheValue, newBackingData);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
             this.logger.warn("Failed to set event cache backing array, type was " + this.handlersCache.getClass().getName());

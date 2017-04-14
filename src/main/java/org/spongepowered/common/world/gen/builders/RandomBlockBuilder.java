@@ -92,8 +92,7 @@ public class RandomBlockBuilder implements RandomBlock.Builder {
 
     @Override
     public RandomBlock build() throws IllegalStateException {
-        RandomBlock pop = new RandomBlockPopulator(this.block, this.count, this.height, this.target);
-        return pop;
+        return new RandomBlockPopulator(this.block, this.count, this.height, this.target);
     }
 
 }

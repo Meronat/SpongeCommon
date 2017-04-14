@@ -42,8 +42,8 @@ import org.spongepowered.api.data.value.BaseValue;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
 import org.spongepowered.api.data.value.mutable.Value;
 import org.spongepowered.common.data.DataProcessor;
-import org.spongepowered.common.data.ValueProcessor;
 import org.spongepowered.common.data.SpongeDataManager;
+import org.spongepowered.common.data.ValueProcessor;
 
 import java.util.Map;
 import java.util.Optional;
@@ -135,7 +135,8 @@ public abstract class AbstractData<M extends DataManipulator<M, I>, I extends Im
      * @param function The function for getting the field
      */
     protected final void registerFieldGetter(Key<?> key, Supplier<?> function) {
-        this.keyFieldGetterMap.put(checkNotNull(key, "The key cannot be null"), checkNotNull(function, "The function cannot be null"));
+        this.keyFieldGetterMap.put(checkNotNull(key, "The key cannot be null"),
+                checkNotNull(function, "The function cannot be null"));
     }
 
     /**

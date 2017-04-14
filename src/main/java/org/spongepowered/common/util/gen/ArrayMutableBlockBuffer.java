@@ -91,7 +91,6 @@ public class ArrayMutableBlockBuffer extends AbstractBlockBuffer implements Muta
      * @param palette The palette
      * @param start The start block position
      * @param size The block size
-     * @param data The backing data
      */
     ArrayMutableBlockBuffer(BlockPalette palette, BackingData blocks, Vector3i start, Vector3i size) {
         super(start, size);
@@ -112,26 +111,26 @@ public class ArrayMutableBlockBuffer extends AbstractBlockBuffer implements Muta
 
             int highId = this.palette.getHighestId();
             int dataSize = area();
-            BackingData newdata;
+            BackingData newData;
             if (highId * 2 > GlobalPalette.instance.getHighestId()) {
                 // we are only saving about 1 bit at this point, so transition to a global palette
-                BlockPalette newpalette = GlobalPalette.instance;
-                id = newpalette.getOrAssign(block);
-                highId = newpalette.getHighestId();
+                BlockPalette newPalette = GlobalPalette.instance;
+                id = newPalette.getOrAssign(block);
+                highId = newPalette.getHighestId();
 
-                newdata = new PackedBackingData(dataSize, highId);
+                newData = new PackedBackingData(dataSize, highId);
                 for (int i = 0; i < dataSize; i++) {
-                    newdata.set(i, newpalette.getOrAssign(this.palette.get(this.data.get(i)).orElse(AIR)));
+                    newData.set(i, newPalette.getOrAssign(this.palette.get(this.data.get(i)).orElse(AIR)));
                 }
-                this.palette = newpalette;
+                this.palette = newPalette;
             } else {
 
-                newdata = new PackedBackingData(dataSize, highId);
+                newData = new PackedBackingData(dataSize, highId);
                 for (int i = 0; i < dataSize; i++) {
-                    newdata.set(i, this.data.get(i));
+                    newData.set(i, this.data.get(i));
                 }
             }
-            this.data = newdata;
+            this.data = newData;
         }
         this.data.set(getIndex(x, y, z), id);
         return true;

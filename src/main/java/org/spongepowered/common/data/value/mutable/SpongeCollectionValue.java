@@ -105,11 +105,7 @@ public abstract class SpongeCollectionValue<Element,
 
     @Override
     public CollectionValueType removeAll(Predicate<Element> predicate) {
-        for (Iterator<Element> iterator = this.actualValue.iterator(); iterator.hasNext(); ) {
-            if (checkNotNull(predicate).test(iterator.next())) {
-                iterator.remove();
-            }
-        }
+        this.actualValue.removeIf(element -> checkNotNull(predicate).test(element));
         return (CollectionValueType) this;
     }
 

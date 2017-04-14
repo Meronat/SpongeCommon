@@ -50,10 +50,10 @@ import java.util.function.Function;
  */
 public class SpongeContextCalculator implements ContextCalculator<Subject> {
     private final LoadingCache<RemoteSource, Set<Context>> remoteIpCache = buildAddressCache(Context.REMOTE_IP_KEY,
-                                                                                             input -> input.getConnection().getAddress().getAddress());
+            input -> input.getConnection().getAddress().getAddress());
 
     private final LoadingCache<RemoteSource, Set<Context>> localIpCache = buildAddressCache(Context.LOCAL_IP_KEY,
-                                                                                            input -> input.getConnection().getVirtualHost().getAddress());
+            input -> input.getConnection().getVirtualHost().getAddress());
 
     private LoadingCache<RemoteSource, Set<Context>> buildAddressCache(final String contextKey, final Function<RemoteSource, InetAddress> function) {
         return CacheBuilder.newBuilder()
@@ -64,9 +64,7 @@ public class SpongeContextCalculator implements ContextCalculator<Subject> {
                     ImmutableSet.Builder<Context> builder = ImmutableSet.builder();
                     final InetAddress addr = checkNotNull(function.apply(key), "addr");
                     builder.add(new Context(contextKey, addr.getHostAddress()));
-                    for (String set : Maps.filterValues(SpongeImpl.getGlobalConfig().getConfig().getIpSets(), input -> {
-                        return input.apply(addr);
-                    }).keySet()) {
+                    for (String set : Maps.filterValues(SpongeImpl.getGlobalConfig().getConfig().getIpSets(), input -> input.apply(addr)).keySet()) {
                         builder.add(new Context(contextKey, set));
                     }
                     return builder.build();

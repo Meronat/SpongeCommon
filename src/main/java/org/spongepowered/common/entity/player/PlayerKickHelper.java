@@ -28,21 +28,23 @@ import com.google.common.util.concurrent.Futures;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.play.server.SPacketDisconnect;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.ITextComponent;
-
 
 /**
  * Function to kick a player.
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class PlayerKickHelper {
+
     private PlayerKickHelper() {
     }
 
     /**
-     * A {@link ITextComponent}-friendly version of {@link NetHandlerPlayServer#kickPlayerFromServer(String)}.
-     * This duplicates the code of that kick implementation pretty much exactly
+     * A {@link ITextComponent}-friendly version of
+     * {@link NetHandlerPlayServer#kickPlayerFromServer(String)}.
+     *
+     * <p>This duplicates the code of that kick implementation pretty
+     * much exactly.</p>
      *
      * @param ply The player to kick
      * @param component The kick message
@@ -53,7 +55,6 @@ public class PlayerKickHelper {
         ply.connection.getNetworkManager().disableAutoRead();
         // fix this getServer.
         Futures.getUnchecked(ply.getServer().addScheduledTask(() -> ply.connection.getNetworkManager().checkDisconnected()));
-
     }
 
 }

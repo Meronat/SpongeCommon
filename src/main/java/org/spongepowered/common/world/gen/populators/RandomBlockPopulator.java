@@ -75,7 +75,7 @@ public class RandomBlockPopulator implements RandomBlock {
         Vector3i min = extent.getBlockMin();
         Vector3i size = extent.getBlockSize();
         int n = this.count.getFlooredAmount(random);
-        Location<World> chunkMin = new Location<World>(world, min.getX(), min.getY(),
+        Location<World> chunkMin = new Location<>(world, min.getX(), min.getY(),
                 min.getZ());
         for (int i = 0; i < n; i++) {
             Location<World> pos = chunkMin.add(random.nextInt(size.getX()), this.height.getFlooredAmount(random), random.nextInt(size.getZ()));

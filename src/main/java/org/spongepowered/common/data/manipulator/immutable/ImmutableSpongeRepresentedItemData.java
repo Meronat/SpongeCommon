@@ -29,15 +29,17 @@ import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.immutable.ImmutableRepresentedItemData;
 import org.spongepowered.api.data.manipulator.mutable.RepresentedItemData;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
-import org.spongepowered.api.item.inventory.ItemStackComparators;
 import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.common.data.manipulator.immutable.common.AbstractImmutableSingleData;
 import org.spongepowered.common.data.manipulator.mutable.SpongeRepresentedItemData;
 import org.spongepowered.common.data.value.immutable.ImmutableSpongeValue;
 
-public class ImmutableSpongeRepresentedItemData extends AbstractImmutableSingleData<ItemStackSnapshot, ImmutableRepresentedItemData, RepresentedItemData> implements ImmutableRepresentedItemData {
+public class ImmutableSpongeRepresentedItemData
+        extends AbstractImmutableSingleData<ItemStackSnapshot, ImmutableRepresentedItemData, RepresentedItemData>
+        implements ImmutableRepresentedItemData {
 
-    private final ImmutableValue<ItemStackSnapshot> immutableValue = new ImmutableSpongeValue<>(Keys.REPRESENTED_ITEM, ItemStackSnapshot.NONE, this.value);
+    private final ImmutableValue<ItemStackSnapshot> immutableValue =
+            new ImmutableSpongeValue<>(Keys.REPRESENTED_ITEM, ItemStackSnapshot.NONE, this.value);
 
     public ImmutableSpongeRepresentedItemData(ItemStackSnapshot itemStack) {
         super(ImmutableRepresentedItemData.class, itemStack, Keys.REPRESENTED_ITEM);

@@ -32,6 +32,7 @@ import org.spongepowered.api.world.gen.Populator;
 import org.spongepowered.api.world.gen.PopulatorType;
 import org.spongepowered.common.interfaces.world.gen.IFlaggedPopulator;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -53,9 +54,7 @@ public class FilteredPopulator implements IFlaggedPopulator {
 
     public void setRequiredFlags(String... flags) {
         this.requiredFlags.clear();
-        for (String f : flags) {
-            this.requiredFlags.add(f);
-        }
+        this.requiredFlags.addAll(Arrays.asList(flags));
     }
 
     @Override

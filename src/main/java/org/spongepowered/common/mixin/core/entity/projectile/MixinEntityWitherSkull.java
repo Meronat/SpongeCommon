@@ -131,8 +131,7 @@ public abstract class MixinEntityWitherSkull extends MixinEntityFireball impleme
 
     @Redirect(method = "onImpact", at = @At(value = "INVOKE", target = EXPLOSION_TARGET))
     protected net.minecraft.world.Explosion onExplode(net.minecraft.world.World worldObj, Entity self, double x,
-                                                      double y, double z, float strength, boolean flaming,
-                                                      boolean smoking) {
+            double y, double z, float strength, boolean flaming, boolean smoking) {
         boolean griefer = ((IMixinGriefer) this).canGrief();
         return detonate(getDetonationCause(), Explosion.builder()
                 .location(new Location<>((World) worldObj, new Vector3d(x, y, z)))

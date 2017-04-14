@@ -140,7 +140,8 @@ public abstract class MixinWorldEntitySpawner {
             for (int i = -mobSpawnRange; i <= mobSpawnRange; ++i) {
                 for (int j = -mobSpawnRange; j <= mobSpawnRange; ++j) {
                     boolean flag = i == -mobSpawnRange || i == mobSpawnRange || j == -mobSpawnRange || j == mobSpawnRange;
-                    final Chunk chunk = ((IMixinChunkProviderServer) worldServerIn.getChunkProvider()).getLoadedChunkWithoutMarkingActive(i + playerPosX, j + playerPosZ);
+                    final Chunk chunk = ((IMixinChunkProviderServer) worldServerIn.getChunkProvider())
+                            .getLoadedChunkWithoutMarkingActive(i + playerPosX, j + playerPosZ);
                     if (chunk == null || (chunk.unloadQueued && !((IMixinChunk) chunk).isPersistedChunk())) {
                         // Don't attempt to spawn in an unloaded chunk
                         continue;
@@ -234,7 +235,8 @@ public abstract class MixinWorldEntitySpawner {
                                 final double spawnY = i3;
                                 final double spawnZ = j3 + 0.5F;
 
-                                if (!worldServerIn.isAnyPlayerWithinRangeAt(spawnX, spawnY, spawnZ, 24.0D) && worldServerIn.getSpawnPoint().distanceSq(spawnX, spawnY, spawnZ) >= 576.0D) {
+                                if (!worldServerIn.isAnyPlayerWithinRangeAt(spawnX, spawnY, spawnZ, 24.0D)
+                                        && worldServerIn.getSpawnPoint().distanceSq(spawnX, spawnY, spawnZ) >= 576.0D) {
                                     if (spawnListEntry == null) {
                                         spawnListEntry = worldServerIn.getSpawnListEntryForTypeAt(enumCreatureType, mutableBlockPos);
 
@@ -246,24 +248,30 @@ public abstract class MixinWorldEntitySpawner {
                                     final EntityType entityType = EntityTypeRegistryModule.getInstance().getForClass(spawnListEntry.entityClass);
                                     if (entityType != null) {
                                         Vector3d vector3d = new Vector3d(spawnX, spawnY, spawnZ);
-                                        Transform<org.spongepowered.api.world.World> transform = new Transform<>((org.spongepowered.api.world.World) worldServerIn, vector3d);
-                                        ConstructEntityEvent.Pre event = SpongeEventFactory.createConstructEntityEventPre(cause, entityType, transform);
+                                        Transform<org.spongepowered.api.world.World> transform =
+                                                new Transform<>((org.spongepowered.api.world.World) worldServerIn, vector3d);
+                                        ConstructEntityEvent.Pre event = SpongeEventFactory
+                                                .createConstructEntityEventPre(cause, entityType, transform);
                                         if (SpongeImpl.postEvent(event)) {
                                             continue;
                                         }
                                     }
 
-                                    if (worldServerIn.canCreatureTypeSpawnHere(enumCreatureType, spawnListEntry, mutableBlockPos) && WorldEntitySpawner.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.getPlacementForEntity(spawnListEntry.entityClass), worldServerIn, mutableBlockPos)) {
+                                    if (worldServerIn.canCreatureTypeSpawnHere(enumCreatureType, spawnListEntry, mutableBlockPos)
+                                            && WorldEntitySpawner.canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry
+                                            .getPlacementForEntity(spawnListEntry.entityClass), worldServerIn, mutableBlockPos)) {
                                         EntityLiving entityliving;
 
                                         try {
-                                            entityliving = spawnListEntry.entityClass.getConstructor(new Class<?>[] {World.class}).newInstance(worldServerIn);
+                                            entityliving = spawnListEntry.entityClass
+                                                    .getConstructor(new Class<?>[] {World.class}).newInstance(worldServerIn);
                                         } catch (Exception exception) {
                                             exception.printStackTrace();
                                             continue labelOuterLoop;
                                         }
 
-                                        entityliving.setLocationAndAngles(spawnX, spawnY, spawnZ, worldServerIn.rand.nextFloat() * 360.0F, 0.0F);
+                                        entityliving.setLocationAndAngles(spawnX, spawnY, spawnZ,
+                                                worldServerIn.rand.nextFloat() * 360.0F, 0.0F);
                                         final boolean entityNotColliding = entityliving.isNotColliding();
 
                                         if (SpongeImplHooks.canEntitySpawnHere(entityliving, ientitylivingdata, entityNotColliding)) {

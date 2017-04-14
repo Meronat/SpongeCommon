@@ -38,7 +38,7 @@ public class NameStrategy<TInventory, TStack> extends QueryStrategy<TInventory, 
 
     @Override
     public QueryStrategy<TInventory, TStack, Translation> with(Translation[] args) {
-        this.names = ImmutableSet.<Translation>copyOf(args);
+        this.names = ImmutableSet.copyOf(args);
         return this;
     }
     

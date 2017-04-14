@@ -112,9 +112,11 @@ import javax.annotation.Nullable;
 public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements IMixinEntityPlayer, ITargetedLocation {
 
     private static final String WORLD_PLAY_SOUND_AT =
-            "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/EntityPlayer;DDDLnet/minecraft/util/SoundEvent;Lnet/minecraft/util/SoundCategory;FF)V";
+            "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/EntityPlayer;DDDLnet/minecraft/util/SoundEvent;"
+                    + "Lnet/minecraft/util/SoundCategory;FF)V";
     private static final String WORLD_SPAWN_ENTITY = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z";
-    private static final String PLAYER_COLLIDE_ENTITY = "Lnet/minecraft/entity/Entity;onCollideWithPlayer(Lnet/minecraft/entity/player/EntityPlayer;)V";
+    private static final String PLAYER_COLLIDE_ENTITY = "Lnet/minecraft/entity/Entity;"
+            + "onCollideWithPlayer(Lnet/minecraft/entity/player/EntityPlayer;)V";
 
     @Shadow public Container inventoryContainer;
     @Shadow public Container openContainer;
@@ -279,7 +281,8 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements
      * This prevents sounds from being sent to the server by players who are vanish.
      */
     @Redirect(method = "playSound", at = @At(value = "INVOKE", target = WORLD_PLAY_SOUND_AT))
-    public void playSound(World world, EntityPlayer player, double d1, double d2, double d3, SoundEvent sound, SoundCategory category, float volume, float pitch) {
+    public void playSound(World world, EntityPlayer player, double d1, double d2, double d3, SoundEvent sound, SoundCategory category,
+            float volume, float pitch) {
         if (!this.isVanished()) {
             this.world.playSound(player, d1, d2, d3, sound, category, volume, pitch);
         }
@@ -321,7 +324,8 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements
     @Overwrite
     @Nullable
     public EntityItem dropItem(@Nullable ItemStack itemStackIn, boolean unused) {
-        return this.dropItem(itemStackIn, false, false);
+        return this.dropItem(itemStackIn,
+                false, false);
     }
 
     /**
@@ -357,9 +361,11 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements
             } else {
                 float f2 = 0.3F;
                 entityitem.motionX =
-                        (double) (-MathHelper.sin(this.rotationYaw * 0.017453292F) * MathHelper.cos(this.rotationPitch * 0.017453292F) * f2);
+                        (double) (-MathHelper.sin(this.rotationYaw * 0.017453292F) *
+                                MathHelper.cos(this.rotationPitch * 0.017453292F) * f2);
                 entityitem.motionZ =
-                        (double) (MathHelper.cos(this.rotationYaw * 0.017453292F) * MathHelper.cos(this.rotationPitch * 0.017453292F) * f2);
+                        (double) (MathHelper.cos(this.rotationYaw * 0.017453292F) *
+                                MathHelper.cos(this.rotationPitch * 0.017453292F) * f2);
                 entityitem.motionY = (double) (-MathHelper.sin(this.rotationPitch * 0.017453292F) * f2 + 0.1F);
                 float f3 = this.rand.nextFloat() * ((float) Math.PI * 2F);
                 f2 = 0.02F * this.rand.nextFloat();
@@ -523,7 +529,8 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements
                         isSprintingAttack = true;
                     }
 
-                    isCriticalAttack = isStrongAttack && this.fallDistance > 0.0F && !this.onGround && !this.isOnLadder() && !this.isInWater() && !this.isPotionActive(MobEffects.BLINDNESS) && !this.isRiding() && targetEntity instanceof EntityLivingBase;
+                    isCriticalAttack = isStrongAttack && this.fallDistance > 0.0F && !this.onGround && !this.isOnLadder() && !this.isInWater()
+                            && !this.isPotionActive(MobEffects.BLINDNESS) && !this.isRiding() && targetEntity instanceof EntityLivingBase;
                     isCriticalAttack = isCriticalAttack && !this.isSprinting();
 
                     if (isCriticalAttack) {
@@ -536,7 +543,8 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements
                     // damage = damage + enchantmentDamage; // Sponge - We don't need this since our event will re-assign the damage to deal
                     double distanceWalkedDelta = (double) (this.distanceWalkedModified - this.prevDistanceWalkedModified);
 
-                    if (isStrongAttack && !isCriticalAttack && !isSprintingAttack && this.onGround && distanceWalkedDelta < (double) this.getAIMoveSpeed()) {
+                    if (isStrongAttack && !isCriticalAttack && !isSprintingAttack && this.onGround
+                            && distanceWalkedDelta < (double) this.getAIMoveSpeed()) {
                         ItemStack itemstack = this.getHeldItem(EnumHand.MAIN_HAND);
 
                         if (itemstack.getItem() instanceof ItemSword) {
@@ -547,7 +555,8 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements
                     // Sponge Start - Create the event and throw it
                     final DamageSource damageSource = DamageSource.causePlayerDamage((EntityPlayer) (Object) this);
                     final Cause cause = Cause.source(damageSource).build();
-                    final AttackEntityEvent event = SpongeEventFactory.createAttackEntityEvent(cause, originalFunctions, EntityUtil.fromNative(targetEntity), knockbackModifier, originalBaseDamage);
+                    final AttackEntityEvent event = SpongeEventFactory.createAttackEntityEvent(cause, originalFunctions,
+                            EntityUtil.fromNative(targetEntity), knockbackModifier, originalBaseDamage);
                     SpongeImpl.postEvent(event);
 
                     if (event.isCancelled()) {
@@ -582,9 +591,13 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements
                     if (attackSucceeded) {
                         if (knockbackModifier > 0) {
                             if (targetEntity instanceof EntityLivingBase) {
-                                ((EntityLivingBase) targetEntity).knockBack((EntityPlayer) (Object) this, (float) knockbackModifier * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+                                ((EntityLivingBase) targetEntity).knockBack((EntityPlayer) (Object) this,
+                                        (float) knockbackModifier * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F),
+                                        (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
                             } else {
-                                targetEntity.addVelocity((double) (-MathHelper.sin(this.rotationYaw * 0.017453292F) * (float) knockbackModifier * 0.5F), 0.1D, (double) (MathHelper.cos(this.rotationYaw * 0.017453292F) * (float) knockbackModifier * 0.5F));
+                                targetEntity.addVelocity((double)
+                                        (-MathHelper.sin(this.rotationYaw * 0.017453292F) * (float) knockbackModifier * 0.5F),
+                                        0.1D, (double) (MathHelper.cos(this.rotationYaw * 0.017453292F) * (float) knockbackModifier * 0.5F));
                             }
 
                             this.motionX *= 0.6D;
@@ -593,28 +606,35 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements
                         }
 
                         if (isSweapingAttack) {
-                            for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class, targetEntity.getEntityBoundingBox().expand(1.0D, 0.25D, 1.0D))) {
-                                if (entitylivingbase != (EntityPlayer) (Object) this && entitylivingbase != targetEntity && !this.isOnSameTeam(entitylivingbase) && this.getDistanceSqToEntity(entitylivingbase) < 9.0D) {
+                            for (EntityLivingBase entitylivingbase : this.world.getEntitiesWithinAABB(EntityLivingBase.class,
+                                    targetEntity.getEntityBoundingBox().expand(1.0D, 0.25D, 1.0D))) {
+                                if (entitylivingbase != (EntityPlayer) (Object) this && entitylivingbase != targetEntity
+                                        && !this.isOnSameTeam(entitylivingbase) && this.getDistanceSqToEntity(entitylivingbase) < 9.0D) {
                                     // Sponge Start - Do a small event for these entities
                                     // entitylivingbase.knockBack(this, 0.4F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
                                     // entitylivingbase.attackEntityFrom(DamageSource.causePlayerDamage(this), 1.0F);
-                                    final EntityDamageSource sweepingAttackSource = EntityDamageSource.builder().entity(this).type(DamageTypes.SWEEPING_ATTACK).build();
+                                    final EntityDamageSource sweepingAttackSource =
+                                            EntityDamageSource.builder().entity(this).type(DamageTypes.SWEEPING_ATTACK).build();
                                     final Cause sweapingCause = Cause.source(sweepingAttackSource)
                                             .named("Weapon", ItemStackUtil.snapshotOf(this.getHeldItem(EnumHand.MAIN_HAND)))
                                             .build();
-                                    AttackEntityEvent sweepingAttackEvent = SpongeEventFactory.createAttackEntityEvent(sweapingCause, new ArrayList<>(), EntityUtil.fromNative(entitylivingbase), 1, 1.0D);
+                                    AttackEntityEvent sweepingAttackEvent = SpongeEventFactory.createAttackEntityEvent(sweapingCause,
+                                            new ArrayList<>(), EntityUtil.fromNative(entitylivingbase), 1, 1.0D);
                                     SpongeImpl.postEvent(sweepingAttackEvent);
                                     if (!sweepingAttackEvent.isCancelled()) {
-                                        entitylivingbase.knockBack((EntityPlayer) (Object) this, sweepingAttackEvent.getKnockbackModifier() * 0.4F,
+                                        entitylivingbase.knockBack((EntityPlayer) (Object) this,
+                                                sweepingAttackEvent.getKnockbackModifier() * 0.4F,
                                                 (double) MathHelper.sin(this.rotationYaw * 0.017453292F),
                                                 (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
-                                        entitylivingbase.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) (Object) this), (float) sweepingAttackEvent.getFinalOutputDamage());
+                                        entitylivingbase.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) (Object) this),
+                                                (float) sweepingAttackEvent.getFinalOutputDamage());
                                     }
                                     // Sponge End
                                 }
                             }
 
-                            this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, this.getSoundCategory(), 1.0F, 1.0F);
+                            this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP,
+                                    this.getSoundCategory(), 1.0F, 1.0F);
                             this.spawnSweepParticles();
                         }
 
@@ -627,15 +647,18 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements
                         }
 
                         if (isCriticalAttack) {
-                            this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_CRIT, this.getSoundCategory(), 1.0F, 1.0F);
+                            this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_CRIT,
+                                    this.getSoundCategory(), 1.0F, 1.0F);
                             this.onCriticalHit(targetEntity);
                         }
 
                         if (!isCriticalAttack && !isSweapingAttack) {
                             if (isStrongAttack) {
-                                this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, this.getSoundCategory(), 1.0F, 1.0F);
+                                this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_STRONG,
+                                        this.getSoundCategory(), 1.0F, 1.0F);
                             } else {
-                                this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_WEAK , this.getSoundCategory(), 1.0F, 1.0F);
+                                this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_WEAK ,
+                                        this.getSoundCategory(), 1.0F, 1.0F);
                             }
                         }
 
@@ -683,13 +706,16 @@ public abstract class MixinEntityPlayer extends MixinEntityLivingBase implements
 
                             if (this.world instanceof WorldServer && f5 > 2.0F) {
                                 int k = (int) ((double) f5 * 0.5D);
-                                ((WorldServer) this.world).spawnParticle(EnumParticleTypes.DAMAGE_INDICATOR, targetEntity.posX, targetEntity.posY + (double) (targetEntity.height * 0.5F), targetEntity.posZ, k, 0.1D, 0.0D, 0.1D, 0.2D, new int[0]);
+                                ((WorldServer) this.world).spawnParticle(EnumParticleTypes.DAMAGE_INDICATOR, targetEntity.posX,
+                                        targetEntity.posY + (double) (targetEntity.height * 0.5F), targetEntity.posZ, k,
+                                        0.1D, 0.0D, 0.1D, 0.2D, new int[0]);
                             }
                         }
 
                         this.addExhaustion(0.3F);
                     } else {
-                        this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE, this.getSoundCategory(), 1.0F, 1.0F);
+                        this.world.playSound((EntityPlayer) null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE,
+                                this.getSoundCategory(), 1.0F, 1.0F);
 
                         if (litEntityOnFire) {
                             targetEntity.extinguish();

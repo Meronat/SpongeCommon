@@ -92,9 +92,10 @@ public class PaginationCalculator {
     }
 
     /**
+     * Gets the amount of lines that the specified text fills.
      *
-     * @param text
-     * @return the number of lines that this text flows into.
+     * @param text The text to get the amount of lines for
+     * @return The number of lines that this text flows into
      */
     public int getLines(Text text) {
         //TODO: this needs fixing as well.
@@ -138,9 +139,10 @@ public class PaginationCalculator {
     }
 
     /**
-     * compute the width of a given text
-     * @param text
-     * @return the number of character pixels/columns the line takes up
+     * Computes the width of a given text.
+     *
+     * @param text The text to compute
+     * @return The number of character pixels/columns the line takes up
      */
     @VisibleForTesting
     int getWidth(Text text) {
@@ -184,10 +186,11 @@ public class PaginationCalculator {
     }
 
     /**
-     * Center a text in the middle of the chat box
-     * @param text or 0 width text for no heading
-     * @param padding a >1 width padding character
-     * @return the centered text, or if too big, the original text.
+     * Gets text centered in the middle of the chat box.
+     *
+     * @param text The text or 0 width text for no heading
+     * @param padding A >1 width padding character
+     * @return The centered text, or if too big, the original text
      */
     //TODO: Probably should completely rewrite this to not compute padding, but loop until the padding is done, unless
     //we can get accurate computation of padding ahead of time.

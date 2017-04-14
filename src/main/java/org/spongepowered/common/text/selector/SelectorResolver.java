@@ -195,11 +195,10 @@ public class SelectorResolver {
     }
 
     private void addGamemodeFilters(List<Predicate<Entity>> filters) {
-        Selector sel = this.selector;
-        Optional<GameMode> gamemode = sel.get(ArgumentTypes.GAME_MODE);
+        Optional<GameMode> gameMode = this.selector.get(ArgumentTypes.GAME_MODE);
         // If the gamemode is NOT_SET, that means accept any
-        if (gamemode.isPresent() && gamemode.get() != GameModes.NOT_SET) {
-            final GameMode actualMode = gamemode.get();
+        if (gameMode.isPresent() && gameMode.get() != GameModes.NOT_SET) {
+            final GameMode actualMode = gameMode.get();
             filters.add(input -> {
                 Optional<GameModeData> mode = input.get(GameModeData.class);
                 return mode.isPresent() && mode.get() == actualMode;
@@ -228,8 +227,7 @@ public class SelectorResolver {
     }
 
     private void addNameFilters(List<Predicate<Entity>> filters) {
-        Selector sel = this.selector;
-        Optional<Argument.Invertible<String>> nameOpt = sel.getArgument(ArgumentTypes.NAME);
+        Optional<Argument.Invertible<String>> nameOpt = this.selector.getArgument(ArgumentTypes.NAME);
         if (nameOpt.isPresent()) {
             final String name = nameOpt.get().getValue();
             final boolean inverted = nameOpt.get().isInverted();
@@ -284,13 +282,11 @@ public class SelectorResolver {
     }
 
     private void addScoreFilters(List<Predicate<Entity>> filters) {
-        Selector sel = this.selector;
-        sel.getArguments();
+        this.selector.getArguments();
     }
 
     private void addTeamFilters(List<Predicate<Entity>> filters) {
-        Selector sel = this.selector;
-        Optional<Invertible<String>> teamOpt = sel.getArgument(ArgumentTypes.TEAM);
+        Optional<Invertible<String>> teamOpt = this.selector.getArgument(ArgumentTypes.TEAM);
         if (teamOpt.isPresent()) {
             Invertible<String> teamArg = teamOpt.get();
             final boolean inverted = teamArg.isInverted();
@@ -318,8 +314,7 @@ public class SelectorResolver {
     }
 
     private void addTypeFilters(List<Predicate<Entity>> filters) {
-        Selector sel = this.selector;
-        Optional<Argument.Invertible<EntityType>> typeOpt = sel.getArgument(ArgumentTypes.ENTITY_TYPE);
+        Optional<Argument.Invertible<EntityType>> typeOpt = this.selector.getArgument(ArgumentTypes.ENTITY_TYPE);
         if (typeOpt.isPresent()) {
             Argument.Invertible<EntityType> typeArg = typeOpt.get();
             final boolean inverted = typeArg.isInverted();

@@ -952,10 +952,8 @@ public interface PacketFunction {
             }
         }
     };
-    PacketFunction MOVEMENT = (packet, state, player, context) -> {
-        context.getCapturedBlockSupplier()
-            .ifPresentAndNotEmpty(blocks -> TrackingUtil.processBlockCaptures(blocks, state, context));
-    };
+    PacketFunction MOVEMENT = (packet, state, player, context) -> context.getCapturedBlockSupplier()
+        .ifPresentAndNotEmpty(blocks -> TrackingUtil.processBlockCaptures(blocks, state, context));
 
     PacketFunction UNKNOWN_PACKET = (packet, state, player, context) -> {
         final IMixinWorldServer mixinWorldServer = (IMixinWorldServer) player.getServerWorld();

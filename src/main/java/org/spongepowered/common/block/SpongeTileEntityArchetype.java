@@ -42,11 +42,11 @@ import org.spongepowered.api.world.World;
 import org.spongepowered.common.data.AbstractArchetype;
 import org.spongepowered.common.data.nbt.NbtDataType;
 import org.spongepowered.common.data.nbt.NbtDataTypes;
+import org.spongepowered.common.data.nbt.validation.ValidationType;
+import org.spongepowered.common.data.nbt.validation.Validations;
 import org.spongepowered.common.data.persistence.NbtTranslator;
 import org.spongepowered.common.data.util.DataQueries;
 import org.spongepowered.common.data.util.DataVersions;
-import org.spongepowered.common.data.nbt.validation.ValidationType;
-import org.spongepowered.common.data.nbt.validation.Validations;
 import org.spongepowered.common.util.VecHelper;
 
 public class SpongeTileEntityArchetype extends AbstractArchetype<TileEntityType, BlockSnapshot> implements TileEntityArchetype {

@@ -28,12 +28,10 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.trait.BlockTrait;
 import org.spongepowered.api.data.DataContainer;
-import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.MemoryDataContainer;
 import org.spongepowered.api.data.Property;
 import org.spongepowered.api.data.Queries;
@@ -50,7 +48,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.common.data.util.DataQueries;
 import org.spongepowered.common.data.util.DataVersions;
 import org.spongepowered.common.interfaces.world.IMixinLocation;
-import org.spongepowered.common.util.VecHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -147,7 +144,7 @@ public interface MixinIBlockState extends IBlockState, BlockState {
     default String getId() {
         StringBuilder builder = new StringBuilder();
         builder.append(((BlockType) getBlock()).getId());
-        final ImmutableMap<IProperty<?>, Comparable<?>> properties = (ImmutableMap<IProperty<?>, Comparable<?>>) (ImmutableMap<?, ?>) this.getProperties();
+        final ImmutableMap<IProperty<?>, Comparable<?>> properties = (ImmutableMap<IProperty<?>, Comparable<?>>) this.getProperties();
         if (!properties.isEmpty()) {
             builder.append('[');
             Joiner joiner = Joiner.on(',');

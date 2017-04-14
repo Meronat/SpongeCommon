@@ -58,10 +58,9 @@ import javax.annotation.Nullable;
 
 public class SpongeTileEntityArchetypeBuilder extends AbstractDataBuilder<TileEntityArchetype> implements TileEntityArchetype.Builder {
 
-    BlockState     blockState;    // -These two fields can never be null
-    @Nullable
-    TileEntityType tileEntityType;
-    DataContainer  tileData;      // This can be empty, but cannot be null.
+    BlockState blockState; // -These two fields can never be null
+    @Nullable TileEntityType tileEntityType;
+    @Nullable DataContainer tileData; // This can be empty, but cannot be null.
 
     public SpongeTileEntityArchetypeBuilder() {
         super(TileEntityArchetype.class, DataVersions.TileEntitArchetype.BASE_VERSION);

@@ -28,9 +28,9 @@ import org.spongepowered.api.item.inventory.InventoryProperty;
 import org.spongepowered.common.item.inventory.lens.Lens;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 
 /**
  * A relationship between a lens and properties for the lens when viewed through
@@ -74,9 +74,7 @@ public final class LensHandle<TInventory, TStack> {
         this.lens = lens;
         if (properties != null && properties.length > 0) {
             this.properties = new ArrayList<InventoryProperty<?, ?>>();
-            for (InventoryProperty<?, ?> property : properties) {
-                this.properties.add(property);
-            }
+            this.properties.addAll(Arrays.asList(properties));
         }
     }
 
@@ -133,12 +131,7 @@ public final class LensHandle<TInventory, TStack> {
     }
 
     private void removeMatchingProperties(InventoryProperty<?, ?> property) {
-        for (Iterator<InventoryProperty<?, ?>> iter = this.properties.iterator(); iter.hasNext();) {
-            InventoryProperty<?, ?> prop = iter.next();
-            if (prop.getClass() == property.getClass() && prop.getKey().equals(property.getKey())) {
-                iter.remove();
-            }
-        }
+        this.properties.removeIf(prop -> prop.getClass() == property.getClass() && prop.getKey().equals(property.getKey()));
     }
 
 }

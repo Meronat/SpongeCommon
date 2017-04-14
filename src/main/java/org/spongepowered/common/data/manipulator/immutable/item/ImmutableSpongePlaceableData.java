@@ -25,7 +25,6 @@
 package org.spongepowered.common.data.manipulator.immutable.item;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.primitives.Booleans;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.key.Keys;
@@ -38,7 +37,8 @@ import org.spongepowered.common.data.manipulator.mutable.item.SpongePlaceableDat
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ImmutableSpongePlaceableData extends AbstractImmutableSingleSetData<BlockType, ImmutablePlaceableData, PlaceableData> implements ImmutablePlaceableData {
+public class ImmutableSpongePlaceableData extends AbstractImmutableSingleSetData<BlockType, ImmutablePlaceableData, PlaceableData>
+        implements ImmutablePlaceableData {
 
     public ImmutableSpongePlaceableData() {
         this(ImmutableSet.of());

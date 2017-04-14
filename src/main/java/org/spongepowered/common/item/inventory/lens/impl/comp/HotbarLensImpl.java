@@ -50,7 +50,8 @@ public class HotbarLensImpl extends InventoryRowLensImpl implements HotbarLens<I
         this(base, width, xBase, yBase, HotbarAdapter.class, slots);
     }
     
-    public HotbarLensImpl(int base, int width, int xBase, int yBase, Class<? extends Inventory> adapterType, SlotProvider<IInventory, ItemStack> slots) {
+    public HotbarLensImpl(int base, int width, int xBase, int yBase, Class<? extends Inventory> adapterType,
+            SlotProvider<IInventory, ItemStack> slots) {
         super(base, width, xBase, yBase, adapterType, slots);
     }
 
@@ -71,9 +72,7 @@ public class HotbarLensImpl extends InventoryRowLensImpl implements HotbarLens<I
 
     @Override
     public void setSelectedSlotIndex(Fabric<IInventory> inv, int index) {
-        inv.allInventories().stream().filter(inner -> inner instanceof IMixinInventoryPlayer).forEach(inner -> {
-            ((IMixinInventoryPlayer) inner).setSelectedItem(index, true);
-        });
+        inv.allInventories().stream().filter(inner -> inner instanceof IMixinInventoryPlayer).forEach(inner -> ((IMixinInventoryPlayer) inner).setSelectedItem(index, true));
     }
 
 }

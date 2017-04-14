@@ -41,6 +41,7 @@ public abstract class MixinEntityZombieVillager extends MixinEntityZombie implem
 
     @Override
     public org.spongepowered.api.data.manipulator.mutable.entity.ZombieData getZombieData() {
-        return new SpongeZombieData(org.spongepowered.api.data.type.ZombieTypes.VILLAGER, Optional.of(EntityUtil.validateProfession(getProfession())));
+        return new SpongeZombieData(org.spongepowered.api.data.type.ZombieTypes.VILLAGER,
+                Optional.of(EntityUtil.validateProfession(getProfession())));
     }
 }

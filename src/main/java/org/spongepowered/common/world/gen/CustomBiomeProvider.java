@@ -32,9 +32,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.IntCache;
-import org.spongepowered.api.world.biome.BiomeType;
-import org.spongepowered.api.world.biome.VirtualBiomeType;
 import org.spongepowered.api.world.gen.BiomeGenerator;
+import org.spongepowered.common.mixin.core.world.biome.MixinBiomeProvider;
 import org.spongepowered.common.util.gen.ObjectArrayMutableBiomeBuffer;
 
 import java.util.Arrays;
@@ -44,7 +43,7 @@ import java.util.Random;
 /**
  * Implementation of {@link BiomeProvider} based on a {@link BiomeGenerator}.
  *
- * <p>This class does the opposite of {@link SpongeBiomeGenerator}, that class
+ * <p>This class does the opposite of {@link MixinBiomeProvider}, that class
  * wraps a world chunk manager so that it is usable as a {@link BiomeGenerator}
  * .</p>
  */
@@ -196,7 +195,8 @@ public final class CustomBiomeProvider extends BiomeProvider {
             Arrays.fill(biomeArray, Biomes.OCEAN);
         }
 
-        ObjectArrayMutableBiomeBuffer biomeArea = new ObjectArrayMutableBiomeBuffer(new Vector3i(startX, 0, startZ), new Vector3i(sizeX, 1, sizeZ));
+        ObjectArrayMutableBiomeBuffer biomeArea = new ObjectArrayMutableBiomeBuffer(new Vector3i(startX, 0, startZ),
+                new Vector3i(sizeX, 1, sizeZ));
         this.biomeGenerator.generateBiomes(biomeArea);
         biomeArea.fill(biomeArray);
         return biomeArray;

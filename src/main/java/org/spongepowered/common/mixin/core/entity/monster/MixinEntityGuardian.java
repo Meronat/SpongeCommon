@@ -56,7 +56,8 @@ public abstract class MixinEntityGuardian extends MixinEntityMob implements Guar
 
     @Override
     public Value<Boolean> elder() {
-        return new SpongeValue<>(Keys.ELDER_GUARDIAN, false, (Object) this instanceof EntityElderGuardian);
+        return new SpongeValue<>(Keys.ELDER_GUARDIAN, false,
+                (Object) this instanceof EntityElderGuardian);
     }
 
     @Override

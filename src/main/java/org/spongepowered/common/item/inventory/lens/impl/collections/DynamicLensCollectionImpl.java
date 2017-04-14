@@ -32,9 +32,9 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 
-public class DynamicLensCollectionImpl<TInventory, TStack> extends AbstractList<Lens<TInventory, TStack>> implements DynamicLensCollection<TInventory, TStack> {
+public class DynamicLensCollectionImpl<TInventory, TStack> extends AbstractList<Lens<TInventory, TStack>>
+        implements DynamicLensCollection<TInventory, TStack> {
 
     protected final Lens<TInventory, TStack>[] lenses;
     
@@ -76,12 +76,7 @@ public class DynamicLensCollectionImpl<TInventory, TStack> extends AbstractList<
     }
 
     private void removeMatchingProperties(int index, InventoryProperty<?, ?> property) {
-        for (Iterator<InventoryProperty<?, ?>> iter = this.properties[index].iterator(); iter.hasNext();) {
-            InventoryProperty<?, ?> prop = iter.next();
-            if (prop.getClass() == property.getClass() && prop.getKey().equals(property.getKey())) {
-                iter.remove();
-            }
-        }
+        this.properties[index].removeIf(prop -> prop.getClass() == property.getClass() && prop.getKey().equals(property.getKey()));
     }
 
     @Override

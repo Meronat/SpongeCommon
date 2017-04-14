@@ -84,10 +84,10 @@ class EntityTickPhaseState extends TickPhaseState {
         final User entityCreator = notifier.orElseGet(() -> creator.orElse(null));
         phaseContext.getCapturedEntitySupplier()
                 .ifPresentAndNotEmpty(entities -> {
-                    final List<Entity> experience = new ArrayList<Entity>(entities.size());
-                    final List<Entity> nonExp = new ArrayList<Entity>(entities.size());
-                    final List<Entity> breeding = new ArrayList<Entity>(entities.size());
-                    final List<Entity> projectile = new ArrayList<Entity>(entities.size());
+                    final List<Entity> experience = new ArrayList<>(entities.size());
+                    final List<Entity> nonExp = new ArrayList<>(entities.size());
+                    final List<Entity> breeding = new ArrayList<>(entities.size());
+                    final List<Entity> projectile = new ArrayList<>(entities.size());
                     for (Entity entity : entities) {
                         if (entity instanceof EntityXPOrb) {
                             experience.add(entity);
@@ -414,7 +414,7 @@ class EntityTickPhaseState extends TickPhaseState {
                     }
                 }
             }
-            final List<Entity> experience = new ArrayList<Entity>(1);
+            final List<Entity> experience = new ArrayList<>(1);
             experience.add(entity);
 
             final SpawnEntityEvent
@@ -443,7 +443,7 @@ class EntityTickPhaseState extends TickPhaseState {
                     builder.named(NamedCause.of("Player", playerInLove));
                 }
             }
-            final List<Entity> breeding = new ArrayList<Entity>(1);
+            final List<Entity> breeding = new ArrayList<>(1);
             breeding.add(entity);
             SpawnEntityEvent event = SpongeEventFactory.createSpawnEntityEvent(builder.build(), breeding);
             if (!SpongeImpl.postEvent(event)) {
@@ -463,7 +463,7 @@ class EntityTickPhaseState extends TickPhaseState {
                             .type(InternalSpawnTypes.PROJECTILE)
                             .build()
             );
-            final List<Entity> projectile = new ArrayList<Entity>(1);
+            final List<Entity> projectile = new ArrayList<>(1);
             projectile.add(entity);
 
             notifier.ifPresent(builder::notifier);
@@ -481,7 +481,7 @@ class EntityTickPhaseState extends TickPhaseState {
             }
             return false;
         }
-        final List<Entity> nonExp = new ArrayList<Entity>(1);
+        final List<Entity> nonExp = new ArrayList<>(1);
         nonExp.add(entity);
 
         final Cause.Builder builder = Cause.source(EntitySpawnCause.builder()

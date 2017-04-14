@@ -89,8 +89,7 @@ public class RandomObjectBuilder implements RandomObject.Builder {
 
     @Override
     public RandomObject build() throws IllegalStateException {
-        RandomObject pop = new RandomObjectPopulator(this.object, this.count, this.height, this.chance);
-        return pop;
+        return new RandomObjectPopulator(this.object, this.count, this.height, this.chance);
     }
 
 }

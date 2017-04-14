@@ -60,12 +60,7 @@ public class SpongeInternalListeners {
 
     @Listener
     public void onServiceChange(ChangeServiceProviderEvent event) {
-        Iterator<Predicate<Object>> it = this.serviceCallbacks.get(event.getService()).iterator();
-        while (it.hasNext()) {
-            if (!it.next().test(event.getNewProvider())) {
-                it.remove();
-            }
-        }
+        this.serviceCallbacks.get(event.getService()).removeIf(objectPredicate -> !objectPredicate.test(event.getNewProvider()));
     }
 
     @Listener

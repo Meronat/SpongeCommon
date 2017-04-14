@@ -24,7 +24,6 @@
  */
 package org.spongepowered.common.data.manipulator.mutable.item;
 
-import com.google.common.collect.Lists;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.immutable.item.ImmutableEnchantmentData;
@@ -33,12 +32,13 @@ import org.spongepowered.api.data.meta.ItemEnchantment;
 import org.spongepowered.common.data.manipulator.immutable.item.ImmutableSpongeEnchantmentData;
 import org.spongepowered.common.data.manipulator.mutable.common.AbstractListData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpongeEnchantmentData extends AbstractListData<ItemEnchantment, EnchantmentData, ImmutableEnchantmentData> implements EnchantmentData {
 
     public SpongeEnchantmentData() {
-        this(Lists.<ItemEnchantment>newArrayList());
+        this(new ArrayList<>());
     }
 
     public SpongeEnchantmentData(List<ItemEnchantment> enchantments) {

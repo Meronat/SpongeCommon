@@ -29,7 +29,6 @@ import net.minecraft.inventory.IInventory;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Inventory;
-import org.spongepowered.api.item.inventory.InventoryProperty;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.Slot;
 import org.spongepowered.api.item.inventory.transaction.InventoryTransactionResult;
@@ -43,8 +42,6 @@ import org.spongepowered.common.item.inventory.lens.impl.slots.SlotLensImpl;
 import org.spongepowered.common.item.inventory.lens.slots.SlotLens;
 import org.spongepowered.common.item.inventory.util.ItemStackUtil;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 
 public class SlotAdapter extends Adapter implements Slot {
@@ -60,7 +57,9 @@ public class SlotAdapter extends Adapter implements Slot {
     public int slotNumber = -1;
 
     public SlotAdapter(net.minecraft.inventory.Slot slot) {
-        this(MinecraftFabric.of(slot), ((IMixinSlot)slot).getSlotIndex() >= 0 ? new SlotLensImpl(((IMixinSlot)slot).getSlotIndex()) : new FakeSlotLensImpl(slot), slot.inventory instanceof Inventory ? (Inventory) slot.inventory : null);
+        this(MinecraftFabric.of(slot), ((IMixinSlot)slot).getSlotIndex() >= 0 ?
+                new SlotLensImpl(((IMixinSlot)slot).getSlotIndex()) : new FakeSlotLensImpl(slot), slot.inventory instanceof Inventory ?
+                (Inventory) slot.inventory : null);
         this.slotNumber = slot.slotNumber;
     }
 

@@ -44,10 +44,10 @@ import java.util.Optional;
 @SuppressWarnings("deprecation")
 public class SkeletonDataProcessor
         extends AbstractEntitySingleDataProcessor<AbstractSkeleton,
-    org.spongepowered.api.data.type.SkeletonType,
-    Value<org.spongepowered.api.data.type.SkeletonType>,
-    org.spongepowered.api.data.manipulator.mutable.entity.SkeletonData,
-    org.spongepowered.api.data.manipulator.immutable.entity.ImmutableSkeletonData> {
+        org.spongepowered.api.data.type.SkeletonType,
+        Value<org.spongepowered.api.data.type.SkeletonType>,
+        org.spongepowered.api.data.manipulator.mutable.entity.SkeletonData,
+        org.spongepowered.api.data.manipulator.immutable.entity.ImmutableSkeletonData> {
 
     public SkeletonDataProcessor() {
         super(AbstractSkeleton.class, Keys.SKELETON_TYPE);
