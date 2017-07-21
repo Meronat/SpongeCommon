@@ -329,6 +329,9 @@ public class DataRegistrar {
         DataUtil.registerDualProcessor(ExpOrbData.class, SpongeExpOrbData.class, ImmutableExpOrbData.class,
                 ImmutableSpongeExpOrbData.class, new ExpOrbDataProcessor());
 
+        DataUtil.registerDualProcessor(ElytraFlyingData.class, SpongeElytraFlyingData.class, ImmutableElytraFlyingData.class,
+                ImmutableSpongeElytraFlyingData.class, new ElytraFlyingDataProcessor());
+
         DataUtil.registerDualProcessor(FlyingData.class, SpongeFlyingData.class, ImmutableFlyingData.class,
                 ImmutableSpongeFlyingData.class, new FlyingDataProcessor());
 
