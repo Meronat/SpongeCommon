@@ -37,8 +37,10 @@ import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemElytra;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -69,6 +71,7 @@ import org.spongepowered.api.event.cause.entity.damage.source.FallingBlockDamage
 import org.spongepowered.api.event.entity.DamageEntityEvent;
 import org.spongepowered.api.event.entity.MoveEntityEvent;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.util.ElytraCapability;
 import org.spongepowered.api.util.annotation.NonnullByDefault;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -114,6 +117,8 @@ public abstract class MixinEntityLivingBase extends MixinEntity implements Livin
 
     private int maxAir = 300;
 
+    private ElytraCapability elytraCapability = ElytraCapability.EQUIPMENT;
+
     @Shadow public int maxHurtResistantTime;
     @Shadow public int hurtTime;
     @Shadow public int maxHurtTime;
@@ -128,6 +133,7 @@ public abstract class MixinEntityLivingBase extends MixinEntity implements Livin
     @Shadow protected AbstractAttributeMap attributeMap;
     @Shadow protected int idleTime;
     @Shadow protected int recentlyHit;
+    @Shadow protected int ticksElytraFlying;
     @Shadow protected float lastDamage;
     @Shadow @Nullable protected EntityPlayer attackingPlayer;
     @Shadow protected ItemStack activeItemStack;
@@ -184,6 +190,8 @@ public abstract class MixinEntityLivingBase extends MixinEntity implements Livin
         return false; // SHADOWED
     }
     @Shadow public abstract AbstractAttributeMap getAttributeMap();
+
+    @Shadow protected boolean isJumping;
 
     @Override
     public Vector3d getHeadRotation() {
@@ -918,6 +926,65 @@ public abstract class MixinEntityLivingBase extends MixinEntity implements Livin
     @Override
     public <T extends Projectile> Optional<T> launchProjectile(Class<T> projectileClass, Vector3d velocity) {
         return ProjectileLauncher.launch(checkNotNull(projectileClass, "projectile class"), this, checkNotNull(velocity, "velocity"));
+    }
+
+    @Override
+    public void setElytraFlying() {
+        this.setFlag(7, true);
+    }
+
+    @Override
+    public void clearElytraFlying() {
+        this.setFlag(7, true);
+        this.setFlag(7, false);
+    }
+
+    @Override
+    public ElytraCapability getElytraCapability() {
+        return this.elytraCapability;
+    }
+
+    @Override
+    public void setElytraCapability(ElytraCapability elytraCapability) {
+        this.elytraCapability = elytraCapability;
+    }
+
+    /**
+     * Overwrites the update elytra method.
+     *
+     * @author Meronat - July 21st, 2017
+     * @reason Allows us to enable flying without an elytra
+     */
+    @Overwrite
+    private void updateElytra() {
+        boolean flag = this.getFlag(7);
+
+        switch (this.elytraCapability) {
+            case EQUIPMENT:
+                if (flag && !this.onGround && !this.isRiding()) {
+                    final ItemStack itemStack = this.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+
+                    if (itemStack.getItem() == Items.ELYTRA && ItemElytra.isUsable(itemStack)) {
+                        flag = true;
+
+                        if (!this.world.isRemote && (this.ticksElytraFlying + 1) % 20 == 0) {
+                            itemStack.damageItem(1, (EntityLivingBase) (Object) this);
+                        }
+                    } else {
+                        flag = false;
+                    }
+                }
+                break;
+            case ENABLED:
+                break;
+            case DISABLED:
+                flag = false;
+        }
+
+        if (!this.world.isRemote)
+        {
+            this.setFlag(7, flag);
+        }
     }
 
 }

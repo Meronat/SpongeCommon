@@ -29,6 +29,7 @@ import net.minecraft.util.DamageSource;
 import org.spongepowered.api.event.cause.entity.damage.DamageFunction;
 import org.spongepowered.api.event.cause.entity.damage.DamageModifier;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
+import org.spongepowered.api.util.ElytraCapability;
 
 import java.util.List;
 import java.util.Optional;
@@ -60,5 +61,13 @@ public interface IMixinEntityLivingBase {
     default boolean properlyOverridesOnDeathForCauseTrackerCompletion() {
         return false;
     }
+
+    void setElytraFlying();
+
+    void clearElytraFlying();
+
+    ElytraCapability getElytraCapability();
+
+    void setElytraCapability(ElytraCapability elytraCapability);
 
 }

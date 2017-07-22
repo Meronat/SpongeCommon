@@ -329,7 +329,7 @@ public class DataRegistrar {
         DataUtil.registerDualProcessor(ExpOrbData.class, SpongeExpOrbData.class, ImmutableExpOrbData.class,
                 ImmutableSpongeExpOrbData.class, new ExpOrbDataProcessor());
 
-        DataUtil.registerDualProcessor(ElytraFlyingData.class, SpongeElytraFlyingData.class, ImmutableElytraFlyingData.class,
+        DataUtil.registerDataProcessorAndImpl(ElytraFlyingData.class, SpongeElytraFlyingData.class, ImmutableElytraFlyingData.class,
                 ImmutableSpongeElytraFlyingData.class, new ElytraFlyingDataProcessor());
 
         DataUtil.registerDualProcessor(FlyingData.class, SpongeFlyingData.class, ImmutableFlyingData.class,
@@ -807,6 +807,8 @@ public class DataRegistrar {
         DataUtil.registerValueProcessor(Keys.IS_ADULT, new IsAdultValueProcessor());
         DataUtil.registerValueProcessor(Keys.IS_ADULT, new IsAdultZombieValueProcessor());
         DataUtil.registerValueProcessor(Keys.AGE, new AgeableAgeValueProcessor());
+        DataUtil.registerValueProcessor(Keys.IS_ELYTRA_FLYING, new IsElytraFlyingValueProcessor());
+        DataUtil.registerValueProcessor(Keys.ELYTRA_CAPABILITY, new ElytraCapabilityValueProcessor());
 
         // Properties
         final PropertyRegistry propertyRegistry = Sponge.getPropertyRegistry();
@@ -837,6 +839,7 @@ public class DataRegistrar {
         propertyRegistry.register(BurningFuelProperty.class, new BurningFuelPropertyStore());
         propertyRegistry.register(DamageAbsorptionProperty.class, new DamageAbsorptionPropertyStore());
         propertyRegistry.register(EfficiencyProperty.class, new EfficiencyPropertyStore());
+        propertyRegistry.register(ElytraFlyingProperty.class, new ElytraFlyingPropertyStore());
         propertyRegistry.register(EquipmentProperty.class, new EquipmentPropertyStore());
         propertyRegistry.register(FoodRestorationProperty.class, new FoodRestorationPropertyStore());
         propertyRegistry.register(HarvestingProperty.class, new HarvestingPropertyStore());

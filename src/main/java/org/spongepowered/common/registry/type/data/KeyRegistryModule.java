@@ -211,6 +211,10 @@ public class KeyRegistryModule implements AdditionalCatalogRegistryModule<Key<?>
 
         this.fieldMap.put("golden_apple_type", makeSingleKey(TypeTokens.GOLDEN_APPLE_TOKEN, TypeTokens.GOLDEN_APPLE_VALUE_TOKEN, of("GoldenAppleType"), "sponge:golden_apple_type", "Golden Apple Type"));
 
+        this.fieldMap.put("elytra_capability", makeSingleKey(TypeTokens.ELYTRA_CAPABILITY_TOKEN, TypeTokens.ELYTRA_CAPABILITY_VALUE_TOKEN, of("ElytraCapability"), "sponge:elytra_capability", "Elytra Capability"));
+
+        this.fieldMap.put("is_elytra_flying", makeSingleKey(TypeTokens.BOOLEAN_TOKEN, TypeTokens.BOOLEAN_VALUE_TOKEN, of("IsElytraFlying"), "sponge:is_elytra_flying", "Is Elytra Flying"));
+
         this.fieldMap.put("is_flying", makeSingleKey(TypeTokens.BOOLEAN_TOKEN, TypeTokens.BOOLEAN_VALUE_TOKEN, of("IsFlying"), "sponge:is_flying", "Is Flying"));
 
         this.fieldMap.put("experience_level", makeSingleKey(TypeTokens.INTEGER_TOKEN, TypeTokens.BOUNDED_INTEGER_VALUE_TOKEN, of("ExperienceLevel"), "sponge:experience_level", "Experience Level"));

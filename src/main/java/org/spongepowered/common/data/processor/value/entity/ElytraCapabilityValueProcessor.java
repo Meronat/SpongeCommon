@@ -22,68 +22,54 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.common.data.processor.data.entity;
+package org.spongepowered.common.data.processor.value.entity;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
+import com.google.common.base.Preconditions;
+import net.minecraft.entity.EntityLivingBase;
 import org.spongepowered.api.data.DataTransactionResult;
 import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.data.manipulator.immutable.entity.ImmutableElytraFlyingData;
-import org.spongepowered.api.data.manipulator.mutable.entity.ElytraFlyingData;
 import org.spongepowered.api.data.value.ValueContainer;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
 import org.spongepowered.api.data.value.mutable.Value;
-import org.spongepowered.common.data.manipulator.mutable.entity.SpongeElytraFlyingData;
-import org.spongepowered.common.data.processor.common.AbstractEntitySingleDataProcessor;
+import org.spongepowered.api.util.ElytraCapability;
+import org.spongepowered.common.data.processor.common.AbstractSpongeValueProcessor;
 import org.spongepowered.common.data.value.immutable.ImmutableSpongeValue;
 import org.spongepowered.common.data.value.mutable.SpongeValue;
+import org.spongepowered.common.interfaces.entity.IMixinEntityLivingBase;
 
 import java.util.Optional;
 
-public class ElytraFlyingDataProcessor extends AbstractEntitySingleDataProcessor<EntityPlayerMP, Boolean, Value<Boolean>,
-        ElytraFlyingData, ImmutableElytraFlyingData> {
+public class ElytraCapabilityValueProcessor extends AbstractSpongeValueProcessor<EntityLivingBase, ElytraCapability, Value<ElytraCapability>> {
 
-    public ElytraFlyingDataProcessor() {
-        super(EntityPlayerMP.class, Keys.IS_ELYTRA_FLYING);
+    public ElytraCapabilityValueProcessor() {
+        super(EntityLivingBase.class, Keys.ELYTRA_CAPABILITY);
     }
 
     @Override
-    protected boolean set(EntityPlayerMP dataHolder, Boolean value) {
-        if (value == Boolean.TRUE) {
-            if (dataHolder.armorArray.get(2).getItem().equals(Items.ELYTRA)) {
-                dataHolder.setElytraFlying();
-                return true;
-            }
-        } else if (value == Boolean.FALSE) {
-            dataHolder.clearElytraFlying();
-            return true;
-        }
-        return false;
+    protected Value<ElytraCapability> constructValue(ElytraCapability actualValue) {
+        return new SpongeValue<>(Keys.ELYTRA_CAPABILITY, ElytraCapability.EQUIPMENT, actualValue);
     }
 
     @Override
-    protected Optional<Boolean> getVal(EntityPlayerMP dataHolder) {
-        return Optional.of(dataHolder.isElytraFlying());
+    protected boolean set(EntityLivingBase container, ElytraCapability value) {
+        ((IMixinEntityLivingBase) container).setElytraCapability(Preconditions
+                .checkNotNull(value, "The elytra capability value cannot be null!"));
+        return true;
     }
 
     @Override
-    protected ImmutableValue<Boolean> constructImmutableValue(Boolean value) {
-        return ImmutableSpongeValue.cachedOf(Keys.IS_ELYTRA_FLYING, false, value);
+    protected Optional<ElytraCapability> getVal(EntityLivingBase container) {
+        return Optional.ofNullable(((IMixinEntityLivingBase) container).getElytraCapability());
     }
 
     @Override
-    protected Value<Boolean> constructValue(Boolean actualValue) {
-        return new SpongeValue<>(Keys.IS_ELYTRA_FLYING, false, actualValue);
+    protected ImmutableValue<ElytraCapability> constructImmutableValue(ElytraCapability value) {
+        return ImmutableSpongeValue.cachedOf(Keys.ELYTRA_CAPABILITY, ElytraCapability.EQUIPMENT, value);
     }
 
     @Override
     public DataTransactionResult removeFrom(ValueContainer<?> container) {
         return DataTransactionResult.failNoData();
-    }
-
-    @Override
-    protected ElytraFlyingData createManipulator() {
-        return new SpongeElytraFlyingData();
     }
 
 }

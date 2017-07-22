@@ -239,6 +239,7 @@ public abstract class MixinEntity implements IMixinEntity {
     @Shadow protected abstract void applyEnchantments(EntityLivingBase entityLivingBaseIn, net.minecraft.entity.Entity entityIn);
     @Shadow public abstract void extinguish();
     @Shadow protected abstract void setFlag(int flag, boolean set);
+    @Shadow protected abstract boolean getFlag(int flag);
 
     // @formatter:on
 

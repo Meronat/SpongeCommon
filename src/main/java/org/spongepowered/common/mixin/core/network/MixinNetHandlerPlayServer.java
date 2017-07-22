@@ -43,6 +43,8 @@ import net.minecraft.network.PacketThreadUtil;
 import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.network.play.client.CPacketClickWindow;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.minecraft.network.play.client.CPacketEntityAction;
+import net.minecraft.network.play.client.CPacketEntityAction.Action;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketResourcePackStatus;
 import net.minecraft.network.play.client.CPacketUpdateSign;
@@ -70,6 +72,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.WorldServer;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.api.block.tileentity.Sign;
+import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.mutable.tileentity.SignData;
 import org.spongepowered.api.data.value.mutable.ListValue;
 import org.spongepowered.api.entity.Transform;
@@ -85,6 +88,7 @@ import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.network.PlayerConnection;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
+import org.spongepowered.api.util.ElytraCapability;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import org.spongepowered.asm.mixin.Final;
@@ -702,4 +706,15 @@ public abstract class MixinNetHandlerPlayServer implements PlayerConnection, IMi
             this.sendPacket(this.resourcePackRequests.peek());
         }
     }
+
+    @Inject(method = "processEntityAction(Lnet/minecraft/network/play/client/CPacketEntityAction;)V", at = @At("HEAD"), cancellable = true)
+    public void onProcessEntityAction(CPacketEntityAction packetIn, CallbackInfo ci) {
+        if (packetIn.getAction() == Action.START_FALL_FLYING) {
+            if (((Player) this.player).get(Keys.ELYTRA_CAPABILITY).orElse(ElytraCapability.EQUIPMENT) == ElytraCapability.DISABLED) {
+                this.player.clearElytraFlying();
+                ci.cancel();
+            }
+        }
+    }
+
 }

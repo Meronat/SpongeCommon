@@ -24,23 +24,76 @@
  */
 package org.spongepowered.common.data.manipulator.immutable.entity;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.immutable.entity.ImmutableElytraFlyingData;
 import org.spongepowered.api.data.manipulator.mutable.entity.ElytraFlyingData;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
-import org.spongepowered.common.data.manipulator.immutable.common.AbstractImmutableBooleanData;
+import org.spongepowered.api.util.ElytraCapability;
+import org.spongepowered.common.data.manipulator.immutable.common.AbstractImmutableData;
 import org.spongepowered.common.data.manipulator.mutable.entity.SpongeElytraFlyingData;
+import org.spongepowered.common.data.value.immutable.ImmutableSpongeValue;
 
-public class ImmutableSpongeElytraFlyingData extends AbstractImmutableBooleanData<ImmutableElytraFlyingData, ElytraFlyingData>
+public class ImmutableSpongeElytraFlyingData extends AbstractImmutableData<ImmutableElytraFlyingData, ElytraFlyingData>
         implements ImmutableElytraFlyingData {
 
-    public ImmutableSpongeElytraFlyingData(boolean value) {
-        super(ImmutableElytraFlyingData.class, value, Keys.IS_ELYTRA_FLYING, SpongeElytraFlyingData.class, false);
+    private ElytraCapability elytraCapability;
+    private boolean isElytraFlying;
+
+    private final ImmutableValue<ElytraCapability> capabilityValue;
+    private final ImmutableValue<Boolean> isFlyingValue;
+
+    public ImmutableSpongeElytraFlyingData(ElytraCapability capability, boolean isElytraFlying) {
+        super(ImmutableElytraFlyingData.class);
+
+        this.elytraCapability = checkNotNull(capability, "The elytra capability cannot be null!");
+        this.isElytraFlying = isElytraFlying;
+
+        this.capabilityValue = ImmutableSpongeValue.cachedOf(Keys.ELYTRA_CAPABILITY, ElytraCapability.EQUIPMENT, elytraCapability);
+        this.isFlyingValue = ImmutableSpongeValue.cachedOf(Keys.IS_ELYTRA_FLYING, false, isElytraFlying);
+
+        registerGetters();
+    }
+
+    @Override
+    public ImmutableValue<ElytraCapability> elytraCapability() {
+        return this.capabilityValue;
     }
 
     @Override
     public ImmutableValue<Boolean> elytraFlying() {
-        return getValueGetter();
+        return this.isFlyingValue;
+    }
+
+    @Override
+    protected void registerGetters() {
+        registerFieldGetter(Keys.ELYTRA_CAPABILITY, ImmutableSpongeElytraFlyingData.this::getElytraCapability);
+        registerKeyValue(Keys.ELYTRA_CAPABILITY, ImmutableSpongeElytraFlyingData.this::elytraCapability);
+
+        registerFieldGetter(Keys.IS_ELYTRA_FLYING, ImmutableSpongeElytraFlyingData.this::isElytraFlying);
+        registerKeyValue(Keys.IS_ELYTRA_FLYING, ImmutableSpongeElytraFlyingData.this::elytraFlying);
+    }
+
+    @Override
+    public ElytraFlyingData asMutable() {
+        return new SpongeElytraFlyingData(this.elytraCapability, this.isElytraFlying);
+    }
+
+    @Override
+    public DataContainer toContainer() {
+        return super.toContainer()
+                .set(Keys.ELYTRA_CAPABILITY.getQuery(), this.elytraCapability)
+                .set(Keys.IS_ELYTRA_FLYING.getQuery(), this.isElytraFlying);
+    }
+
+    private ElytraCapability getElytraCapability() {
+        return this.elytraCapability;
+    }
+
+    private boolean isElytraFlying() {
+        return this.isElytraFlying;
     }
 
 }
