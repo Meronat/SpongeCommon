@@ -476,6 +476,8 @@ public class KeyRegistryModule implements AdditionalCatalogRegistryModule<Key<?>
 
         this.fieldMap.put("explosion_radius", makeSingleKey(TypeTokens.INTEGER_TOKEN, TypeTokens.INTEGER_VALUE_TOKEN, of("ExplosionRadius"), "sponge:explosion_radius", "Explosion Radius"));
 
+        this.fieldMap.put("disabled_slot_types", makeSingleKey(TypeTokens.SET_DISABLED_SLOT_TYPE_TOKEN, TypeTokens.SET_DISABLED_SLOT_TYPE_VALUE_TOKEN, of("DisabledSlotTypes"), "sponge:disabled_slot_types", "Disabled Slot Types"));
+
         this.fieldMap.put("armor_stand_has_arms", makeSingleKey(TypeTokens.BOOLEAN_TOKEN, TypeTokens.BOOLEAN_VALUE_TOKEN, of("HasArms"), "sponge:has_arms", "Has Arms"));
 
         this.fieldMap.put("armor_stand_has_base_plate", makeSingleKey(TypeTokens.BOOLEAN_TOKEN, TypeTokens.BOOLEAN_VALUE_TOKEN, of("HasBasePlate"), "sponge:has_base_plate", "Has Base Plate"));

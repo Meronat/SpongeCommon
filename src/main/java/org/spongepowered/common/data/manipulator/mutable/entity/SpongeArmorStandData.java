@@ -28,11 +28,17 @@ import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.immutable.entity.ImmutableArmorStandData;
 import org.spongepowered.api.data.manipulator.mutable.entity.ArmorStandData;
+import org.spongepowered.api.data.type.DisabledSlotType;
+import org.spongepowered.api.data.value.mutable.SetValue;
 import org.spongepowered.api.data.value.mutable.Value;
 import org.spongepowered.common.data.ImmutableDataCachingUtil;
 import org.spongepowered.common.data.manipulator.immutable.entity.ImmutableSpongeArmorStandData;
 import org.spongepowered.common.data.manipulator.mutable.common.AbstractData;
+import org.spongepowered.common.data.value.mutable.SpongeSetValue;
 import org.spongepowered.common.data.value.mutable.SpongeValue;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class SpongeArmorStandData extends AbstractData<ArmorStandData, ImmutableArmorStandData> implements ArmorStandData {
 
@@ -40,17 +46,19 @@ public class SpongeArmorStandData extends AbstractData<ArmorStandData, Immutable
     private boolean small;
     private boolean arms;
     private boolean basePlate;
+    private Set<DisabledSlotType> disabledSlotTypes;
 
     public SpongeArmorStandData() {
-        this(false, false, false, true);
+        this(false, false, false, true, new HashSet<>());
     }
 
-    public SpongeArmorStandData(boolean marker, boolean small, boolean arms, boolean basePlate) {
+    public SpongeArmorStandData(boolean marker, boolean small, boolean arms, boolean basePlate, Set<DisabledSlotType> disabledSlotTypes) {
         super(ArmorStandData.class);
         this.marker = marker;
         this.small = small;
         this.arms = arms;
         this.basePlate = basePlate;
+        this.disabledSlotTypes = disabledSlotTypes;
         registerGettersAndSetters();
     }
 
@@ -72,6 +80,10 @@ public class SpongeArmorStandData extends AbstractData<ArmorStandData, Immutable
         registerFieldGetter(Keys.ARMOR_STAND_MARKER, () -> this.marker);
         registerFieldSetter(Keys.ARMOR_STAND_MARKER, (marker) -> this.marker = marker);
         registerKeyValue(Keys.ARMOR_STAND_MARKER, this::marker);
+
+        registerFieldGetter(Keys.DISABLED_SLOT_TYPES, () -> this.disabledSlotTypes);
+        registerFieldSetter(Keys.DISABLED_SLOT_TYPES, (disabledSlotTypes -> this.disabledSlotTypes = disabledSlotTypes));
+        registerKeyValue(Keys.DISABLED_SLOT_TYPES, this::disabledSlotTypes);
     }
 
     @Override
@@ -94,15 +106,19 @@ public class SpongeArmorStandData extends AbstractData<ArmorStandData, Immutable
         return new SpongeValue<>(Keys.ARMOR_STAND_HAS_BASE_PLATE, true, this.basePlate);
     }
 
+    @Override
+    public SetValue<DisabledSlotType> disabledSlotTypes() {
+        return new SpongeSetValue<>(Keys.DISABLED_SLOT_TYPES, this.disabledSlotTypes);
+    }
 
     @Override
     public ArmorStandData copy() {
-        return new SpongeArmorStandData(this.marker, this.small, this.arms, this.basePlate);
+        return new SpongeArmorStandData(this.marker, this.small, this.arms, this.basePlate, this.disabledSlotTypes);
     }
 
     @Override
     public ImmutableArmorStandData asImmutable() {
-        return ImmutableDataCachingUtil.getManipulator(ImmutableSpongeArmorStandData.class, this.marker, this.small, this.arms, this.basePlate);
+        return ImmutableDataCachingUtil.getManipulator(ImmutableSpongeArmorStandData.class, this.marker, this.small, this.arms, this.basePlate, this.disabledSlotTypes);
     }
 
     @Override
@@ -111,6 +127,7 @@ public class SpongeArmorStandData extends AbstractData<ArmorStandData, Immutable
                 .set(Keys.ARMOR_STAND_HAS_ARMS, this.arms)
                 .set(Keys.ARMOR_STAND_HAS_BASE_PLATE, this.basePlate)
                 .set(Keys.ARMOR_STAND_IS_SMALL, this.small)
-                .set(Keys.ARMOR_STAND_MARKER, this.marker);
+                .set(Keys.ARMOR_STAND_MARKER, this.marker)
+                .set(Keys.DISABLED_SLOT_TYPES, this.disabledSlotTypes);
     }
 }

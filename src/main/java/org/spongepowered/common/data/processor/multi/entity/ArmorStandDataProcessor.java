@@ -33,11 +33,14 @@ import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.immutable.entity.ImmutableArmorStandData;
 import org.spongepowered.api.data.manipulator.mutable.entity.ArmorStandData;
+import org.spongepowered.api.data.type.DisabledSlotType;
 import org.spongepowered.common.data.manipulator.mutable.entity.SpongeArmorStandData;
 import org.spongepowered.common.data.processor.common.AbstractEntityDataProcessor;
+import org.spongepowered.common.interfaces.entity.item.IMixinArmorStand;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class ArmorStandDataProcessor extends AbstractEntityDataProcessor<EntityArmorStand, ArmorStandData, ImmutableArmorStandData> {
 
@@ -56,10 +59,12 @@ public class ArmorStandDataProcessor extends AbstractEntityDataProcessor<EntityA
         final boolean hasBasePlate = (boolean) keyValues.get(Keys.ARMOR_STAND_HAS_BASE_PLATE);
         final boolean isSmall = (boolean) keyValues.get(Keys.ARMOR_STAND_IS_SMALL);
         final boolean isMarker = (boolean) keyValues.get(Keys.ARMOR_STAND_MARKER);
+        final Set<DisabledSlotType> disabledSlotTypes = (Set<DisabledSlotType>) keyValues.get(Keys.DISABLED_SLOT_TYPES);
         dataHolder.setSmall(isSmall);
         dataHolder.setMarker(isMarker);
         dataHolder.setNoBasePlate(!hasBasePlate);
         dataHolder.setShowArms(hasArms);
+        ((IMixinArmorStand) dataHolder).setDisabledSlotTypes(disabledSlotTypes);
         return true;
     }
 
@@ -70,6 +75,7 @@ public class ArmorStandDataProcessor extends AbstractEntityDataProcessor<EntityA
                 .put(Keys.ARMOR_STAND_HAS_BASE_PLATE, !dataHolder.hasNoBasePlate())
                 .put(Keys.ARMOR_STAND_MARKER, dataHolder.hasMarker())
                 .put(Keys.ARMOR_STAND_IS_SMALL, dataHolder.isSmall())
+                .put(Keys.DISABLED_SLOT_TYPES, ((IMixinArmorStand) dataHolder).getDisabledSlotTypes())
                 .build();
     }
 
@@ -91,6 +97,9 @@ public class ArmorStandDataProcessor extends AbstractEntityDataProcessor<EntityA
         }
         if (container.contains(Keys.ARMOR_STAND_IS_SMALL)) {
             armorStandData.set(Keys.ARMOR_STAND_IS_SMALL, container.getBoolean(Keys.ARMOR_STAND_IS_SMALL.getQuery()).get());
+        }
+        if (container.contains(Keys.DISABLED_SLOT_TYPES)) {
+            armorStandData.set(Keys.DISABLED_SLOT_TYPES, (Set<DisabledSlotType>) container.get(Keys.DISABLED_SLOT_TYPES.getQuery()).get());
         }
         return Optional.of(armorStandData);
     }

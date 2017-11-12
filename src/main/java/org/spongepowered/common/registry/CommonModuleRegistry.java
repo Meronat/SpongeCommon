@@ -451,6 +451,7 @@ public final class CommonModuleRegistry {
             .registerModule(CraftingRecipe.class, SpongeCraftingRecipeRegistry.getInstance())
             .registerModule(EventContextKey.class, EventContextKeysModule.getInstance())
             .registerModule(RecordType.class, RecordTypeRegistryModule.getInstance())
+            .registerModule(DisabledSlotType.class, DisabledSlotTypeRegistryModule.getInstance())
 
             // Miscellaneous Registries
             .registerModule(DungeonMobRegistryModule.getInstance())

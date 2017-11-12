@@ -23,15 +23,20 @@
  * THE SOFTWARE.
  */
 package org.spongepowered.common.data.manipulator.immutable.entity;
-
+import com.google.common.collect.ImmutableSet;
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.manipulator.immutable.entity.ImmutableArmorStandData;
 import org.spongepowered.api.data.manipulator.mutable.entity.ArmorStandData;
+import org.spongepowered.api.data.type.DisabledSlotType;
+import org.spongepowered.api.data.value.immutable.ImmutableSetValue;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
 import org.spongepowered.common.data.manipulator.immutable.common.AbstractImmutableData;
 import org.spongepowered.common.data.manipulator.mutable.entity.SpongeArmorStandData;
+import org.spongepowered.common.data.value.immutable.ImmutableSpongeSetValue;
 import org.spongepowered.common.data.value.immutable.ImmutableSpongeValue;
+
+import java.util.Set;
 
 public class ImmutableSpongeArmorStandData extends AbstractImmutableData<ImmutableArmorStandData, ArmorStandData> implements ImmutableArmorStandData {
 
@@ -39,25 +44,29 @@ public class ImmutableSpongeArmorStandData extends AbstractImmutableData<Immutab
     private final boolean small;
     private final boolean arms;
     private final boolean basePlate;
+    private final Set<DisabledSlotType> disabledSlotTypes;
     private final ImmutableValue<Boolean> markerValue;
     private final ImmutableValue<Boolean> smallValue;
     private final ImmutableValue<Boolean> armsValue;
     private final ImmutableValue<Boolean> basePlateValue;
+    private final ImmutableSetValue<DisabledSlotType> disabledSlotTypesValue;
 
     public ImmutableSpongeArmorStandData() {
-        this(false, false, false, true);
+        this(false, false, false, true, ImmutableSet.of());
     }
 
-    public ImmutableSpongeArmorStandData(boolean marker, boolean small, boolean arms, boolean basePlate) {
+    public ImmutableSpongeArmorStandData(boolean marker, boolean small, boolean arms, boolean basePlate, Set<DisabledSlotType> disabledSlotTypes) {
         super(ImmutableArmorStandData.class);
         this.marker = marker;
         this.small = small;
         this.arms = arms;
         this.basePlate = basePlate;
+        this.disabledSlotTypes = disabledSlotTypes;
         this.markerValue = ImmutableSpongeValue.cachedOf(Keys.ARMOR_STAND_MARKER, false, this.marker);
         this.smallValue = ImmutableSpongeValue.cachedOf(Keys.ARMOR_STAND_IS_SMALL, false, this.small);
         this.armsValue = ImmutableSpongeValue.cachedOf(Keys.ARMOR_STAND_HAS_ARMS, false, this.arms);
         this.basePlateValue = ImmutableSpongeValue.cachedOf(Keys.ARMOR_STAND_HAS_BASE_PLATE, true, this.basePlate);
+        this.disabledSlotTypesValue = new ImmutableSpongeSetValue<>(Keys.DISABLED_SLOT_TYPES, this.disabledSlotTypes);
         registerGetters();
     }
 
@@ -75,6 +84,8 @@ public class ImmutableSpongeArmorStandData extends AbstractImmutableData<Immutab
         registerFieldGetter(Keys.ARMOR_STAND_MARKER, () -> this.marker);
         registerKeyValue(Keys.ARMOR_STAND_MARKER, () -> this.markerValue);
 
+        registerFieldGetter(Keys.DISABLED_SLOT_TYPES, () -> this.disabledSlotTypes);
+        registerKeyValue(Keys.DISABLED_SLOT_TYPES, () -> this.disabledSlotTypesValue);
     }
 
     @Override
@@ -98,8 +109,13 @@ public class ImmutableSpongeArmorStandData extends AbstractImmutableData<Immutab
     }
 
     @Override
+    public ImmutableSetValue<DisabledSlotType> disabledSlotTypes() {
+        return this.disabledSlotTypesValue;
+    }
+
+    @Override
     public ArmorStandData asMutable() {
-        return new SpongeArmorStandData(this.marker, this.small, this.arms, this.basePlate);
+        return new SpongeArmorStandData(this.marker, this.small, this.arms, this.basePlate, this.disabledSlotTypes);
     }
 
     @Override
@@ -108,6 +124,7 @@ public class ImmutableSpongeArmorStandData extends AbstractImmutableData<Immutab
                 .set(Keys.ARMOR_STAND_HAS_ARMS, this.arms)
                 .set(Keys.ARMOR_STAND_HAS_BASE_PLATE, this.basePlate)
                 .set(Keys.ARMOR_STAND_IS_SMALL, this.small)
-                .set(Keys.ARMOR_STAND_MARKER, this.marker);
+                .set(Keys.ARMOR_STAND_MARKER, this.marker)
+                .set(Keys.DISABLED_SLOT_TYPES, this.disabledSlotTypes);
     }
 }
