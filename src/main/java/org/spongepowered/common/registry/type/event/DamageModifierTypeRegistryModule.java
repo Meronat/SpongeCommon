@@ -57,7 +57,7 @@ public class DamageModifierTypeRegistryModule implements CatalogRegistryModule<D
     @Override
     public void registerDefaults() {
         // TODO - convert these to properly use the sponge id.
-        this.modifierTypeMap.put("weapon_enchantment", new SpongeDamageModifierType("Weapon Enchantment", "weapon_enchantment"));
+        this.modifierTypeMap.put("weapon_enchantment", new SpongeDamageModifierType("Weapon EnchantmentType", "weapon_enchantment"));
         this.modifierTypeMap.put("offensive_potion_effect", new SpongeDamageModifierType("Offensive PotionEffect", "offensive_potion_effect"));
         this.modifierTypeMap.put("defensive_potion_effect", new SpongeDamageModifierType("Defensive PotionEffect", "defensive_potion_effect"));
         this.modifierTypeMap.put("negative_potion_effect", new SpongeDamageModifierType("Negative PotionEffect", "negative_potion_effect"));
@@ -65,7 +65,7 @@ public class DamageModifierTypeRegistryModule implements CatalogRegistryModule<D
         this.modifierTypeMap.put("shield", new SpongeDamageModifierType("Shield", "shield"));
         this.modifierTypeMap.put("blocking", this.modifierTypeMap.get("shield"));
         this.modifierTypeMap.put("armor", new SpongeDamageModifierType("Armor", "armor"));
-        this.modifierTypeMap.put("armor_enchantment", new SpongeDamageModifierType("Armor Enchantment", "armor_enchantment"));
+        this.modifierTypeMap.put("armor_enchantment", new SpongeDamageModifierType("Armor EnchantmentType", "armor_enchantment"));
         this.modifierTypeMap.put("magic", new SpongeDamageModifierType("Magic", "magic"));
         this.modifierTypeMap.put("difficulty", new SpongeDamageModifierType("Difficulty", "difficulty"));
         this.modifierTypeMap.put("absorption", new SpongeDamageModifierType("Absorption", "absorption"));

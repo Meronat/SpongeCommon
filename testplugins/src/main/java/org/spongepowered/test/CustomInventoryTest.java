@@ -26,6 +26,7 @@ package org.spongepowered.test;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.BlockTypes;
+import org.spongepowered.api.block.tileentity.EnchantmentTable;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.animal.Horse;
 import org.spongepowered.api.entity.living.animal.Llama;
@@ -39,6 +40,7 @@ import org.spongepowered.api.event.filter.Getter;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
+import org.spongepowered.api.item.EnchantmentTypes;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Carrier;
 import org.spongepowered.api.item.inventory.Inventory;
@@ -65,6 +67,20 @@ import org.spongepowered.api.world.World;
  */
 @Plugin(id = "custominventorytest", name = "Custom Inventory Test", description = "A plugin to test custom inventories")
 public class CustomInventoryTest {
+
+    @Listener
+    public void onBlockInteract(InteractBlockEvent event, @Root Player player) {
+        player.sendMessage(Text.of("====="));
+        player.sendMessage(Text.of(event.getTargetBlock().getState().getType().getName()));
+        player.sendMessage(Text.of(event.getTargetBlock().getState().getType().getId()));
+        player.sendMessage(Text.of(event.getTargetBlock().getState().getType().getTranslation().get()));
+        player.sendMessage(Text.of(event.getTargetBlock().getState().getType().getTranslation().getId()));
+        player.sendMessage(Text.of("====="));
+        player.sendMessage(Text.of(EnchantmentTypes.AQUA_AFFINITY.getTranslation().get()));
+        player.sendMessage(Text.of(EnchantmentTypes.AQUA_AFFINITY.getTranslation().getId()));
+        player.sendMessage(Text.of(EnchantmentTypes.AQUA_AFFINITY.getName()));
+        player.sendMessage(Text.of(EnchantmentTypes.AQUA_AFFINITY.getId()));
+    }
 
     @Listener
     public void onPunchBlock(InteractBlockEvent.Primary event, @Root Player player) {

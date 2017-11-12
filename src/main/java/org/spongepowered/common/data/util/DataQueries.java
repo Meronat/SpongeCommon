@@ -64,8 +64,8 @@ public final class DataQueries {
     public static final DataQuery VELOCITY_Y = of("Y");
     public static final DataQuery VELOCITY_Z = of("Z");
 
-    // Enchantments
-    public static final DataQuery ENCHANTMENT_ID = of("Enchantment");
+    // EnchantmentTypes
+    public static final DataQuery ENCHANTMENT_ID = of("EnchantmentType");
     public static final DataQuery ENCHANTMENT_LEVEL = of("Level");
 
     // Potions

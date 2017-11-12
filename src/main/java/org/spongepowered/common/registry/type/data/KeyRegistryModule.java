@@ -195,7 +195,7 @@ public class KeyRegistryModule implements AdditionalCatalogRegistryModule<Key<?>
 
         this.fieldMap.put("disarmed", makeSingleKey(TypeTokens.BOOLEAN_TOKEN, TypeTokens.BOOLEAN_VALUE_TOKEN, of("Disarmed"), "sponge:disarmed", "Disarmed"));
 
-        this.fieldMap.put("item_enchantments", makeListKey(TypeTokens.LIST_ITEM_ENCHANTMENT_TOKEN, TypeTokens.LIST_ITEM_ENCHANTMENT_VALUE_TOKEN, of("ItemEnchantments"), "sponge:item_enchantments", "Item Enchantments"));
+        this.fieldMap.put("item_enchantments", makeListKey(TypeTokens.LIST_ITEM_ENCHANTMENT_TOKEN, TypeTokens.LIST_ITEM_ENCHANTMENT_VALUE_TOKEN, of("ItemEnchantments"), "sponge:item_enchantments", "Item EnchantmentTypes"));
 
         this.fieldMap.put("banner_patterns", makeListKey(TypeTokens.LIST_PATTERN_TOKEN, TypeTokens.LIST_PATTERN_VALUE_TOKEN, of("BannerPatterns"), "sponge:banner_patterns", "Banner Patterns"));
 
@@ -412,7 +412,7 @@ public class KeyRegistryModule implements AdditionalCatalogRegistryModule<Key<?>
 
         this.fieldMap.put("persists", makeSingleKey(TypeTokens.BOOLEAN_TOKEN, TypeTokens.BOOLEAN_VALUE_TOKEN, of("Persists"), "sponge:persists", "Persists"));
 
-        this.fieldMap.put("stored_enchantments", makeListKey(TypeTokens.LIST_ITEM_ENCHANTMENT_TOKEN, TypeTokens.LIST_ITEM_ENCHANTMENT_VALUE_TOKEN, of("StoredEnchantments"), "sponge:stored_enchantments", "Stored Enchantments"));
+        this.fieldMap.put("stored_enchantments", makeListKey(TypeTokens.LIST_ITEM_ENCHANTMENT_TOKEN, TypeTokens.LIST_ITEM_ENCHANTMENT_VALUE_TOKEN, of("StoredEnchantments"), "sponge:stored_enchantments", "Stored EnchantmentTypes"));
 
         this.fieldMap.put("is_sprinting", makeSingleKey(TypeTokens.BOOLEAN_TOKEN, TypeTokens.BOOLEAN_VALUE_TOKEN, of("Sprinting"), "sponge:sprinting", "Sprinting"));
 
@@ -436,7 +436,7 @@ public class KeyRegistryModule implements AdditionalCatalogRegistryModule<Key<?>
 
         this.fieldMap.put("last_date_played", makeSingleKey(TypeTokens.INSTANT_TOKEN, TypeTokens.INSTANT_VALUE_TOKEN, of("LastTimePlayed"), "sponge:last_time_played", "Last Time Played"));
 
-        this.fieldMap.put("hide_enchantments", makeSingleKey(TypeTokens.BOOLEAN_TOKEN, TypeTokens.BOOLEAN_VALUE_TOKEN, of("HideEnchantments"), "sponge:hide_enchantments", "Hide Enchantments"));
+        this.fieldMap.put("hide_enchantments", makeSingleKey(TypeTokens.BOOLEAN_TOKEN, TypeTokens.BOOLEAN_VALUE_TOKEN, of("HideEnchantments"), "sponge:hide_enchantments", "Hide EnchantmentTypes"));
 
         this.fieldMap.put("hide_attributes", makeSingleKey(TypeTokens.BOOLEAN_TOKEN, TypeTokens.BOOLEAN_VALUE_TOKEN, of("HideAttributes"), "sponge:hide_attributes", "Hide Attributes"));
 
