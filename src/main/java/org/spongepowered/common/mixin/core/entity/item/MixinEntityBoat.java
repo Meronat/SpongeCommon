@@ -119,6 +119,8 @@ public abstract class MixinEntityBoat extends MixinEntity implements Boat {
     public void supplyVanillaManipulators(List<DataManipulator<?, ?>> manipulators) {
         super.supplyVanillaManipulators(manipulators);
         manipulators.add(get(TreeData.class).get());
+        manipulators.add(getBoatData());
+        // passenger data
     }
 
     @Override
