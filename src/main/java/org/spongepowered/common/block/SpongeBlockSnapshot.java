@@ -32,6 +32,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -54,6 +55,7 @@ import org.spongepowered.api.data.manipulator.ImmutableDataManipulator;
 import org.spongepowered.api.data.merge.MergeFunction;
 import org.spongepowered.api.data.value.BaseValue;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
+import org.spongepowered.api.item.inventory.ItemStackSnapshot;
 import org.spongepowered.api.world.BlockChangeFlag;
 import org.spongepowered.api.world.BlockChangeFlags;
 import org.spongepowered.api.world.Location;
@@ -67,6 +69,7 @@ import org.spongepowered.common.event.tracking.PhaseContext;
 import org.spongepowered.common.event.tracking.phase.block.BlockPhase;
 import org.spongepowered.common.interfaces.block.IMixinBlock;
 import org.spongepowered.common.interfaces.world.IMixinWorldServer;
+import org.spongepowered.common.item.inventory.util.ItemStackUtil;
 import org.spongepowered.common.registry.type.block.TileEntityTypeRegistryModule;
 import org.spongepowered.common.util.VecHelper;
 import org.spongepowered.common.world.BlockChange;
@@ -533,6 +536,12 @@ public class SpongeBlockSnapshot implements BlockSnapshot {
                 .tileData(NbtTranslator.getInstance().translate(this.compound))
                 .build();
         return Optional.of(archetype);
+    }
+
+    @Override
+    public Optional<ItemStackSnapshot> getPickItem() {
+        return getLocation().map(worldLocation -> ItemStackUtil.snapshotOf(((Block) this.blockState.getType())
+            .getItem((net.minecraft.world.World) worldLocation.getExtent(), this.blockPos, (IBlockState) this.blockState)));
     }
 
     @Override
